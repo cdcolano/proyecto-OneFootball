@@ -11,6 +11,7 @@ public class Traspaso {
 	private Date fecha;
 	
 	
+	
 	public Date getFecha() {
 		return fecha;
 	}
@@ -55,6 +56,12 @@ public class Traspaso {
 		this.vendedor=jug.getEquipo();
 		this.precio=precio;
 		fecha= new Date( System.currentTimeMillis());
+	}
+	
+	
+	public String toString() {
+		return ("" + jugador.getNombre() + "Vendedor: " + vendedor.getNombre() + "Comprador: " + equipo.getNombre()+
+		"precio: " + precio + "fecha" + fecha.toLocaleString());
 	}
 	
 	

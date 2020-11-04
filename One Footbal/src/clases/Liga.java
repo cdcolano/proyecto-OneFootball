@@ -2,7 +2,7 @@ package clases;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-public class Liga {
+public class Liga extends Contenedor{
 	private String nombre;
 	private TreeSet<Equipo> equipos;
 	private TreeSet<Jugador> maximosGoleadores;

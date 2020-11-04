@@ -1,7 +1,7 @@
 package clases;
 import java.util.ArrayList;
 
-public class Equipo implements Comparable{
+public class Equipo extends Contenedor implements Comparable{
 	private String nombre;
 	private ArrayList<Jugador>jugadores;
 	private int puntos;
@@ -9,14 +9,7 @@ public class Equipo implements Comparable{
 	private int golesEnContra;
 	private int partidosJugados;
 	private String logo;
-	
-	
-	public String getNombre() {
-		return nombre;
-	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+	private ArrayList<Noticia>noticias;
 	
 	public ArrayList<Jugador> getJugadores() {
 		return jugadores;
@@ -48,20 +41,16 @@ public class Equipo implements Comparable{
 	public void setPartidosJugados(int partidosJugados) {
 		this.partidosJugados = partidosJugados;
 	}
-	public ArrayList<Traspaso> getTraspasos() {
-		return traspasos;
-	}
-	public void setTraspasos(ArrayList<Traspaso> traspasos) {
-		this.traspasos = traspasos;
-	}
+	
 	public ArrayList<Noticia> getNoticias() {
 		return noticias;
 	}
+	
 	public void setNoticias(ArrayList<Noticia> noticias) {
 		this.noticias = noticias;
 	}
-	private ArrayList<Traspaso>traspasos;
-	private ArrayList<Noticia>noticias;
+	
+	
 	
 	public Equipo() {
 		jugadores= new ArrayList<Jugador>();
@@ -74,6 +63,8 @@ public class Equipo implements Comparable{
 	public Equipo(String nombre) {
 		this.nombre=nombre;
 		jugadores= new ArrayList<Jugador>();
+		traspasos= new ArrayList<Traspaso>();
+		noticias= new ArrayList<Noticia>();
 		puntos=0;
 		golesAFavor=0;
 		golesEnContra=0;

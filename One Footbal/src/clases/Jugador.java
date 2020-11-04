@@ -1,6 +1,6 @@
 package clases;
 
-public class Jugador {
+public class Jugador implements ConImagenes{
 	private String nombre;
 	private String pais;
 	private String posicion;
@@ -10,8 +10,15 @@ public class Jugador {
 	private int numAsistencias;
 	private int numRojas;
 	private Equipo equipo;
+	private String imagen;
 
 	
+	public String getImagen() {
+		return imagen;
+	}
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -67,11 +74,30 @@ public class Jugador {
 		this.numRojas = numRojas;
 	}
 	
-	public Jugador(String nombre, String pais, int edad, String posicion){
+	public Jugador(String nombre, String pais, int edad, String posicion, Equipo equipo){
 		this.nombre= nombre;
 		this.pais=pais;
 		this.edad=edad;
 		this.posicion=posicion;
+		this.equipo=equipo;
+		numAmarillas=0;
+		numRojas=0;
+		numGoles=0;
+		numAsistencias=0;
+	}
+	
+	/**Considera iguales dos jugadores con mismo nombre, misma nacionalidad,
+	 * misma posicion y misma edad
+	 * @param j Jugador a comparar
+	 * @return true si son iguales,, false si no lo son
+	 */
+	public boolean equals(Jugador j) {
+		if (nombre.contentEquals(j.getNombre())&& edad==j.getEdad() &&
+				pais.contentEquals(j.getPais()) && posicion.contentEquals(j.getPosicion())) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 }
