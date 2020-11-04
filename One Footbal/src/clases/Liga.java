@@ -3,40 +3,16 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class Liga extends Contenedor{
-	private String nombre;
+	
 	private TreeSet<Equipo> equipos;
 	private TreeSet<Jugador> maximosGoleadores;
 	private TreeSet<Jugador> maximosAsistentes;
 	private TreeSet<Jugador> tarjetasAmarillas;
 	private TreeSet<Jugador> tarjetasRojas;
-	private ArrayList<Traspaso> traspasos;
 	private ArrayList<Jornada> jornadas;
-	private ArrayList<Noticia>noticias;
 	private String logo;
 	
-	
-
-	public String getNombre() {
-		return nombre;
-	}
-
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-
-
-	
-	public ArrayList<Noticia> getNoticias() {
-		return noticias;
-	}
-
-
-	public void setNoticias(ArrayList<Noticia> noticias) {
-		this.noticias = noticias;
-	}
-
+		
 
 	public Liga() {
 		equipos= new TreeSet<Equipo>();
