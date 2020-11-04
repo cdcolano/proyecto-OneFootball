@@ -1,9 +1,11 @@
 package ventanas;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -13,14 +15,30 @@ import clases.Noticia;
 import clases.Usuario;
 
 public class VentanaInicio extends JFrame{
-	private JScrollPane panelCentral; //estara compuesto por más subpanles con los distintos contenidos
-	private JPanel equiposSeguido; //hacer un Jpanel por equipoSeguido
-	private JPanel topNews; //noticias con ultima fecha necesario BD
+	private JScrollPane scpanelCentral; //estara compuesto por más subpanles con los distintos contenidos
+	private JPanel pTopNews; //noticias con ultima fecha necesario BD
+	private ArrayList<Noticia>topNews;
 	private Usuario u;
+	private JPanel panelCentral;
 	
 	
 	public VentanaInicio(Usuario u) {
-		panelCentral= new JScrollPane();
+		this.u=u;
+		scpanelCentral= new JScrollPane();
+		scpanelCentral.setLayout(new GridLayout(u.getEquiposSeguidos().size()+1,1));
+		pTopNews=new JPanel();
+		pTopNews.setLayout(new GridLayout(topNews.size()+1 , 1));
+		JPanel pTituloTopNews= new JPanel();
+		pTituloTopNews.setLayout(new FlowLayout (FlowLayout.LEFT));
+		JLabel imgFuego= new JLabel();
+		imgFuego.setIcon(new ImageIcon(VentanaInicio.class.getResource("/img/fuego.png")));
+		pTituloTopNews.add(new JLabel("TOP NEWS"));
+		pTopNews.add(pTituloTopNews);
+		for (Noticia not: topNews) {
+			JPanel pNoticia= anyadePanalesNoticia(not);
+			pTopNews.add(pNoticia);
+		}
+		
 		for (Equipo e :u.getEquiposSeguidos()) {
 			JPanel pEquipo= new JPanel();
 			JPanel pEquipoAct= new JPanel();
@@ -39,8 +57,10 @@ public class VentanaInicio extends JFrame{
 					}
 			}else {
 				for (Noticia n: e.getNoticias()) {
-					anyadePanalesNoticia(n);
+					JPanel pNoticia=anyadePanalesNoticia(n);
+					pEquipo.add(pNoticia);
 				}
+				scpanelCentral.add(pEquipo);
 			}
 		}
 	}
