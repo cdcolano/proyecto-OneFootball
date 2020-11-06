@@ -10,7 +10,7 @@ public class Liga extends Contenedor{
 	private TreeSet<Jugador> tarjetasAmarillas;
 	private TreeSet<Jugador> tarjetasRojas;
 	private ArrayList<Jornada> jornadas;
-	private String logo;
+	
 	
 		
 
