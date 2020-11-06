@@ -27,5 +27,13 @@ public class Contenedor implements ConImagenes{
 	public void setImagen(String logo) {
 		this.logo = logo;
 	}
+	public ArrayList<Noticia> getNoticias() {
+		return noticias;
+	}
+	public void setNoticias(ArrayList<Noticia> noticias) {
+		this.noticias = noticias;
+	}
+	
+	
 	
 }

@@ -11,7 +11,7 @@ import javax.swing.ListCellRenderer;
 
 import clases.ConImagenes;
 
-public class NoticiaListCellRenderer extends DefaultListCellRenderer {
+public class ImagenListCellRenderer extends DefaultListCellRenderer {
 	private static final long serialVersionUID = 1L;
 	Font font = new Font("helvitica", Font.BOLD, 24);
 

@@ -2,14 +2,12 @@ package clases;
 import java.util.ArrayList;
 
 public class Equipo extends Contenedor implements Comparable{
-	private String nombre;
 	private ArrayList<Jugador>jugadores;
 	private int puntos;
 	private int golesAFavor;
 	private int golesEnContra;
-	private int partidosJugados;
-	private String logo;
-	private ArrayList<Noticia>noticias;
+	private ArrayList<Partido>partidos; //TODO cambiar getters setters y constructor
+	
 	
 	public ArrayList<Jugador> getJugadores() {
 		return jugadores;
@@ -35,29 +33,25 @@ public class Equipo extends Contenedor implements Comparable{
 	public void setGolesEnContra(int golesEnContra) {
 		this.golesEnContra = golesEnContra;
 	}
-	public int getPartidosJugados() {
-		return partidosJugados;
+	
+	
+	public int getNumPartidos() {
+		return partidos.size(); 
 	}
-	public void setPartidosJugados(int partidosJugados) {
-		this.partidosJugados = partidosJugados;
+
+	
+	public ArrayList<Partido> getPartidos() {
+		return partidos;
 	}
-	
-	public ArrayList<Noticia> getNoticias() {
-		return noticias;
+	public void setPartidos(ArrayList<Partido> partidos) {
+		this.partidos = partidos;
 	}
-	
-	public void setNoticias(ArrayList<Noticia> noticias) {
-		this.noticias = noticias;
-	}
-	
-	
-	
 	public Equipo() {
 		jugadores= new ArrayList<Jugador>();
 		puntos=0;
 		golesAFavor=0;
 		golesEnContra=0;
-		partidosJugados=0;
+		partidos= new ArrayList<Partido>();
 	}
 	
 	public Equipo(String nombre) {
@@ -68,7 +62,7 @@ public class Equipo extends Contenedor implements Comparable{
 		puntos=0;
 		golesAFavor=0;
 		golesEnContra=0;
-		partidosJugados=0;
+		partidos= new ArrayList<Partido>();
 	}
 	@Override
 	public int compareTo(Object o) {
@@ -85,7 +79,7 @@ public class Equipo extends Contenedor implements Comparable{
 	
 	
 	public String toString() {
-		return nombre + "PJ: " + partidosJugados + "Pts: " + puntos+ "GF: " + golesAFavor + "GC: " +golesEnContra;
+		return nombre + "PJ: " + partidos.size() + "Pts: " + puntos+ "GF: " + golesAFavor + "GC: " +golesEnContra;
 	}
 	
 	

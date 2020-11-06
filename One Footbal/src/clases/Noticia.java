@@ -6,7 +6,7 @@ public class Noticia implements ConImagenes{
 	private String imagen;
 	private String fuente;
 	
-	
+	//TODO libreria de html o formatos intermedios / editor de texto enriquecido
 	public String getFuente() {
 		return fuente;
 	}
