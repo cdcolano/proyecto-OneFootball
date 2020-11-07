@@ -7,8 +7,14 @@ public class Equipo extends Contenedor implements Comparable{
 	private int golesAFavor;
 	private int golesEnContra;
 	private ArrayList<Partido>partidos; //TODO cambiar getters setters y constructor
+	private Liga liga;
 	
-	
+	public Liga getLiga() {
+		return liga;
+	}
+	public void setLiga(Liga liga) {
+		this.liga = liga;
+	}
 	public ArrayList<Jugador> getJugadores() {
 		return jugadores;
 	}

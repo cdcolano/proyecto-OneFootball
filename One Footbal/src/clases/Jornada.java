@@ -61,4 +61,8 @@ public class Jornada {
 	}
 	
 	
+	public String toString() {
+		return "Jornada: " + numJornada;
+	}
+	
 }

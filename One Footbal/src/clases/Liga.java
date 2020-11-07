@@ -1,5 +1,6 @@
 package clases;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.TreeSet;
 
 public class Liga extends Contenedor{
@@ -16,10 +17,54 @@ public class Liga extends Contenedor{
 
 	public Liga() {
 		equipos= new TreeSet<Equipo>();
-		maximosGoleadores= new TreeSet<Jugador>();
-		maximosAsistentes= new TreeSet<Jugador>();
-		tarjetasAmarillas= new TreeSet<Jugador>();
-		tarjetasRojas= new TreeSet<Jugador>();
+		maximosGoleadores= new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
+				if (o1.getNumGoles()>o2.getNumGoles()) {
+					return 1;
+				}else if (o1.getNumGoles()==o2.getNumGoles()) {
+					return 0;
+				}
+				else {
+					return -1;
+				}
+			}
+			
+		);
+		maximosAsistentes=new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
+			if (o1.getNumAsistencias()>o2.getNumAsistencias()) {
+				return 1;
+			}else if (o1.getNumAsistencias()==o2.getNumAsistencias()) {
+				return 0;
+			}
+			else {
+				return -1;
+			}
+		}
+		
+	);
+		tarjetasAmarillas= new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
+			if (o1.getNumAmarillas()>o2.getNumAmarillas()) {
+				return 1;
+			}else if (o1.getNumAmarillas()==o2.getNumAmarillas()) {
+				return 0;
+			}
+			else {
+				return -1;
+			}
+		}
+		
+	);
+		tarjetasRojas=new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
+			if (o1.getNumRojas()>o2.getNumRojas()) {
+				return 1;
+			}else if (o1.getNumRojas()==o2.getNumRojas()) {
+				return 0;
+			}
+			else {
+				return -1;
+			}
+		}
+		
+	);
 		traspasos= new ArrayList<Traspaso>();
 		jornadas=new ArrayList<Jornada>();
 	}
