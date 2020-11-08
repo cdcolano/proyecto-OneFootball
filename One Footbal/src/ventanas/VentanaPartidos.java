@@ -19,8 +19,15 @@ import clases.Liga;
 import clases.Partido;
 import clases.Usuario;
 
+/**Ventana que muestra los partidos de las diferentes ligas que sigue el usuario loggeado
+ * @author cdcol
+ *
+ */
 public class VentanaPartidos extends JFrame {
 	
+	/**
+	 * @param u Usuario loggeado
+	 */
 	public VentanaPartidos( Usuario u) {
 		JPanel pPrincipal= new JPanel();
 		pPrincipal.setLayout(new BoxLayout(pPrincipal, BoxLayout.Y_AXIS));
@@ -39,10 +46,13 @@ public class VentanaPartidos extends JFrame {
 			panelLigaSupa.add(new JLabel("Jornada"+ l.getJornadas().size()));
 			panelLiga.setLayout(new BorderLayout());
 			panelLiga.add(panelLigaSup,BorderLayout.SOUTH);
-			panelLiga.add(anyadePanelUltimaJornada(l), BorderLayout.CENTER);
+			panelLiga.add(anyadePanelUltimaJornada(l.getJornadas().get(l.getJornadas().size()-1)), BorderLayout.CENTER);
 			pPrincipal.add(panelLiga);
 		}
 		VentanaInicio.anyadeBotonera(this, u);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(200, 300, 500, 500);
+		setVisible(true);
 	
 	//TODO posibilidad de hacerlo con JTable
 	}
@@ -55,10 +65,10 @@ public class VentanaPartidos extends JFrame {
 	 * @param l liga de la que se añaden los partidos
 	 * @return panel con los partidos añadidos
 	 */
-	public static JPanel anyadePanelUltimaJornada(Liga l) {
+	public static JPanel anyadePanelUltimaJornada(Jornada j) {
 		JPanel pPrincipal= new JPanel();
-		pPrincipal.setLayout(new GridLayout(l.getJornadas().get(l.getJornadas().size()-1).getPartidos().size(), 1));
-		for (Partido p: l.getJornadas().get(l.getJornadas().size()-1).getPartidos()) {
+		pPrincipal.setLayout(new GridLayout(j.getPartidos().size(), 1));
+		for (Partido p: j.getPartidos()) {
 			JPanel pPartido= new JPanel();
 			pPartido.setLayout(new BorderLayout());
 			SimpleDateFormat df= new SimpleDateFormat("aaaa.MM.dd HH: mm: ss zzz");

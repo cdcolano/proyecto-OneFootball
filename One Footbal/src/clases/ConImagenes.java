@@ -1,5 +1,6 @@
 package clases;
 
+
 public interface ConImagenes {
 	
 	public String getImagen();

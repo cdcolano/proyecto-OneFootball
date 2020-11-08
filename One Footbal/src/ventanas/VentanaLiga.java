@@ -33,6 +33,12 @@ import clases.Jugador;
 import clases.Liga;
 import clases.Usuario;
 
+/**Ventana que muestra la clasificacion asi como las estadisticas de lideres en ciertas categorias en funcion 
+ * del booleano clasificacion si este es true se muestra la clasificacion, si es false se muestran los lideres en las 
+ * diferentes categorias
+ * @author cdcol
+ *
+ */
 public class VentanaLiga extends JFrame {
 	JPanel pCentral;
 	JTable tClasificacion;
@@ -50,6 +56,12 @@ public class VentanaLiga extends JFrame {
 	public static final String[] ID_ROJAS= {"Rojas", "", "", ""};
 	public static final String[] ID_AMARILLAS= {"Amarillas", "", "", ""};
 	
+	/**
+	 * @param clasif true si desea mostrar la clasificacion, false si desea mostrar
+	 * los lideres por categorias
+	 * @param liga liga de la que se desean mostrar los datos
+	 * @param u Usuario loggeado
+	 */
 	public VentanaLiga(boolean clasif, Liga liga, Usuario u) {
 		tClasificacion= new JTable();
 		mEquipos= new DefaultTableModel();
@@ -157,9 +169,16 @@ public class VentanaLiga extends JFrame {
 		VentanaLiga.anyadePanelSup(this, liga, u);
 		
 		VentanaInicio.anyadeBotonera(this, u);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(200, 300, 500, 500);
+		setVisible(true);
 	}
 	
 	
+	/**añade Elemeentos del tipo Jugador al modelo correspondiente
+	 * @param listaJugador  lista de Jugadores a añadir
+	 * @param mJugador modelo de la Tabla correspondiente
+	 */
 	private void anyadeElementos(TreeSet<Jugador>listaJugador, DefaultTableModel mJugador) {
 		for (int i=0;i<3;i++) {
 			Jugador[] jugadores= (Jugador[])listaJugador.toArray();
@@ -171,6 +190,11 @@ public class VentanaLiga extends JFrame {
 	}
 	
 	
+	/**añade la botoneraa Superior comun en varias ventanas
+	 * @param vent ventana a la que se desea añadir el panel
+	 * @param l Liga de la que se desea añadir
+	 * @param u Usuario loggeado
+	 */
 	public static void anyadePanelSup(JFrame vent, Liga l,Usuario u) {
 		JPanel pSuperior= new JPanel();
 		JPanel pBotoneraSup= new JPanel();

@@ -13,8 +13,16 @@ import javax.swing.JTextArea;
 import clases.Noticia;
 import clases.Usuario;
 
+/**Ventana que muestra una sola noticia con su cuerpo desarrollado
+ * @author cdcol
+ *
+ */
 public class VentanaNoticia extends JFrame {
 	
+	/**
+	 * @param u Usuario loggeado
+	 * @param n Noticia a mostrar
+	 */
 	public VentanaNoticia(Usuario u, Noticia n) {
 		JPanel pCentral= new JPanel();
 		JPanel pNoticia=new JPanel();
@@ -39,6 +47,9 @@ public class VentanaNoticia extends JFrame {
 		
 		getContentPane().add(pCentral,BorderLayout.CENTER);
 		VentanaInicio.anyadeBotonera(this, u);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(200, 300, 500, 500);
+		setVisible(true);
 	}
 	
 }

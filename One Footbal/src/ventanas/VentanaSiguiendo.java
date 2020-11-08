@@ -19,7 +19,15 @@ import clases.Jugador;
 import clases.Liga;
 import clases.Usuario;
 
+/**ventana en la que se muestran Equipos, Jugadores y Ligas seguidos por el usuario y se
+ * da la opcion de añadir a cada una de estas categorias
+ * @author cdcol
+ *
+ */
 public class VentanaSiguiendo extends JFrame{
+	/**
+	 * @param u Usuario loggeado
+	 */
 	public VentanaSiguiendo(Usuario u) {
 		JTable tEquipos= new JTable();
 		JTable tLigas= new JTable();
@@ -112,6 +120,10 @@ public class VentanaSiguiendo extends JFrame{
 		getContentPane().add(pCentral,BorderLayout.CENTER);
 		
 		
+		
 		VentanaInicio.anyadeBotonera(this, u);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(200, 300, 500, 500);
+		setVisible(true);
 	}
 }

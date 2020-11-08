@@ -22,9 +22,17 @@ import clases.Jugador;
 import clases.Liga;
 import clases.Usuario;
 
+/**Ventana que gestiona la visualizacion de la plantilla de un equipo
+ * @author cdcol
+ *
+ */
 public class VentanaEquipo extends JFrame{
 
 	//TODO posibilidad de visualizar plantilla 
+	/**
+	 * @param u USuario loggeado
+	 * @param e Equipo del que se mostraran los datos
+	 */
 	public VentanaEquipo(Usuario u,Equipo e) {
 		JTable tPlantilla= new JTable();
 		DefaultTableModel mPlantilla= new DefaultTableModel();
@@ -58,9 +66,17 @@ public class VentanaEquipo extends JFrame{
 		getContentPane().add(spCentral,BorderLayout.CENTER);
 		anyadePanelSup(this, e, u);
 		VentanaInicio.anyadeBotonera(this, u);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(200, 300, 500, 500);
+		setVisible(true);
 	}
 	
 	
+		/**añade el panel Superior que es comun en varias ventanas
+		 * @param vent Ventana a la que se añadira este panel superior
+		 * @param e Equipo representado
+		 * @param u Usuario loggeado
+		 */
 		public static void anyadePanelSup(JFrame vent, Equipo e,Usuario u) {
 			JPanel pSuperior= new JPanel();
 			JPanel pBotoneraSup= new JPanel();

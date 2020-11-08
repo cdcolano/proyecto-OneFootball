@@ -72,4 +72,21 @@ public class Usuario {
 		jugadoresSeguidos.add(j);
 	}
 	
+	
+	public String toString() {
+		return "Nombre: "+ nombre + "Correo: " + correoElec;
+	}
+	
+	/**Considera iguales dos Usuarios con el mismo correo electronico
+	 * @param u Usuario a comparar
+	 * @return true si son iguales false si no lo son
+	 */
+	public boolean equals(Usuario u) {
+		if (u.getCorreoElec().contentEquals(correoElec)) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 }

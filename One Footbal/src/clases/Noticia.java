@@ -32,4 +32,27 @@ public class Noticia implements ConImagenes{
 		this.imagen = imagen;
 	}
 	
+	
+	public Noticia() {
+		
+	}
+	
+	public Noticia(String titulo, String imagen) {
+		this.titulo=titulo;
+		this.imagen=imagen;
+	}
+	
+	/**Considera iguales dos noticias con mismo titulo y mismo cuerpo
+	 * @param n Noticia a comparar
+	 * @return true si son iguales false si no lo son
+	 */
+	public boolean equals(Noticia n) {
+		if (n.getTitulo().contentEquals(titulo) && n.getCuerpo().contentEquals(cuerpo)) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
 }

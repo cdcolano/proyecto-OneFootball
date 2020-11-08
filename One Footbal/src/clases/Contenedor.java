@@ -3,6 +3,10 @@ package clases;
 import java.io.File;
 import java.util.ArrayList;
 
+/**Clase padre creada para implementar las caracteristicas comunes entre Liga y Equipo
+ * @author cdcol
+ *
+ */
 public class Contenedor implements ConImagenes{
 	protected ArrayList<Traspaso>traspasos;
 	protected String logo;

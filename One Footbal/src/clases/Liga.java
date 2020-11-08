@@ -151,6 +151,10 @@ public class Liga extends Contenedor{
 	}
 	
 	
+	/**Considera iguales dos ligas con el mismo nombre
+	 * @param l Liga a comparar
+	 * @return true si son iguales, false si no lo son
+	 */
 	public boolean equals(Liga l) {
 		if (l.getNombre().contentEquals(nombre)) {
 			return true;

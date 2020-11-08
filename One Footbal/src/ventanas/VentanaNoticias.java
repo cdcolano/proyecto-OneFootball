@@ -20,9 +20,18 @@ import clases.Liga;
 import clases.Noticia;
 import clases.Usuario;
 
+/**Ventana que dispone varias noticias
+ * al hacer doble click en alguna se abre la ventana exclusiva de esa noticia
+ * @author cdcol
+ *
+ */
 public class VentanaNoticias extends JFrame {
 
 	
+	/**
+	 * @param u Usuario loggeadp
+	 * @param c Elemento del que se desean mostrar las noticias
+	 */
 	public VentanaNoticias(Usuario u, Contenedor c) {
 		JScrollPane scpanelCentral= new JScrollPane();
 		JPanel pEquipo= new JPanel();
@@ -38,8 +47,12 @@ public class VentanaNoticias extends JFrame {
 			pNoticia.addMouseListener(new MouseAdapter() {
 				
 				public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount()>=2) {
-						VentanaNoticia v= new VentanaNoticia( u, n);
+					if (e.getClickCount()>=2 && pNoticia.getLocationOnScreen().x<=e.getLocationOnScreen().x &&
+							pNoticia.getLocationOnScreen().x+ pNoticia.getWidth()>=e.getLocationOnScreen().x &&
+							pNoticia.getLocationOnScreen().y<=e.getLocationOnScreen().y && 
+							pNoticia.getLocationOnScreen().y+pNoticia.getHeight()>=e.getLocationOnScreen().y){
+							VentanaNoticia v= new VentanaNoticia( u, n);
+							VentanaNoticias.this.dispose();
 					}
 					
 				}
@@ -58,8 +71,16 @@ public class VentanaNoticias extends JFrame {
 			Equipo e=(Equipo)c;
 			VentanaEquipo.anyadePanelSup(this,e,u);
 		}
+		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(200, 300, 500, 500);
+		setVisible(true);
 	}
 	
+	/**añade los datos de una noticia a un Panel
+	 * @param n Noticia a añadir
+	 * @return panel de Noticia
+	 */
 	private JPanel anyadePanalesNoticia(Noticia n) {
 		JPanel pNoticia=new JPanel();
 		pNoticia.setLayout(new BorderLayout());

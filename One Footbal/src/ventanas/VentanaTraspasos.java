@@ -17,10 +17,18 @@ import clases.Liga;
 import clases.Traspaso;
 import clases.Usuario;
 
+/**Ventana que muestra los traspasos de un Elemento
+ * @author cdcol
+ *
+ */
 public class VentanaTraspasos extends JFrame {
 	ArrayList<Traspaso>traspasos;
 	JScrollPane scTraspaso;
 	
+	/**
+	 * @param c Elemento del que se desean mostrar los traspasos
+	 * @param u Usuario loggeado
+	 */
 	public VentanaTraspasos( Contenedor c, Usuario u) {
 		//TODO añadir la imagen del contenedor en un JPanel arriba si es null nada posibilidad de aplicarlo a noticias
 		traspasos=c.getTraspasos();
@@ -117,6 +125,9 @@ public class VentanaTraspasos extends JFrame {
 		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		VentanaInicio.anyadeBotonera(this, u);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(200, 300, 500, 500);
+		setVisible(true);
 	}
 	
 	

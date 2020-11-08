@@ -22,6 +22,11 @@ import clases.Equipo;
 import clases.Noticia;
 import clases.Usuario;
 
+/**Ventana que imita el comportamiento de la ventana inicial de oneFootball
+ * mostrando noticias de diferentes equipos a los que se sigue aparte de las TOP NEWS
+ * @author cdcol
+ *
+ */
 public class VentanaInicio extends JFrame {
 	private JScrollPane scpanelCentral; //estara compuesto por más subpanles con los distintos contenidos
 	private JPanel pTopNews; //noticias con ultima fecha necesario BD
@@ -30,6 +35,9 @@ public class VentanaInicio extends JFrame {
 	private JPanel panelCentral;
 	
 	
+	/**
+	 * @param u Usuario loggeado
+	 */
 	public VentanaInicio(Usuario u) {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.u=u;
@@ -66,14 +74,17 @@ public class VentanaInicio extends JFrame {
 					pNoticia.addMouseListener(new MouseAdapter() {
 						
 						public void mouseClicked(MouseEvent e) {
-							if (e.getClickCount()>=2) {
+							if (e.getClickCount()>=2 && pNoticia.getLocationOnScreen().x<=e.getLocationOnScreen().x &&
+									pNoticia.getLocationOnScreen().x+ pNoticia.getWidth()>=e.getLocationOnScreen().x &&
+									pNoticia.getLocationOnScreen().y<=e.getLocationOnScreen().y && 
+									pNoticia.getLocationOnScreen().y+pNoticia.getHeight()>=e.getLocationOnScreen().y){
 								VentanaNoticia v= new VentanaNoticia( u, n);
+								VentanaInicio.this.dispose();
 							}
 							
 						}
 					}); 
 					pEquipo.add(pNoticia);
-					//TODO añadir MouseListener para poder cargar la ventana con la noticia en cuestion
 					}
 			}else {
 				for (Noticia n: e.getNoticias()) {
@@ -90,18 +101,23 @@ public class VentanaInicio extends JFrame {
 					pEquipo.add(pNoticia);
 				}
 				scpanelCentral.add(pEquipo);
-				getContentPane().add(scpanelCentral, BorderLayout.CENTER);
+				
 			}
-			
 		}
+		getContentPane().add(scpanelCentral, BorderLayout.CENTER);
 		anyadeBotonera(this, u);
-
-			
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(200, 300, 500, 500);
+		setVisible(true);	
 	}
 
 	
 	
 	
+	/**crea Paneles con los datos de una noticia
+	 * @param n Noticia que se va a añadir
+	 * @return Panel con los datos de la noticia
+	 */
 	private JPanel anyadePanalesNoticia(Noticia n) {
 		JPanel pNoticia=new JPanel();
 		pNoticia.setLayout(new BorderLayout());
@@ -115,7 +131,7 @@ public class VentanaInicio extends JFrame {
 		fuente.setFont(new Font("helvitica", Font.PLAIN, 16));
 		pNoticia.add(fuente,BorderLayout.NORTH);
 		return pNoticia;
-		a//TODO default Close operation y set Visible true y añadir tamaño por defecto
+		//TODO default Close operation y set Visible true y añadir tamaño por defecto
 	}
 	
 	/**redimensiona la imagen con formato 200x200
@@ -128,6 +144,10 @@ public class VentanaInicio extends JFrame {
 			return imageIcon = new ImageIcon(newimg);  // transform it back
 	}
 	
+	/**añade Botones comunes en todas las Ventanas 
+	 * @param vent ventana a la que se añadiran los botones
+	 * @param u Usuario loggeado
+	 */
 	public static void anyadeBotonera(JFrame vent,Usuario u) {
 
 		JButton bInicio= new JButton();
