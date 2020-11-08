@@ -115,7 +115,7 @@ public class VentanaInicio extends JFrame {
 		fuente.setFont(new Font("helvitica", Font.PLAIN, 16));
 		pNoticia.add(fuente,BorderLayout.NORTH);
 		return pNoticia;
-		a//TODO default Close operation
+		a//TODO default Close operation y set Visible true y añadir tamaño por defecto
 	}
 	
 	/**redimensiona la imagen con formato 200x200
