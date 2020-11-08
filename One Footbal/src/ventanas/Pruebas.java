@@ -2,6 +2,7 @@ package ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.util.EventObject;
 
 import javax.swing.*;
@@ -17,8 +18,18 @@ public class Pruebas extends JFrame {
 		JTable t= new JTable(o, b);
 		t.getColumnModel().getColumn(0).setCellRenderer(new ColumnColorRenderer());
 		t.getColumnModel().getColumn(1).setCellRenderer(new ColumnColorRenderer());
-		
-		p.add(new JScrollPane(t), BorderLayout.CENTER);
+		JPanel pC= new JPanel();
+		JPanel pCC= new JPanel();
+		JPanel pD= new JPanel();
+		pCC.setLayout(new BorderLayout());
+		pC.setLayout(new FlowLayout(FlowLayout.LEFT));
+		pD.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		pD.add(new JLabel ("hoala"));
+		pCC.add(pC,BorderLayout.CENTER);
+		pCC.add(pD,BorderLayout.EAST);
+		p.add(pCC);
+		pC.add(new JLabel("hola"));
+
 		p.setVisible(true);
 		p.setBounds(300, 200, 600, 400);
 	}

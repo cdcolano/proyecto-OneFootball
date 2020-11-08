@@ -10,7 +10,19 @@ public class Usuario {
 	ArrayList<Jugador>jugadoresSeguidos;
 	ArrayList<Liga> ligasSeguidas;
 	
+	public Usuario() {
+		equiposSeguidos= new ArrayList<Equipo>();
+		jugadoresSeguidos= new ArrayList<Jugador>();
+		ligasSeguidas= new ArrayList<Liga>();
+	}
 	
+	public Usuario (String nombre, String correoElec, String contrasena) {
+		this();
+		this.contrasena=contrasena;
+		this.correoElec= correoElec;
+		this.nombre= nombre;
+		
+	}
 	
 	public String getNombre() {
 		return nombre;
@@ -48,4 +60,16 @@ public class Usuario {
 	public void setLigasSeguidas(ArrayList<Liga> ligasSeguidas) {
 		this.ligasSeguidas = ligasSeguidas;
 	}
+	
+	public void addLigaSeguida(Liga l) {
+		ligasSeguidas.add(l);
+	}
+	public void addEquipoSeguido(Equipo e) {
+		equiposSeguidos.add(e);
+	}
+	
+	public void addJugadorSeguido(Jugador j) {
+		jugadoresSeguidos.add(j);
+	}
+	
 }

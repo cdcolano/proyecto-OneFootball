@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import clases.Jugador;
 import clases.Usuario;
 
 public class VentanaJugador extends JFrame{
@@ -15,7 +16,7 @@ public class VentanaJugador extends JFrame{
 	
 	
 
-	public VentanaJugador(Usuario u) {
+	public VentanaJugador(Usuario u,Jugador j) {
 		VentanaInicio.anyadeBotonera(this, u);
 	}
 	

@@ -3,8 +3,11 @@ package ventanas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
@@ -56,19 +59,11 @@ public class VentanaLiga extends JFrame {
 		mTarjetasRojas= new DefaultTableModel();
 		mEquipos.setColumnIdentifiers(ID_CLASIF);
 		JPanel pEstadisticas=new JPanel();
-		JPanel pBotoneraSup= new JPanel();
-		JPanel pSimbolo= new JPanel();
+		
 		JPanel pContenedor= new JPanel();
 		JScrollPane spClasif= new JScrollPane();
 		
-		
-		a;
-		
-		pBotoneraSup.add(new JButton());
-		pBotoneraSup.add(new JButton());
-		pBotoneraSup.add(new JButton());
-		getContentPane().add(pBotoneraSup,BorderLayout.NORTH);
-		//TODO añadir botonera
+	
 		
 		if (clasif) {
 			tClasificacion= new JTable();
@@ -93,7 +88,6 @@ public class VentanaLiga extends JFrame {
 			
 			
 			pContenedor.setLayout(new BorderLayout());
-			pContenedor.add(pSimbolo, BorderLayout.SOUTH);
 			pContenedor.add(spClasif, BorderLayout.CENTER);
 			pContenedor.add(pEstadisticas,BorderLayout.NORTH);
 			getContentPane().add(pContenedor, BorderLayout.CENTER);
@@ -160,7 +154,7 @@ public class VentanaLiga extends JFrame {
 			
 			
 		}
-
+		VentanaLiga.anyadePanelSup(this, liga, u);
 		
 		VentanaInicio.anyadeBotonera(this, u);
 	}
@@ -174,6 +168,95 @@ public class VentanaLiga extends JFrame {
 			Object[] listaAtributos= {img, jugador.getNombre(), jugador.getEquipo(), jugador.getNumGoles()};
 			mJugador.addRow(listaAtributos);
 		}
+	}
+	
+	
+	public static void anyadePanelSup(JFrame vent, Liga l,Usuario u) {
+		JPanel pSuperior= new JPanel();
+		JPanel pBotoneraSup= new JPanel();
+		
+		pSuperior.setLayout(new BorderLayout());
+		JLabel nomLiga= new JLabel(l.getNombre());
+		nomLiga.setIcon(new ImageIcon(VentanaLiga.class.getResource(l.getImagen())));
+		nomLiga.setFont(new Font("helvitica", Font.BOLD, 36));
+		pSuperior.add(nomLiga,BorderLayout.CENTER);
+		JButton bJornada= new JButton("Jornada");
+		JButton bClasificacion= new JButton("Clasificacion");
+		JButton bTraspasos=new JButton("Traspasos");
+		JButton bNoticias= new JButton("Noticias");
+		JButton bEstadisticas= new JButton("Estadisticas");
+		pBotoneraSup.add(bJornada);
+		pBotoneraSup.add(bClasificacion);
+		pBotoneraSup.add(bTraspasos);
+		pBotoneraSup.add(bNoticias);
+		pBotoneraSup.add(bEstadisticas);
+		pSuperior.add(pBotoneraSup,BorderLayout.SOUTH);
+		
+		
+	
+		
+		bJornada.addActionListener((ActionEvent arg0)-> {
+			if (!(vent instanceof VentanaJornada)) {
+				VentanaJornada v= new VentanaJornada(u,l);
+				vent.dispose();
+			}
+				
+			
+		});
+		
+		bClasificacion.addActionListener((ActionEvent arg0)-> {
+			if (!(vent instanceof VentanaLiga)) {
+				VentanaLiga v= new VentanaLiga(true, l, u);
+				v.dispose();
+			}else {
+				VentanaLiga ventLiga=(VentanaLiga)vent;
+				if (ventLiga.clasif==false) {
+					ventLiga.clasif=true;
+					ventLiga.revalidate();
+				}
+			}
+				
+			
+		});
+		
+		bEstadisticas.addActionListener((ActionEvent arg0)-> {
+			if (!(vent instanceof VentanaLiga)) {
+				VentanaLiga v= new VentanaLiga(false,l,u);
+				v.dispose();
+			}else {
+				VentanaLiga ventLiga=(VentanaLiga)vent;
+				if (ventLiga.clasif==true) {
+					ventLiga.clasif=false;
+					ventLiga.revalidate();
+				}
+			}
+				
+			
+		});
+		
+		
+		bTraspasos.addActionListener((ActionEvent arg0)-> {
+			if (!(vent instanceof VentanaTraspasos)) {
+				VentanaTraspasos v= new VentanaTraspasos(l,u);
+				v.dispose();
+			}
+				
+			
+		});
+		
+		bNoticias.addActionListener((ActionEvent arg0)-> {
+			if (!(vent instanceof VentanaNoticias)) {
+				VentanaNoticias v= new VentanaNoticias(u,l);
+				v.dispose();
+			}
+				
+			
+		});
+		
+		
+		
+		vent.getContentPane().add(pSuperior,BorderLayout.NORTH);
+		//TODO añadir botonera
 	}
 }
 

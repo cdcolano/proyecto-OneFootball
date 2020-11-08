@@ -13,6 +13,7 @@ import javax.swing.*;
 import clases.Contenedor;
 import clases.Equipo;
 import clases.Jugador;
+import clases.Liga;
 import clases.Traspaso;
 import clases.Usuario;
 
@@ -20,9 +21,9 @@ public class VentanaTraspasos extends JFrame {
 	ArrayList<Traspaso>traspasos;
 	JScrollPane scTraspaso;
 	
-	public VentanaTraspasos(ArrayList<Traspaso> tras, Contenedor c, Usuario u) {
+	public VentanaTraspasos( Contenedor c, Usuario u) {
 		//TODO añadir la imagen del contenedor en un JPanel arriba si es null nada posibilidad de aplicarlo a noticias
-		traspasos=tras;
+		traspasos=c.getTraspasos();
 		JPanel pCentral= new JPanel();
 		scTraspaso= new JScrollPane(pCentral);
 		
@@ -37,8 +38,16 @@ public class VentanaTraspasos extends JFrame {
 				texto.setText("Fichaje");
 			}
 			texto.setFont(new Font("helvitica", Font.BOLD, 24));
-			pTraspasoSup.add(texto, FlowLayout.LEFT);
-			pTraspasoSup.add(new JLabel("" + traspaso.getFecha()),FlowLayout.RIGHT);
+			JPanel ptexto= new JPanel();
+			ptexto.setLayout(new FlowLayout(FlowLayout.LEFT));
+			ptexto.add(texto);
+			
+			pTraspaso.setLayout(new BorderLayout());
+			pTraspasoSup.add(ptexto,BorderLayout.CENTER);
+			JPanel pfecha=new JPanel();
+			pfecha.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			pfecha.add(new JLabel("" + traspaso.getFecha()));
+			pTraspasoSup.add(pfecha,BorderLayout.EAST);
 			pTraspaso.add(pTraspasoSup,BorderLayout.NORTH);
 			
 			JPanel pTraspasoCen=new JPanel();
@@ -69,12 +78,39 @@ public class VentanaTraspasos extends JFrame {
 				precio.setBackground(Color.GREEN);
 			}
 			
-			//TODO añadir parte de abajo de un traspaso
+			JPanel pTraspasoInf= new JPanel();
+			JPanel pVendedor= new JPanel();
+			JPanel pTraspasoInfCen= new JPanel();
+			JPanel pComprador= new JPanel();
+			
+			pTraspasoInf.setLayout(new BorderLayout());
+			pVendedor.setLayout(new FlowLayout(FlowLayout.LEFT));
+			pTraspasoInfCen.setLayout(new FlowLayout(FlowLayout.CENTER));
+			pComprador.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			
+			
+			pVendedor.add(new JLabel( traspaso.getVendedor().getNombre()),FlowLayout.LEFT);
+			pTraspasoInfCen.add(new JLabel("se va a"), FlowLayout.CENTER);
+			pComprador.add(new JLabel(traspaso.getEquipo().getNombre()));
+			
+			pTraspaso.add(pVendedor,BorderLayout.WEST);
+			pTraspaso.add(pTraspasoInfCen, BorderLayout.CENTER);
+			pTraspaso.add(pComprador, BorderLayout.EAST);
 			
 			
 			
+			pTraspaso.add( pTraspasoCen,BorderLayout.CENTER);
+			pTraspaso.add(pTraspasoInf,BorderLayout.SOUTH);
 			
 			
+			
+		}
+		if (c instanceof Liga) {
+			Liga l= (Liga)c;
+			VentanaLiga.anyadePanelSup(this, l, u);
+		}else {
+			Equipo e= (Equipo)c;
+			VentanaEquipo.anyadePanelSup(this,e, u);
 		}
 		pCentral.setLayout( new GridLayout(traspasos.size(),1));
 		getContentPane().add(scTraspaso, BorderLayout.CENTER);
@@ -86,10 +122,10 @@ public class VentanaTraspasos extends JFrame {
 	
 	public static void main (String []args) {
 		Equipo at= new Equipo("at");
-		Jugador j= new Jugador("Jose", "ESP", 19, "DC", at);
+	//	Jugador j= new Jugador("Jose", "ESP", 19, "DC", at);
 		Equipo e= new Equipo("E");
 		ArrayList<Traspaso>tras= new ArrayList<Traspaso> ();
-		tras.add(new Traspaso(j, e, 10000));
+		//tras.add(new Traspaso(j, e, 10000));
 		//VentanaTraspasos v= new VentanaTraspasos(tras);
 	}
 	

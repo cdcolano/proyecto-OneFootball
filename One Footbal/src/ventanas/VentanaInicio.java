@@ -63,6 +63,15 @@ public class VentanaInicio extends JFrame {
 				for (int i=e.getNoticias().size()-1; i>e.getNoticias().size()-6; i++) {	//solo las ultimas 5 noticias por equipo
 					Noticia n= e.getNoticias().get(i);
 					JPanel pNoticia=anyadePanalesNoticia(n);
+					pNoticia.addMouseListener(new MouseAdapter() {
+						
+						public void mouseClicked(MouseEvent e) {
+							if (e.getClickCount()>=2) {
+								VentanaNoticia v= new VentanaNoticia( u, n);
+							}
+							
+						}
+					}); 
 					pEquipo.add(pNoticia);
 					//TODO añadir MouseListener para poder cargar la ventana con la noticia en cuestion
 					}
@@ -73,7 +82,7 @@ public class VentanaInicio extends JFrame {
 						
 						public void mouseClicked(MouseEvent e) {
 							if (e.getClickCount()>=2) {
-								VentanaNoticias v= new VentanaNoticias( n,VentanaInicio.this, u);
+								VentanaNoticia v= new VentanaNoticia( u, n);
 							}
 							
 						}
@@ -106,6 +115,7 @@ public class VentanaInicio extends JFrame {
 		fuente.setFont(new Font("helvitica", Font.PLAIN, 16));
 		pNoticia.add(fuente,BorderLayout.NORTH);
 		return pNoticia;
+		a//TODO default Close operation
 	}
 	
 	/**redimensiona la imagen con formato 200x200
