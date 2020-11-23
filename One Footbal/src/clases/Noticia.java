@@ -1,11 +1,28 @@
 package clases;
 
+import java.util.ArrayList;
+
 public class Noticia implements ConImagenes{
-	private String titulo;
+	private String titulo; // titulo clave primaria
 	private String cuerpo;
 	private String imagen;
 	private String fuente;
+	private ArrayList<Equipo> equipos;
+	private ArrayList<Liga>ligas;
 	
+	
+	public ArrayList<Equipo> getEquipos() {
+		return equipos;
+	}
+	public void setEquipos(ArrayList<Equipo> equipos) {
+		this.equipos = equipos;
+	}
+	public ArrayList<Liga> getLigas() {
+		return ligas;
+	}
+	public void setLigas(ArrayList<Liga> ligas) {
+		this.ligas = ligas;
+	}
 	//TODO libreria de html o formatos intermedios / editor de texto enriquecido
 	public String getFuente() {
 		return fuente;
@@ -34,12 +51,17 @@ public class Noticia implements ConImagenes{
 	
 	
 	public Noticia() {
-		
+		this.equipos= new ArrayList<Equipo>();
+		this.ligas= new ArrayList<Liga>();
 	}
+	
+	
 	
 	public Noticia(String titulo, String imagen) {
 		this.titulo=titulo;
 		this.imagen=imagen;
+		this.equipos= new ArrayList<Equipo>();
+		this.ligas= new ArrayList<Liga>();
 	}
 	
 	/**Considera iguales dos noticias con mismo titulo y mismo cuerpo

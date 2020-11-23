@@ -2,7 +2,7 @@ package clases;
 
 import java.util.Date;
 
-public class Traspaso {
+public class Traspaso { // jugador + fecha primary key
 	private Jugador jugador;
 	private Equipo vendedor;
 	private Equipo equipo;
@@ -10,7 +10,9 @@ public class Traspaso {
 	private byte grado;
 	private Date fecha;
 	
-	
+	public Traspaso() {
+		
+	}
 	
 	public Date getFecha() {
 		return fecha;
@@ -62,6 +64,11 @@ public class Traspaso {
 	public String toString() {
 		return ("" + jugador.getNombre() + "Vendedor: " + vendedor.getNombre() + "Comprador: " + equipo.getNombre()+
 		"precio: " + precio + "fecha" + fecha.toLocaleString());
+	}
+	
+	public Traspaso(Jugador j, Date fecha) {
+		this.jugador=j;
+		this.fecha=fecha;
 	}
 	
 	

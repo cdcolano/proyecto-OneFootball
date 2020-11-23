@@ -3,12 +3,24 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Jornada {
-	private ArrayList<Partido>partidos;
+	private ArrayList<Partido>partidos; // numJornada + liga clave primaria
 	private int numJornada;
 	private Date fechaInicio;
 	private Date fechaFinal;
+	private Liga liga;
 	
 	
+	public Jornada(Liga l,int numJornada) {
+		this.liga=l;
+		this.numJornada=numJornada;
+	}
+	
+	public Liga getLiga() {
+		return liga;
+	}
+	public void setLiga(Liga liga) {
+		this.liga = liga;
+	}
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}
@@ -37,6 +49,10 @@ public class Jornada {
 	
 	public void addPartido(Partido p) {
 		partidos.add(p);
+	}
+	
+	public Jornada() {
+		partidos= new ArrayList<Partido>();
 	}
 	
 	

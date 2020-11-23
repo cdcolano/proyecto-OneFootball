@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Partido {
-	private Date fecha;
+	private Date fecha; //local, visitante y fecha clave primaria
 	private Equipo local;
 	private Equipo visitante;
 	private int golesLocal;
@@ -12,7 +12,32 @@ public class Partido {
 	private ArrayList<Jugador>asistentes;
 	private ArrayList<Jugador>amarillas;
 	private ArrayList<Jugador>rojas;
+	private Jornada jornada;
+	public Jornada getJornada() {
+		return jornada;
+	}
+
+	public void setJornada(Jornada jornada) {
+		this.jornada = jornada;
+	}
+
+	public Liga getLiga() {
+		return liga;
+	}
+
+	public void setLiga(Liga liga) {
+		this.liga = liga;
+	}
+
+	private Liga liga;
 	
+	
+	public Partido() {
+		goleadores= new ArrayList<Jugador>();
+		asistentes= new ArrayList<Jugador>();
+		amarillas= new ArrayList<Jugador>();
+		rojas= new ArrayList<Jugador>();
+	}
 	
 	public Date getFecha() {
 		return fecha;

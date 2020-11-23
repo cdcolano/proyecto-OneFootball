@@ -5,13 +5,13 @@ import java.util.TreeSet;
 
 public class Liga extends Contenedor{
 	
-	private TreeSet<Equipo> equipos;
+	private TreeSet<Equipo> equipos; // nombre clave primaria
 	private TreeSet<Jugador> maximosGoleadores;
 	private TreeSet<Jugador> maximosAsistentes;
 	private TreeSet<Jugador> tarjetasAmarillas;
 	private TreeSet<Jugador> tarjetasRojas;
 	private ArrayList<Jornada> jornadas;
-	
+
 	
 		
 
@@ -29,6 +29,7 @@ public class Liga extends Contenedor{
 			}
 			
 		);
+		
 		maximosAsistentes=new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
 			if (o1.getNumAsistencias()>o2.getNumAsistencias()) {
 				return 1;
@@ -69,15 +70,12 @@ public class Liga extends Contenedor{
 		jornadas=new ArrayList<Jornada>();
 	}
 	
+
+
 	public Liga(String nombre) {
+		this();
 		this.nombre=nombre;
-		equipos= new TreeSet<Equipo>();
-		maximosGoleadores= new TreeSet<Jugador>();
-		maximosAsistentes= new TreeSet<Jugador>();
-		tarjetasAmarillas= new TreeSet<Jugador>();
-		tarjetasRojas= new TreeSet<Jugador>();
-		traspasos= new ArrayList<Traspaso>();
-		jornadas=new ArrayList<Jornada>();
+		
 	}
 
 
@@ -148,6 +146,22 @@ public class Liga extends Contenedor{
 
 	public void setJornadas(ArrayList<Jornada> jornadas) {
 		this.jornadas = jornadas;
+	}
+	
+	public void addAsistente(Jugador j) {
+		maximosAsistentes.add(j);
+	}
+	
+	public void addGoleador(Jugador j) {
+		maximosGoleadores.add(j);
+	}
+	
+	public void addAmarilla(Jugador j) {
+		tarjetasAmarillas.add(j);
+	}
+	
+	public void addRoja(Jugador j) {
+		tarjetasRojas.add(j);
 	}
 	
 	

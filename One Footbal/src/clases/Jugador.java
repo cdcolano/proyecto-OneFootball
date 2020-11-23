@@ -1,7 +1,9 @@
 package clases;
 
+import java.util.ArrayList;
+
 public class Jugador implements ConImagenes{
-	private String nombre;
+	private String nombre; // nombre + equipo clave primaria
 	private String pais;
 	private String posicion;
 	private int edad;
@@ -12,8 +14,19 @@ public class Jugador implements ConImagenes{
 	private int numRojas;
 	private Equipo equipo;
 	private String imagen;
-
+	private Liga liga;
 	
+	public Jugador(String nombre) {
+		this.nombre=nombre;
+	}
+	
+	
+	public Liga getLiga() {
+		return liga;
+	}
+	public void setLiga(Liga liga) {
+		this.liga = liga;
+	}
 	public int getDorsal() {
 		return dorsal;
 	}
@@ -81,18 +94,24 @@ public class Jugador implements ConImagenes{
 		this.numRojas = numRojas;
 	}
 	
-	public Jugador(String nombre, String pais, int edad, String posicion, Equipo equipo, int dorsal){
+	public Jugador(String nombre, String pais, int edad, String posicion, Equipo equipo, int dorsal,Liga liga){
 		this.nombre= nombre;
 		this.pais=pais;
 		this.edad=edad;
 		this.dorsal=dorsal;
 		this.posicion=posicion;
 		this.equipo=equipo;
+		this.liga= liga;
 		numAmarillas=0;
 		numRojas=0;
 		numGoles=0;
 		numAsistencias=0;
-		
+
+	}
+	
+	
+	public Jugador() {
+	
 	}
 	
 	/**Considera iguales dos jugadores con mismo nombre, misma nacionalidad,

@@ -2,7 +2,7 @@ package clases;
 import java.util.ArrayList;
 
 public class Equipo extends Contenedor implements Comparable{
-	private ArrayList<Jugador>jugadores;
+	private ArrayList<Jugador>jugadores; // nombre clave primaria
 	private int puntos;
 	private int golesAFavor;
 	private int golesEnContra;
