@@ -35,15 +35,17 @@ public class VentanaNoticias extends JFrame {
 	public VentanaNoticias(Usuario u, Contenedor c) {
 		JScrollPane scpanelCentral= new JScrollPane();
 		JPanel pEquipo= new JPanel();
+		pEquipo.setLayout(new GridLayout(c.getNoticias().size(),1));
 		JPanel pEquipoAct= new JPanel();
 		JLabel img= new JLabel();
-		img.setIcon(new ImageIcon(VentanaInicio.class.getResource(c.getImagen())));
+		img.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaInicio.class.getResource(c.getImagen())),50,50));
 		pEquipoAct.add(img);
 		pEquipo.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pEquipo.add(new JLabel (c.getNombre()));
 		pEquipo.add(pEquipoAct);
 		for (Noticia n: c.getNoticias()) {
-			JPanel pNoticia=anyadePanalesNoticia(n);
+			System.out.println("Noticia!!");
+			JPanel pNoticia=VentanaInicio.anyadePanalesNoticia(n);
 			pNoticia.addMouseListener(new MouseAdapter() {
 				
 				public void mouseClicked(MouseEvent e) {
@@ -56,10 +58,10 @@ public class VentanaNoticias extends JFrame {
 					}
 					
 				}
-			}); 
+			});
 			pEquipo.add(pNoticia);
 		}
-		scpanelCentral.add(pEquipo);
+		scpanelCentral=new JScrollPane(pEquipo);
 		getContentPane().add(scpanelCentral, BorderLayout.CENTER);
 		
 		

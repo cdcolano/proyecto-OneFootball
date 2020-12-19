@@ -13,8 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import clases.BD;
 import clases.Equipo;
 import clases.Jugador;
 import clases.Liga;
@@ -69,6 +73,19 @@ public class VentanaSiguiendo extends JFrame{
 				//TODO una vez implantada la base de datos
 				
 			
+		});
+		tEquipos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		ListSelectionModel lmEquipos= tEquipos.getSelectionModel();
+		lmEquipos.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				String nomEquipo=(String)mEquipos.getValueAt(e.getFirstIndex(), 1);
+				Equipo eq= BD.selectEquipo(nomEquipo);
+				VentanaEquipo v= new VentanaEquipo(u, eq);
+				VentanaSiguiendo.this.dispose();
+				
+			}
 		});
 		
 		

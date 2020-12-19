@@ -156,7 +156,7 @@ public class VentanaInicio extends JFrame {
 	 * @param n Noticia que se va a añadir
 	 * @return Panel con los datos de la noticia
 	 */
-	private JPanel anyadePanalesNoticia(Noticia n) {
+	public static JPanel anyadePanalesNoticia(Noticia n) {
 		JPanel pNoticia=new JPanel();
 		pNoticia.setLayout(new BorderLayout());
 		JLabel img= new JLabel();

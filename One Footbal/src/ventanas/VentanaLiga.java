@@ -87,12 +87,12 @@ public class VentanaLiga extends JFrame {
 			}
 			    
 
-			for (int i=0;i<4;i++) {
+			for (int i=0;i<4;i++) {//TODO revisar este for
 				for (int j=0; j<6;j++) {
 					tClasificacion.getColumnModel().getColumn(j).setCellRenderer(new ColumnColorRenderer());
 					}
 			}
-		
+//TODO error si la clasificacion es menor 		
 			pEstadisticas.setLayout(new GridLayout(1,2));
 			
 			

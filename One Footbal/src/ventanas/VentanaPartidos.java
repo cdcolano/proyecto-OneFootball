@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import clases.BD;
 import clases.Jornada;
 import clases.Liga;
 import clases.Partido;
@@ -48,6 +49,7 @@ public class VentanaPartidos extends JFrame {
 			panelLigaSup.add(panelLigaSupa);
 			panelLiga.setLayout(new BorderLayout());
 			panelLiga.add(panelLigaSup,BorderLayout.NORTH);
+			System.out.println(l.getJornadas().get(0).getPartidos().size() + "tamaño");
 			panelLiga.add(anyadePanelUltimaJornada(l.getJornadas().get(l.getJornadas().size()-1)), BorderLayout.CENTER);
 			pPrincipal.add(panelLiga);
 		}
@@ -71,12 +73,15 @@ public class VentanaPartidos extends JFrame {
 	 */
 	public static JPanel anyadePanelUltimaJornada(Jornada j) {
 		JPanel pPrincipal= new JPanel();
+		j.setPartidos(BD.selectPartidos(j));
+		System.out.println(j.getPartidos().size()+ "tamano 2");
 		pPrincipal.setLayout(new GridLayout(j.getPartidos().size(), 1));
 		for (Partido p: j.getPartidos()) {
+			System.out.println(p.getLocal().getNombre() +"Equipo LoCal");
 			JPanel pPartido= new JPanel();
 			pPartido.setLayout(new BorderLayout());
 			SimpleDateFormat df= new SimpleDateFormat("aaaa.MM.dd HH: mm: ss zzz");
-			pPartido.add(new JLabel("" +df.format(p.getFecha())),BorderLayout.EAST);
+			pPartido.add(new JLabel("" +df.format(p.getFecha())),BorderLayout.NORTH);
 			JPanel pResultado= new JPanel();
 			pResultado.setLayout(new GridLayout(2,1));
 			JPanel pResultadoArriba= new JPanel();
@@ -88,9 +93,9 @@ public class VentanaPartidos extends JFrame {
 			JPanel pVisitanteIzq= new JPanel();
 			JPanel pVisitanteDch= new JPanel();
 			pLocalIzq.setLayout(new FlowLayout(FlowLayout.LEFT));
-			pLocalDcha.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			pLocalDcha.setLayout(new FlowLayout(FlowLayout.LEFT));
 			pVisitanteIzq.setLayout(new FlowLayout(FlowLayout.LEFT));
-			pVisitanteDch.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			pVisitanteDch.setLayout(new FlowLayout(FlowLayout.LEFT));
 			pResultadoArriba.add(pLocalIzq, BorderLayout.CENTER);
 			pResultadoArriba.add(pLocalDcha,BorderLayout.EAST);
 			pResultadoAbajo.add(pVisitanteIzq, BorderLayout.CENTER);
@@ -98,12 +103,12 @@ public class VentanaPartidos extends JFrame {
 			
 			
 			JLabel imgLocal= new JLabel();
-			imgLocal.setIcon(new ImageIcon(VentanaPartidos.class.getResource(p.getLocal().getImagen())));
+			imgLocal.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaPartidos.class.getResource(p.getLocal().getImagen())),50,50));
 			pLocalIzq.add(imgLocal);
 			pLocalIzq.add(new JLabel(p.getLocal().getNombre()));
 			
 			JLabel imgVisitante= new JLabel();
-			imgVisitante.setIcon(new ImageIcon(VentanaPartidos.class.getResource(p.getVisitante().getImagen())));
+			imgVisitante.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaPartidos.class.getResource(p.getVisitante().getImagen())),50,50));
 			pVisitanteIzq.add(imgVisitante);
 			pVisitanteIzq.add(new JLabel (p.getVisitante().getNombre()));
 			

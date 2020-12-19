@@ -1248,7 +1248,7 @@ public class BD {
 		
 		
 		public static ArrayList<Partido> selectPartidos(Jornada jor) {
-			String s = "SELECT * FROM Partido WHERE nomLiga='" + jor.getLiga().getNombre() +"' and visitante=" + jor.getNumJornada();
+			String s = "SELECT * FROM Partido WHERE nomLiga='" + jor.getLiga().getNombre() +"' and numJornada=" + jor.getNumJornada();
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
@@ -1259,8 +1259,8 @@ public class BD {
 					p.setLiga(jor.getLiga());
 					p.setJornada(jor);
 					p.setFecha(new Date(rs.getLong("fecha")));
-					p.setLocal(selectEquipo(rs.getString("local")));
-					p.setVisitante(selectEquipo(rs.getString("visitante")));
+					p.setLocal(selectEquipoPartido(p,rs.getString("local")));
+					p.setVisitante(selectEquipoPartido(p,rs.getString("visitante")));
 					p.setGolesLocal(rs.getInt("golesLocal"));
 					p.setGolesVisitante(rs.getInt("golesVisitante"));
 					p.setAmarillas(selectJugadoresAmarillas(p));
@@ -1599,6 +1599,8 @@ public class BD {
 				return null;
 			}
 		}
+		
+		
 		
 
 		public static ArrayList<Jugador> selectSeleccionables(SeleccionNacional sel){

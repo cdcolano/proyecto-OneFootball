@@ -130,7 +130,7 @@ public class VentanaEquipo extends JFrame{
 			bTraspasos.addActionListener((ActionEvent arg0)-> {
 				if (!(vent instanceof VentanaTraspasos)) {
 					VentanaTraspasos v= new VentanaTraspasos(e,u);
-					v.dispose();
+					vent.dispose();
 				}
 					
 				
@@ -139,7 +139,7 @@ public class VentanaEquipo extends JFrame{
 			bNoticias.addActionListener((ActionEvent arg0)-> {
 				if (!(vent instanceof VentanaNoticias)) {
 					VentanaNoticias v= new VentanaNoticias(u,e);
-					v.dispose();
+					vent.dispose();
 				}
 					
 				
