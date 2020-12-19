@@ -12,16 +12,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import clases.BD;
 import clases.ConImagenes;
 import clases.Equipo;
 import clases.Noticia;
 import clases.Usuario;
-
+//TODO Ventana Login que cargue datos para el usuario
+//TODO main para integracion de todos los equipos
 /**Ventana que imita el comportamiento de la ventana inicial de oneFootball
  * mostrando noticias de diferentes equipos a los que se sigue aparte de las TOP NEWS
  * @author cdcol
@@ -39,12 +43,30 @@ public class VentanaInicio extends JFrame {
 	 * @param u Usuario loggeado
 	 */
 	public VentanaInicio(Usuario u) {
+		topNews= new ArrayList<Noticia>();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		ResultSet rs= BD.selectTodas("Noticia");
+		try {
+			while (rs.next()) {
+				Noticia not= BD.selectNoticia(rs.getString("titulo"));
+				not.setEquipos(BD.selectEquiposNot(not));
+				not.setLigas(BD.selectLigasNot(not));
+				topNews.add(not);
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for (Noticia n:topNews) {
+			System.out.println(n.getTitulo() + "Not");
+		}
 		this.u=u;
-		scpanelCentral= new JScrollPane();
-		scpanelCentral.setLayout(new GridLayout(u.getEquiposSeguidos().size()+1,1));
+		
+		JPanel pCentral= new JPanel();
+		scpanelCentral= new JScrollPane(pCentral);
+		pCentral.setLayout(new GridLayout(u.getEquiposSeguidos().size()+1,1));
 		pTopNews=new JPanel();
-		pTopNews.setLayout(new GridLayout(topNews.size()+1 , 1));
+		pTopNews.setLayout(new GridLayout(topNews.size()+1 , 1));//TODO esto hace que haya demasiada distancia entre titulo TOP NEWS y noticias
 		JPanel pTituloTopNews= new JPanel();
 		pTituloTopNews.setLayout(new FlowLayout (FlowLayout.LEFT));
 		JLabel imgFuego= new JLabel();
@@ -55,14 +77,29 @@ public class VentanaInicio extends JFrame {
 		pTopNews.add(pTituloTopNews);
 		for (Noticia not: topNews) {
 			JPanel pNoticia= anyadePanalesNoticia(not);
+			pNoticia.addMouseListener(new MouseAdapter() {
+				
+				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount()>=2 ){//&& pNoticia.getLocationOnScreen().x<=e.getLocationOnScreen().x &&
+					//	pNoticia.getLocationOnScreen().x+ pNoticia.getWidth()>=e.getLocationOnScreen().x &&
+						//pNoticia.getLocationOnScreen().y<=e.getLocationOnScreen().y && 
+						//pNoticia.getLocationOnScreen().y+pNoticia.getHeight()>=e.getLocationOnScreen().y
+						VentanaNoticia v= new VentanaNoticia( u, not);
+						VentanaInicio.this.dispose();
+					}
+					
+				}
+			});
 			pTopNews.add(pNoticia);
 		}
+		pCentral.add(pTopNews);
 		
 		for (Equipo e :u.getEquiposSeguidos()) {
 			JPanel pEquipo= new JPanel();
 			JPanel pEquipoAct= new JPanel();
 			JLabel img= new JLabel();
-			img.setIcon(new ImageIcon(VentanaInicio.class.getResource(e.getImagen())));
+			System.out.println(e.getImagen());
+			img.setIcon(redimensionImgProd(new ImageIcon(VentanaInicio.class.getResource(e.getImagen())),50,50)); //TODO redimension
 			pEquipoAct.add(img);
 			pEquipo.setLayout(new FlowLayout(FlowLayout.LEFT));
 			pEquipo.add(new JLabel (e.getNombre()));
@@ -74,10 +111,10 @@ public class VentanaInicio extends JFrame {
 					pNoticia.addMouseListener(new MouseAdapter() {
 						
 						public void mouseClicked(MouseEvent e) {
-							if (e.getClickCount()>=2 && pNoticia.getLocationOnScreen().x<=e.getLocationOnScreen().x &&
-									pNoticia.getLocationOnScreen().x+ pNoticia.getWidth()>=e.getLocationOnScreen().x &&
-									pNoticia.getLocationOnScreen().y<=e.getLocationOnScreen().y && 
-									pNoticia.getLocationOnScreen().y+pNoticia.getHeight()>=e.getLocationOnScreen().y){
+							if (e.getClickCount()>=2 ){//&& pNoticia.getLocationOnScreen().x<=e.getLocationOnScreen().x &&
+							//	pNoticia.getLocationOnScreen().x+ pNoticia.getWidth()>=e.getLocationOnScreen().x &&
+								//pNoticia.getLocationOnScreen().y<=e.getLocationOnScreen().y && 
+								//pNoticia.getLocationOnScreen().y+pNoticia.getHeight()>=e.getLocationOnScreen().y
 								VentanaNoticia v= new VentanaNoticia( u, n);
 								VentanaInicio.this.dispose();
 							}
@@ -100,10 +137,11 @@ public class VentanaInicio extends JFrame {
 					}); 
 					pEquipo.add(pNoticia);
 				}
-				scpanelCentral.add(pEquipo);
+				pCentral.add(pEquipo);
 				
 			}
 		}
+		
 		getContentPane().add(scpanelCentral, BorderLayout.CENTER);
 		anyadeBotonera(this, u);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -122,6 +160,7 @@ public class VentanaInicio extends JFrame {
 		JPanel pNoticia=new JPanel();
 		pNoticia.setLayout(new BorderLayout());
 		JLabel img= new JLabel();
+		if (!n.getImagen().isEmpty())
 		img.setIcon(new ImageIcon(VentanaInicio.class.getResource(n.getImagen())));
 		pNoticia.add(img,BorderLayout.SOUTH);
 		JLabel titulo= new JLabel(n.getTitulo());
@@ -131,7 +170,7 @@ public class VentanaInicio extends JFrame {
 		fuente.setFont(new Font("helvitica", Font.PLAIN, 16));
 		pNoticia.add(fuente,BorderLayout.NORTH);
 		return pNoticia;
-		//TODO default Close operation y set Visible true y añadir tamaño por defecto
+		//TODO añadir tamaño por defecto
 	}
 	
 	/**redimensiona la imagen con formato 200x200
@@ -179,9 +218,9 @@ public class VentanaInicio extends JFrame {
 			}
 		);
 		
-		ImageIcon iInicio=new ImageIcon(VentanaNoticias.class.getResource("img/inicio.png"));
-		ImageIcon iPartido=new ImageIcon(VentanaNoticias.class.getResource("img/partidos.png"));
-		ImageIcon iSeguidos=new ImageIcon(VentanaNoticias.class.getResource("img/seguidos.png"));
+		ImageIcon iInicio=new ImageIcon(VentanaNoticias.class.getResource("/img/inicio.png")); //TODO redimensionar
+		ImageIcon iPartido=new ImageIcon(VentanaNoticias.class.getResource("/img/partidos.png"));//TODO redimensionar
+		ImageIcon iSeguidos=new ImageIcon(VentanaNoticias.class.getResource("/img/siguiendo.png"));//TODO redimensionar
 		bInicio.setIcon(redimensionImgProd(iInicio, 30, 30)); 
 		bPartidos.setIcon(redimensionImgProd(iPartido, 30, 30));//TODO copia con ActionListeners
 		bSeguidos.setIcon(redimensionImgProd(iSeguidos, 30, 30));

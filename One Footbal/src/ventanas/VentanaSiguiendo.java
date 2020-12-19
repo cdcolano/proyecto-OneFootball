@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,9 +33,9 @@ public class VentanaSiguiendo extends JFrame{
 		JTable tEquipos= new JTable();
 		JTable tLigas= new JTable();
 		JTable tJugadores= new JTable();
-		DefaultTableModel mEquipos= new DefaultTableModel();
-		DefaultTableModel mLigas= new DefaultTableModel();
-		DefaultTableModel mJugadores= new DefaultTableModel();
+		DefaultTableModel mEquipos= new DefaultTableModel();//TODO editor para que las imagenes lleven a la ventana del equipo
+		DefaultTableModel mLigas= new DefaultTableModel(); //TODO igual que arriba para ligas
+		DefaultTableModel mJugadores= new DefaultTableModel(); // TODO igual para Jugador
 		Object[] id= {"",""};
 		mEquipos.setColumnIdentifiers(id);
 		mJugadores.setColumnIdentifiers(id);
@@ -51,16 +52,18 @@ public class VentanaSiguiendo extends JFrame{
 		
 		for (Equipo e:u.getEquiposSeguidos()) {
 			Object[]valores= {
-					new ImageIcon(VentanaSiguiendo.class.getResource(e.getImagen())), 
+					e.getImagen(), 
 					e.getNombre()
 			}; 
 			mEquipos.addRow(valores);
 		}
-		
+		pEquipos.add(new JLabel("Equipos"), BorderLayout.NORTH);
 		pEquipos.add(tEquipos,BorderLayout.CENTER);
 		JButton anyadeEquipos= new JButton();
-		anyadeEquipos.setIcon(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")));
-		pEquipos.add(anyadeEquipos,BorderLayout.SOUTH);
+		anyadeEquipos.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")),30,30));
+		JPanel pAnyadeEquipos= new JPanel();
+		pAnyadeEquipos.add(anyadeEquipos);
+		pEquipos.add(pAnyadeEquipos,BorderLayout.SOUTH);
 		
 		anyadeEquipos.addActionListener((ActionEvent e)->{
 				//TODO una vez implantada la base de datos
@@ -71,16 +74,18 @@ public class VentanaSiguiendo extends JFrame{
 		
 		for (Liga l:u.getLigasSeguidas()) {
 			Object[]valores= {
-					new ImageIcon(VentanaSiguiendo.class.getResource(l.getImagen())), 
+					l.getImagen(), 
 					l.getNombre()
 			}; 
-			mEquipos.addRow(valores);
+			mLigas.addRow(valores);
 		}
-		
+		pLigas.add(new JLabel("Ligas"), BorderLayout.NORTH);
 		pLigas.add(tLigas,BorderLayout.CENTER);
 		JButton anyadeLiga= new JButton();
-		anyadeLiga.setIcon(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")));
-		pLigas.add(anyadeLiga,BorderLayout.SOUTH);
+		anyadeLiga.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")),30,30));
+		JPanel pAnyadeLiga= new JPanel();
+		pAnyadeLiga.add(anyadeLiga);
+		pLigas.add(pAnyadeLiga,BorderLayout.SOUTH);
 		
 		anyadeLiga.addActionListener((ActionEvent e)->{
 				//TODO una vez implantada la base de datos
@@ -92,16 +97,18 @@ public class VentanaSiguiendo extends JFrame{
 		
 		for (Jugador j:u.getJugadoresSeguidos()) {
 			Object[]valores= {
-					new ImageIcon(VentanaSiguiendo.class.getResource(j.getImagen())), 
+					j.getImagen(), 
 					j.getNombre()
 			}; 
-			mEquipos.addRow(valores);
+			mJugadores.addRow(valores);
 		}
-		
-		pJugadores.add(tLigas,BorderLayout.CENTER);
+		pJugadores.add(new JLabel("Jugadores"), BorderLayout.NORTH);
+		pJugadores.add(tJugadores,BorderLayout.CENTER);
 		JButton anyadeJugador= new JButton();
-		anyadeLiga.setIcon(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")));
-		pJugadores.add(anyadeLiga,BorderLayout.SOUTH);
+		JPanel pAnyadeJugador= new JPanel();
+		anyadeJugador.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")),30,30));
+		pAnyadeJugador.add(anyadeJugador);
+		pJugadores.add(pAnyadeJugador,BorderLayout.SOUTH);
 		
 		anyadeJugador.addActionListener((ActionEvent e)->{
 				//TODO una vez implantada la base de datos
@@ -109,13 +116,19 @@ public class VentanaSiguiendo extends JFrame{
 			
 		});
 		
+		tEquipos.setModel(mEquipos);
+		tJugadores.setModel(mJugadores);
+		tLigas.setModel(mLigas);
+		
 		
 		JPanel pCentral= new JPanel();
-		
-		pCentral.setLayout(new BoxLayout(pCentral, BoxLayout.Y_AXIS));
-		pCentral.add(tEquipos);
-		pCentral.add(tLigas);
-		pCentral.add(tJugadores);
+		JScrollPane scEquipos= new JScrollPane(pEquipos);
+		JScrollPane scLigas= new JScrollPane (pLigas);
+		JScrollPane scJugadores= new JScrollPane (pJugadores);
+		pCentral.setLayout(new GridLayout(3,1));
+		pCentral.add(scEquipos);
+		pCentral.add(scLigas);
+		pCentral.add(scJugadores);
 		
 		getContentPane().add(pCentral,BorderLayout.CENTER);
 		
@@ -126,4 +139,7 @@ public class VentanaSiguiendo extends JFrame{
 		setBounds(200, 300, 500, 500);
 		setVisible(true);
 	}
+	
+//TODO	Paso a Ventanas Equipos,Jugadores, ligas
+	//Posibilidad de buscar
 }

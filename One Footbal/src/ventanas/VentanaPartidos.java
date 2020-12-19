@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import clases.Jornada;
 import clases.Liga;
@@ -30,7 +31,7 @@ public class VentanaPartidos extends JFrame {
 	 */
 	public VentanaPartidos( Usuario u) {
 		JPanel pPrincipal= new JPanel();
-		pPrincipal.setLayout(new BoxLayout(pPrincipal, BoxLayout.Y_AXIS));
+		pPrincipal.setLayout(new GridLayout(u.getLigasSeguidas().size(),1));
 		for (Liga l : u.getLigasSeguidas()) {
 			JPanel panelLiga= new JPanel();
 			panelLiga.setLayout(new BorderLayout());
@@ -38,17 +39,20 @@ public class VentanaPartidos extends JFrame {
 			JPanel panelLigaSupa= new JPanel();
 			panelLigaSupa.setLayout(new GridLayout(2, 1));
 			JLabel img= new JLabel();
-			img.setIcon(new ImageIcon(VentanaPartidos.class.getResource(l.getImagen())));
+			img.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaPartidos.class.getResource(l.getImagen())),50,50));
 			panelLigaSup.add(img);
 			JLabel lNombreLiga= new JLabel (l.getNombre());
 			lNombreLiga.setFont(new Font ("helvitica", Font.BOLD,20));
 			panelLigaSupa.add(lNombreLiga);
-			panelLigaSupa.add(new JLabel("Jornada"+ l.getJornadas().size()));
+			panelLigaSupa.add(new JLabel("Jornada "+ l.getJornadas().size()));
+			panelLigaSup.add(panelLigaSupa);
 			panelLiga.setLayout(new BorderLayout());
-			panelLiga.add(panelLigaSup,BorderLayout.SOUTH);
+			panelLiga.add(panelLigaSup,BorderLayout.NORTH);
 			panelLiga.add(anyadePanelUltimaJornada(l.getJornadas().get(l.getJornadas().size()-1)), BorderLayout.CENTER);
 			pPrincipal.add(panelLiga);
 		}
+		JScrollPane scCental= new JScrollPane(pPrincipal);
+		getContentPane().add(scCental,BorderLayout.CENTER);
 		VentanaInicio.anyadeBotonera(this, u);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(200, 300, 500, 500);

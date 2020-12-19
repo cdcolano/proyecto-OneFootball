@@ -717,17 +717,17 @@ public class BD {
 			ResultSet rs = st.executeQuery(s);
 			if (rs.next()) {
 				Equipo e= new Equipo(nomEquipo);
-					
 				e.setImagen( rs.getString("img"));
-				e.setLiga(selectLiga(rs.getString("liga")));
 				e.setGolesAFavor(rs.getInt("golesAFavor"));
 				e.setGolesEnContra(rs.getInt("golesEnContra"));
 				ArrayList<Jugador>jugadores= new ArrayList<Jugador>();
 				e.setJugadores(selectJugadores(e));
 				e.setPuntos(rs.getInt("puntos"));
 				e.setNoticias(selectNoticias(e));
+				e.setLiga(selectLiga(rs.getString("liga")));
 				e.setPartidos(selectPartidos(e)); //TODO implantar con un or
-				e.setTraspasos(selectTraspasos(e)); //TODO implantar con un or
+				e.setTraspasos(selectTraspasos(e));
+				//TODO implantar con un or
 				cerrarBD(con, st);
 				return e;
 			}else {
@@ -805,17 +805,16 @@ public class BD {
 					l.setEquipos(selectEquipos(l));
 					l.setJornadas(selectJornadas(l));
 					l.setMaximosGoleadores(selectJugadoresGoleadores(l));
-					l.setNoticias(selectNoticias(l));
+					ArrayList<Noticia>n= new ArrayList<Noticia>();
+					for (Equipo e:l.getEquipos()) {
+						n.addAll(e.getNoticias());
+					}
 					l.setTraspasos(selectTraspasos(l));
 					l.setTarjetasAmarillas(selectJugadoresAmarillas(l));
 					l.setTarjetasRojas(selectJugadoresRojas(l));
 					l.setMaximosGoleadores(selectJugadoresGoleadores(l));
 					l.setMaximosAsistentes(selectJugadoresAsistentes(l));
-					for (Jugador j: l.getMaximosGoleadores()) {
-						l.addAsistente(j);
-						l.addAmarilla(j);
-						l.addRoja(j);
-					}
+					
 					cerrarBD(con, st);
 					return l;
 				}else {
@@ -859,7 +858,16 @@ public class BD {
 		}
 
 		public static TreeSet<Jugador> selectJugadoresGoleadores(Liga l) {
-			String s = "SELECT * FROM Jugador WHERE liga='" + l.getNombre() +"' and numGoles>0";
+			String in="('";
+			int i=0;
+			for (Equipo e:l.getEquipos()) { 
+				if (i==l.getEquipos().size()-1) {
+					in=in + e.getNombre() + "')";
+				}else {
+					in= in + e.getNombre() + "','";
+				}
+			}
+			String s = "SELECT * FROM Jugador WHERE nomEquipo in"+ in + " and numGoles>0";
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
@@ -879,7 +887,7 @@ public class BD {
 				while(rs.next()) {
 					Jugador j= new Jugador();
 					j.setNombre(rs.getString("nombre"));
-					j.setEquipo(selectEquipo(rs.getString("nomEquipo")));
+					j.setEquipo(selectEquipo(l,rs.getString("nomEquipo")));
 					j.setDorsal(rs.getInt("dorsal"));
 					j.setEdad(rs.getInt("edad"));
 					j.setImagen(rs.getString("img"));
@@ -901,8 +909,52 @@ public class BD {
 			}
 		}
 		
+		public static Equipo selectEquipo(Liga l, String nomEquipo) {
+
+			String s = "SELECT * FROM Equipo WHERE nom='" + nomEquipo +"'";
+			
+			Connection con = initBD("OneFootball.db");
+			try {
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery(s);
+				if (rs.next()) {
+					Equipo e= new Equipo(nomEquipo);
+					e.setImagen( rs.getString("img"));
+					e.setGolesAFavor(rs.getInt("golesAFavor"));
+					e.setGolesEnContra(rs.getInt("golesEnContra"));
+					ArrayList<Jugador>jugadores= new ArrayList<Jugador>();
+					e.setJugadores(selectJugadores(e));
+					e.setPuntos(rs.getInt("puntos"));
+					e.setNoticias(selectNoticias(e));
+					e.setLiga(l);
+					e.setPartidos(selectPartidos(e)); //TODO implantar con un or
+					e.setTraspasos(selectTraspasos(e));
+					//TODO implantar con un or
+					cerrarBD(con, st);
+					return e;
+				}else {
+					cerrarBD(con, st);
+					return null;
+				}
+				
+			} catch (SQLException e) {
+					e.printStackTrace();
+					//TODO logger
+					return null;
+			}
+		}
+		
 		public static TreeSet<Jugador> selectJugadoresAsistentes(Liga l) {
-			String s = "SELECT * FROM Jugador WHERE liga='" + l.getNombre() +"' and numAsistencias>0";
+			String in="('";
+			int i=0;
+			for (Equipo e:l.getEquipos()) { 
+				if (i==l.getEquipos().size()-1) {
+					in=in + e.getNombre() + "')";
+				}else {
+					in= in + e.getNombre() + "','";
+				}
+			}
+			String s = "SELECT * FROM Jugador WHERE nomEquipo in" + in + " and numAsistencias>0";
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
@@ -922,7 +974,7 @@ public class BD {
 				while(rs.next()) {
 					Jugador j= new Jugador();
 					j.setNombre(rs.getString("nombre"));
-					j.setEquipo(selectEquipo(rs.getString("nomEquipo")));
+					j.setEquipo(selectEquipo(l,rs.getString("nomEquipo")));
 					j.setDorsal(rs.getInt("dorsal"));
 					j.setEdad(rs.getInt("edad"));
 					j.setImagen(rs.getString("img"));
@@ -945,7 +997,16 @@ public class BD {
 		}
 		
 		public static TreeSet<Jugador> selectJugadoresAmarillas(Liga l) {
-			String s = "SELECT * FROM Jugador WHERE liga='" + l.getNombre() +"' and numAmarillas>0";
+			String in="('";
+			int i=0;
+			for (Equipo e:l.getEquipos()) { 
+				if (i==l.getEquipos().size()-1) {
+					in=in + e.getNombre() + "')";
+				}else {
+					in= in + e.getNombre() + "','";
+				}
+			}
+			String s = "SELECT * FROM Jugador WHERE nomEquipo in " +in + " and numAmarillas>0";
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
@@ -965,7 +1026,7 @@ public class BD {
 				while(rs.next()) {
 					Jugador j= new Jugador();
 					j.setNombre(rs.getString("nombre"));
-					j.setEquipo(selectEquipo(rs.getString("nomEquipo")));
+					j.setEquipo(selectEquipo(l,rs.getString("nomEquipo")));
 					j.setDorsal(rs.getInt("dorsal"));
 					j.setEdad(rs.getInt("edad"));
 					j.setImagen(rs.getString("img"));
@@ -988,7 +1049,16 @@ public class BD {
 		}
 		
 		public static TreeSet<Jugador> selectJugadoresRojas(Liga l) {
-			String s = "SELECT * FROM Jugador WHERE liga='" + l.getNombre() +"' and numRojas>0";
+			String in="('";
+			int i=0;
+			for (Equipo e:l.getEquipos()) { 
+				if (i==l.getEquipos().size()-1) {
+					in=in + e.getNombre() + "')";
+				}else {
+					in= in + e.getNombre() + "','";
+				}
+			}
+			String s = "SELECT * FROM Jugador WHERE nomEquipo in" + in +" and numRojas>0";
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
@@ -1008,7 +1078,7 @@ public class BD {
 				while(rs.next()) {
 					Jugador j= new Jugador();
 					j.setNombre(rs.getString("nombre"));
-					j.setEquipo(selectEquipo(rs.getString("nomEquipo")));
+					j.setEquipo(selectEquipo(l,rs.getString("nomEquipo")));
 					j.setDorsal(rs.getInt("dorsal"));
 					j.setEdad(rs.getInt("edad"));
 					j.setImagen(rs.getString("img"));
@@ -1066,7 +1136,7 @@ public class BD {
 				while(rs.next()) {
 						Equipo e= new Equipo(rs.getString("nom"));
 						e.setImagen( rs.getString("img"));
-						e.setLiga(selectLiga(rs.getString("liga")));
+						e.setLiga(l);
 						e.setGolesAFavor(rs.getInt("golesAFavor"));
 						e.setGolesEnContra(rs.getInt("golesEnContra"));
 						ArrayList<Jugador>jugadores= new ArrayList<Jugador>();
@@ -1085,6 +1155,7 @@ public class BD {
 			return null;
 		}
 	}
+	
 			
 			
 		/**Busca jugadores que juegan en un equipo 
@@ -1360,8 +1431,6 @@ public class BD {
 						n.setFuente(rs.getString("fuente"));
 						n.setImagen(rs.getString("img"));
 						n.setCuerpo(rs.getString("cuerpo"));
-						n.setEquipos(selectEquiposNot(n));
-						n.setLigas(selectLigasNot(n));
 						cerrarBD(con, st);
 						return n;
 					}else {
@@ -1372,7 +1441,8 @@ public class BD {
 				return null;
 			}
 		}
-				
+			
+		
 				
 				
 		public static ArrayList<Liga> selectLigasNot(Noticia n) {
@@ -1476,11 +1546,13 @@ public class BD {
 				ResultSet rs = st.executeQuery(s);
 				while (rs.next()) {
 					Partido p= new Partido();
-					p.setLiga(selectLiga(rs.getString("nomLiga")));
-					p.setJornada(selectJornada(rs.getInt("numJornada"), p.getLiga()));
+					System.out.println(e.getNombre());
+					System.out.println(e.getLiga());
+					p.setLiga(e.getLiga());
+					p.setJornada(selectJornada(rs.getInt("numJornada"), e.getLiga()));
 					p.setFecha(new Date(rs.getLong("fecha")));
-					p.setLocal(selectEquipo(rs.getString("local")));
-					p.setVisitante(selectEquipo(rs.getString("visitante")));
+					p.setLocal(selectEquipoPartido(p,rs.getString("local")));
+					p.setVisitante(selectEquipoPartido(p, rs.getString("visitante")));
 					p.setGolesLocal(rs.getInt("golesLocal"));
 					p.setGolesVisitante(rs.getInt("golesVisitante"));
 					p.setAmarillas(selectJugadoresAmarillas(p));
@@ -1496,6 +1568,38 @@ public class BD {
 				return null;
 			}
 		}
+		
+		public static Equipo selectEquipoPartido(Partido p,String nomEquipo) {
+			String s = "SELECT * FROM Equipo WHERE nom='" + nomEquipo +"'";
+			
+			Connection con = initBD("OneFootball.db");
+			try {
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery(s);
+				if (rs.next()) {
+					Equipo e= new Equipo(nomEquipo);
+					e.setImagen( rs.getString("img"));
+					e.setGolesAFavor(rs.getInt("golesAFavor"));
+					e.setGolesEnContra(rs.getInt("golesEnContra"));
+					ArrayList<Jugador>jugadores= new ArrayList<Jugador>();
+					e.setJugadores(selectJugadores(e));
+					e.setPuntos(rs.getInt("puntos"));
+					e.setNoticias(selectNoticias(e));
+					e.setLiga(p.getLiga()); 
+					e.setTraspasos(selectTraspasos(e));
+					//TODO implantar con un or
+					cerrarBD(con, st);
+					return e;
+				}else {
+					cerrarBD(con, st);
+					return null;
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
 
 		public static ArrayList<Jugador> selectSeleccionables(SeleccionNacional sel){
 
@@ -2030,7 +2134,19 @@ public class BD {
 	}
 	
 	
-	
+	public static ArrayList<Usuario>selectUsuarios(){
+		ArrayList<Usuario>usuarios= new ArrayList<Usuario>();
+		try {
+			ResultSet rs=selectTodas("Usuario");
+			while (rs.next()) {
+				usuarios.add(selectUsuario(rs.getString("correoElect")));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return usuarios;
+	}
 	
 	
 	
