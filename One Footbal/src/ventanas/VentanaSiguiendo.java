@@ -1,6 +1,8 @@
 package ventanas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import clases.BD;
@@ -53,7 +56,7 @@ public class VentanaSiguiendo extends JFrame{
 		pLigas.setLayout(new BorderLayout());
 		pJugadores.setLayout(new BorderLayout());
 		
-		
+
 		for (Equipo e:u.getEquiposSeguidos()) {
 			Object[]valores= {
 					e.getImagen(), 
@@ -74,19 +77,17 @@ public class VentanaSiguiendo extends JFrame{
 				
 			
 		});
-		tEquipos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ListSelectionModel lmEquipos= tEquipos.getSelectionModel();
-		lmEquipos.addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				String nomEquipo=(String)mEquipos.getValueAt(e.getFirstIndex(), 1);
-				Equipo eq= BD.selectEquipo(nomEquipo);
-				VentanaEquipo v= new VentanaEquipo(u, eq);
-				VentanaSiguiendo.this.dispose();
+		lmEquipos.addListSelectionListener((ListSelectionEvent e)-> {
+				if(e.getFirstIndex()==e.getLastIndex()) {
+					String nomEquipo=(String)mEquipos.getValueAt(e.getFirstIndex(), 1);
+					Equipo eq= BD.selectEquipo(nomEquipo);
+					VentanaEquipo v= new VentanaEquipo(u, eq);
+					VentanaSiguiendo.this.dispose();
+				}
 				
 			}
-		});
+		);
 		
 		
 		for (Liga l:u.getLigasSeguidas()) {
@@ -110,7 +111,16 @@ public class VentanaSiguiendo extends JFrame{
 			
 		});
 		
-		
+		tLigas.getSelectionModel().addListSelectionListener((ListSelectionEvent e)-> {
+				// TODO Auto-generated method stub
+			if (e.getFirstIndex()==e.getLastIndex() && e.getFirstIndex()!=-1 && !e.getValueIsAdjusting()) {
+				String nomLiga=(String)mLigas.getValueAt(e.getFirstIndex(), 1);
+				Liga l= BD.selectLiga(nomLiga);
+				VentanaLiga v= new VentanaLiga(true, l, u);
+				VentanaSiguiendo.this.dispose();
+			}
+			
+		});
 		
 		for (Jugador j:u.getJugadoresSeguidos()) {
 			Object[]valores= {
@@ -134,8 +144,15 @@ public class VentanaSiguiendo extends JFrame{
 		});
 		
 		tEquipos.setModel(mEquipos);
+		tEquipos.getColumnModel().getColumn(0).setCellRenderer(new RendererSiguiendo());
+		tEquipos.setRowHeight(50);
 		tJugadores.setModel(mJugadores);
+		tJugadores.getColumnModel().getColumn(0).setCellRenderer(new RendererSiguiendo());
+		tJugadores.setRowHeight(50);
 		tLigas.setModel(mLigas);
+		tLigas.getColumnModel().getColumn(0).setCellRenderer(new RendererSiguiendo());
+		tLigas.setRowHeight(50);
+		
 		
 		
 		JPanel pCentral= new JPanel();
@@ -159,4 +176,20 @@ public class VentanaSiguiendo extends JFrame{
 	
 //TODO	Paso a Ventanas Equipos,Jugadores, ligas
 	//Posibilidad de buscar
+}
+
+
+
+class RendererSiguiendo extends DefaultTableCellRenderer {
+	   
+	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
+	      JLabel cell = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	      if (column==0) {
+	    	  String valor=(String)value;
+	    	  cell.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaSiguiendo.class.getResource(valor)), 50, 50));
+	    	  cell.setText("");
+	      }
+	      
+	      return cell;
+	   }
 }

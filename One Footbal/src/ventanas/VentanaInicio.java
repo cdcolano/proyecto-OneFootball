@@ -66,7 +66,9 @@ public class VentanaInicio extends JFrame {
 		scpanelCentral= new JScrollPane(pCentral);
 		pCentral.setLayout(new GridLayout(u.getEquiposSeguidos().size()+1,1));
 		pTopNews=new JPanel();
-		pTopNews.setLayout(new GridLayout(topNews.size()+1 , 1));//TODO esto hace que haya demasiada distancia entre titulo TOP NEWS y noticias
+		JPanel pTopNewsConTit= new JPanel();
+		pTopNewsConTit.setLayout(new BorderLayout());
+		pTopNews.setLayout(new GridLayout(topNews.size() , 1));//TODO esto hace que haya demasiada distancia entre titulo TOP NEWS y noticias
 		JPanel pTituloTopNews= new JPanel();
 		pTituloTopNews.setLayout(new FlowLayout (FlowLayout.LEFT));
 		JLabel imgFuego= new JLabel();
@@ -74,7 +76,10 @@ public class VentanaInicio extends JFrame {
 		JLabel ltopNews= new JLabel("TOP NEWS");
 		ltopNews.setFont(new Font("helvitica", Font.BOLD, 30));
 		pTituloTopNews.add(ltopNews);
-		pTopNews.add(pTituloTopNews);
+		pTopNewsConTit.add(pTituloTopNews,BorderLayout.NORTH);
+		pTopNewsConTit.add(pTopNews,BorderLayout.CENTER);
+		
+		//pTopNews.add(pTituloTopNews);
 		for (Noticia not: topNews) {
 			JPanel pNoticia= anyadePanalesNoticia(not);
 			pNoticia.addMouseListener(new MouseAdapter() {
@@ -92,17 +97,19 @@ public class VentanaInicio extends JFrame {
 			});
 			pTopNews.add(pNoticia);
 		}
-		pCentral.add(pTopNews);
+		pCentral.add(pTopNewsConTit);
 		
 		for (Equipo e :u.getEquiposSeguidos()) {
+			JPanel pNoticias= new JPanel();
+			pNoticias.setLayout(new FlowLayout(FlowLayout.LEFT));
 			JPanel pEquipo= new JPanel();
+			pEquipo.setLayout(new BorderLayout());
 			JPanel pEquipoAct= new JPanel();
+			pEquipoAct.setLayout(new FlowLayout(FlowLayout.LEFT));
 			JLabel img= new JLabel();
-			System.out.println(e.getImagen());
 			img.setIcon(redimensionImgProd(new ImageIcon(VentanaInicio.class.getResource(e.getImagen())),50,50)); //TODO redimension
 			pEquipoAct.add(img);
-			pEquipo.setLayout(new FlowLayout(FlowLayout.LEFT));
-			pEquipo.add(new JLabel (e.getNombre()));
+			pEquipoAct.add(new JLabel (e.getNombre()));
 			pEquipo.add(pEquipoAct);
 			if (e.getNoticias().size()>=6) {
 				for (int i=e.getNoticias().size()-1; i>e.getNoticias().size()-6; i++) {	//solo las ultimas 5 noticias por equipo
@@ -121,7 +128,7 @@ public class VentanaInicio extends JFrame {
 							
 						}
 					}); 
-					pEquipo.add(pNoticia);
+					pNoticias.add(pNoticia);
 					}
 			}else {
 				for (Noticia n: e.getNoticias()) {
@@ -135,8 +142,10 @@ public class VentanaInicio extends JFrame {
 							
 						}
 					}); 
-					pEquipo.add(pNoticia);
+					pNoticias.add(pNoticia);
 				}
+				pEquipo.add(pEquipoAct,BorderLayout.NORTH);
+				pEquipo.add(pNoticias,BorderLayout.CENTER);
 				pCentral.add(pEquipo);
 				
 			}

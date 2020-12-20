@@ -4,6 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,16 +34,33 @@ public class VentanaJugador extends JFrame{
 	public VentanaJugador(Usuario u,Jugador j) {
 		JPanel pSup= new JPanel();
 		pSup.setLayout(new BorderLayout());
+		JPanel pJugador= new JPanel();
+		pJugador.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel imgJugador= new JLabel();
-		imgJugador.setIcon(new ImageIcon(VentanaJugador.class.getResource(j.getImagen())));
-		pSup.add(imgJugador,BorderLayout.CENTER);
+		imgJugador.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaJugador.class.getResource(j.getImagen())),150,150));
+		pJugador.add(imgJugador);
+		pJugador.add(new JLabel(j.getNombre()));
+		pSup.add(pJugador,BorderLayout.CENTER);
 		JPanel pEquipo= new JPanel();
 		pEquipo.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel imgEquipo= new JLabel();
-		imgEquipo.setIcon(new ImageIcon(VentanaJugador.class.getResource(j.getImagen())));
+		imgEquipo.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaJugador.class.getResource(j.getEquipo().getImagen())),75,75));
 		pEquipo.add(imgEquipo);
 		pEquipo.add(new JLabel (j.getEquipo().getNombre()));
 		pSup.add(pEquipo,BorderLayout.SOUTH);
+		//pSup.add(new JLabel("Hola"),BorderLayout.NORTH);
+		
+		pEquipo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount()>1) {
+					VentanaEquipo v= new VentanaEquipo(u,j.getEquipo());
+					VentanaJugador.this.dispose();
+				}
+				
+			}
+		});
+		
 		JPanel pCentral= new JPanel();
 		pCentral.setLayout(new GridLayout(4,2));
 		
@@ -83,9 +104,9 @@ public class VentanaJugador extends JFrame{
 		JPanel pRojas= new JPanel();
 		pRojas.setLayout(new GridLayout(2,1));
 		JLabel lRojas= new JLabel(""+ j.getNumRojas());
-		lAmarillas.setFont(new Font("helvitica",Font.BOLD,30));
-		pAmarillas.add(new JLabel("Tarjetas Rojas"));
-		pAmarillas.add(lRojas);
+		lRojas.setFont(new Font("helvitica",Font.BOLD,30));
+		pRojas.add(new JLabel("Tarjetas Rojas"));
+		pRojas.add(lRojas);
 		pCentral.add(pRojas);
 		
 		
@@ -117,8 +138,9 @@ public class VentanaJugador extends JFrame{
 		pDorsal.add(lDorsal);
 		pCentral.add(pDorsal);
 		
-		JScrollPane scCentral= new JScrollPane(pCentral);
+		JScrollPane scCentral= new JScrollPane(pCentral);//cambio a pCentral
 		getContentPane().add(scCentral,BorderLayout.CENTER);
+		getContentPane().add(pSup,BorderLayout.NORTH);
 		VentanaInicio.anyadeBotonera(this, u);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(200, 300, 500, 500);

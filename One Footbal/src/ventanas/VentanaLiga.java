@@ -27,6 +27,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 
 import clases.Equipo;
 import clases.Jugador;
@@ -50,7 +51,7 @@ public class VentanaLiga extends JFrame {
 	TreeSet<Equipo>clasificacion;
 	
 	boolean clasif;
-	public static final String[] ID_CLASIF= {"Logo", "Equipo", "Pts", "PJ", "GF", "GC"};
+	public static final String[] ID_CLASIF= {"Puesto","Logo", "Equipo", "Pts", "PJ", "GF", "GC"};
 	public static final String[] ID_GOLEADORES= {"Goleadores", "", "", ""};
 	public static final String[] ID_ASISTENTES= {"Asistentes", "", "", ""};
 	public static final String[] ID_ROJAS= {"Rojas", "", "", ""};
@@ -71,27 +72,29 @@ public class VentanaLiga extends JFrame {
 		mTarjetasRojas= new DefaultTableModel();
 		mEquipos.setColumnIdentifiers(ID_CLASIF);
 		JPanel pEstadisticas=new JPanel();
-		
+		clasificacion= new TreeSet<Equipo>();
 		JPanel pContenedor= new JPanel();
-		JScrollPane spClasif= new JScrollPane();
+		JScrollPane spClasif= new JScrollPane(tClasificacion);
 		
-	
+		tClasificacion.setModel(mEquipos);
 		
 		if (clasif) {
-			tClasificacion= new JTable();
 			clasificacion=liga.getEquipos();
+			int j=1;
 			for (Equipo eq: clasificacion) {
 				ImageIcon img= new ImageIcon(VentanaLiga.class.getResource(eq.getImagen()));
-				Object[] fila= {img, eq.getNombre(), eq.getPuntos(), eq.getNumPartidos(), eq.getGolesAFavor(), eq.getGolesEnContra()};
+				Object[] fila= {j,img, eq.getNombre(), eq.getPuntos(), eq.getNumPartidos(), eq.getGolesAFavor(), eq.getGolesEnContra()};
 				mEquipos.addRow(fila);
+				j++;
 			}
-			    
-
-			for (int i=0;i<4;i++) {//TODO revisar este for
-				for (int j=0; j<6;j++) {
-					tClasificacion.getColumnModel().getColumn(j).setCellRenderer(new ColumnColorRenderer());
-					}
+			   
+			
+			for (int p=0;p<tClasificacion.getColumnCount();p++) {//TODO revisar este for
+				tClasificacion.getColumnModel().getColumn(p).setCellRenderer(new ColumnColorRenderer());
+				
 			}
+			tClasificacion.setRowHeight(50);
+			
 //TODO error si la clasificacion es menor 		
 			pEstadisticas.setLayout(new GridLayout(1,2));
 			
@@ -108,7 +111,7 @@ public class VentanaLiga extends JFrame {
 
 			tClasificacion.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 		        public void valueChanged(ListSelectionEvent event) {
-		        	if (event.getFirstIndex()==event.getLastIndex() && event.getFirstIndex()!=-1) {
+		        	if (event.getFirstIndex()==event.getLastIndex() && event.getFirstIndex()!=-1 && !event.getValueIsAdjusting()) {
 						int i=event.getFirstIndex();
 						for (Equipo eq: clasificacion) {
 							String nom=(String)mEquipos.getValueAt(i, 1);
@@ -179,8 +182,8 @@ public class VentanaLiga extends JFrame {
 	 * @param listaJugador  lista de Jugadores a añadir
 	 * @param mJugador modelo de la Tabla correspondiente
 	 */
-	private void anyadeElementos(TreeSet<Jugador>listaJugador, DefaultTableModel mJugador) {
-		for (int i=0;i<3;i++) {
+	private void anyadeElementos(TreeSet<Jugador>listaJugador, DefaultTableModel mJugador) { //TODO este metodo no funciona si no hay más datos de prueba
+		for (int i=0;i<3;i++) {	
 			Jugador[] jugadores= (Jugador[])listaJugador.toArray();
 			Jugador jugador= jugadores[i];
 			ImageIcon img= new ImageIcon(VentanaLiga.class.getResource(jugador.getImagen()));
@@ -201,7 +204,7 @@ public class VentanaLiga extends JFrame {
 		
 		pSuperior.setLayout(new BorderLayout());
 		JLabel nomLiga= new JLabel(l.getNombre());
-		nomLiga.setIcon(new ImageIcon(VentanaLiga.class.getResource(l.getImagen())));
+		nomLiga.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaLiga.class.getResource(l.getImagen())),150,150));
 		nomLiga.setFont(new Font("helvitica", Font.BOLD, 36));
 		pSuperior.add(nomLiga,BorderLayout.CENTER);
 		JButton bJornada= new JButton("Jornada");
@@ -231,7 +234,7 @@ public class VentanaLiga extends JFrame {
 		bClasificacion.addActionListener((ActionEvent arg0)-> {
 			if (!(vent instanceof VentanaLiga)) {
 				VentanaLiga v= new VentanaLiga(true, l, u);
-				v.dispose();
+				vent.dispose();
 			}else {
 				VentanaLiga ventLiga=(VentanaLiga)vent;
 				if (ventLiga.clasif==false) {
@@ -246,7 +249,7 @@ public class VentanaLiga extends JFrame {
 		bEstadisticas.addActionListener((ActionEvent arg0)-> {
 			if (!(vent instanceof VentanaLiga)) {
 				VentanaLiga v= new VentanaLiga(false,l,u);
-				v.dispose();
+				vent.dispose();
 			}else {
 				VentanaLiga ventLiga=(VentanaLiga)vent;
 				if (ventLiga.clasif==true) {
@@ -262,7 +265,7 @@ public class VentanaLiga extends JFrame {
 		bTraspasos.addActionListener((ActionEvent arg0)-> {
 			if (!(vent instanceof VentanaTraspasos)) {
 				VentanaTraspasos v= new VentanaTraspasos(l,u);
-				v.dispose();
+				vent.dispose();
 			}
 				
 			
@@ -271,7 +274,7 @@ public class VentanaLiga extends JFrame {
 		bNoticias.addActionListener((ActionEvent arg0)-> {
 			if (!(vent instanceof VentanaNoticias)) {
 				VentanaNoticias v= new VentanaNoticias(u,l);
-				v.dispose();
+				vent.dispose();
 			}
 				
 			
@@ -287,7 +290,7 @@ public class VentanaLiga extends JFrame {
 
 
 
-/**Ajusta los colores de las celulas para que se adecuen a la posicion en la tabla
+/**Ajusta los colores de las celdas para que se adecuen a la posicion en la tabla
  * Champions, Europa League o Descenso
  * @author cdcol
  *
@@ -295,14 +298,23 @@ public class VentanaLiga extends JFrame {
 class ColumnColorRenderer extends DefaultTableCellRenderer {
 	   
 	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
-	      Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	      JLabel cell = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	      if (column==1) {
+	    	  ImageIcon valor=(ImageIcon)value;
+	    	  cell.setIcon(VentanaInicio.redimensionImgProd(valor, 50, 50));
+	    	  cell.setText("");
+	      }
 	      if (row<4) {//esta en Champions
 	    	  cell.setBackground(Color.BLUE);
+	    	  cell.setForeground(Color.WHITE);
 	      }else if (row<6) {//esta en europa league
 	    	  cell.setBackground(Color.GREEN);
+	    	  cell.setForeground(Color.WHITE);
 	      }else if (row>16) {//esta en descenso
 	    	  cell.setBackground(Color.RED);
+	    	  cell.setForeground(Color.WHITE);
 	      }
+	      
 	      return cell;
 	   }
 }

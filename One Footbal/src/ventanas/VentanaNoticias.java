@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,6 +34,14 @@ public class VentanaNoticias extends JFrame {
 	 * @param c Elemento del que se desean mostrar las noticias
 	 */
 	public VentanaNoticias(Usuario u, Contenedor c) {
+		if (c instanceof Liga) {
+			ArrayList<Noticia>not= new ArrayList<Noticia>();
+			Liga l=(Liga)c;
+			for (Equipo e:l.getEquipos()) {
+				not.addAll(e.getNoticias());
+			}
+			l.setNoticias(not);
+		}
 		JScrollPane scpanelCentral= new JScrollPane();
 		JPanel pEquipo= new JPanel();
 		pEquipo.setLayout(new GridLayout(c.getNoticias().size(),1));

@@ -1,6 +1,8 @@
 package ventanas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,8 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import clases.Equipo;
@@ -47,9 +51,14 @@ public class VentanaEquipo extends JFrame{
 		}
 		tPlantilla.setModel(mPlantilla);
 		
+		tPlantilla.getColumnModel().getColumn(0).setCellRenderer(new RendererPlantilla());
+		tPlantilla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tPlantilla.setRowHeight(50);
+		
 		tPlantilla.getSelectionModel().addListSelectionListener((ListSelectionEvent ev)-> {
-			if (ev.getFirstIndex()==ev.getLastIndex() && ev.getFirstIndex()!=-1) {
+			if (ev.getFirstIndex()==ev.getLastIndex() && !ev.getValueIsAdjusting() && ev.getFirstIndex()!=-1) {
 				int i=ev.getFirstIndex();
+				System.out.println("sucede");
 				for (Jugador j: e.getJugadores()) {
 					String nom=(String)mPlantilla.getValueAt(i, 1);
 					if (j.getNombre().contentEquals(nom)) {
@@ -83,7 +92,7 @@ public class VentanaEquipo extends JFrame{
 			
 			pSuperior.setLayout(new BorderLayout());
 			JLabel nomEquipo= new JLabel(e.getNombre());
-			nomEquipo.setIcon(new ImageIcon(VentanaLiga.class.getResource(e.getImagen())));
+			nomEquipo.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaLiga.class.getResource(e.getImagen())),150,150));
 			nomEquipo.setFont(new Font("helvitica", Font.BOLD, 36));
 			pSuperior.add(nomEquipo,BorderLayout.CENTER);
 			JButton bClasificacion= new JButton("Clasificacion");
@@ -110,7 +119,7 @@ public class VentanaEquipo extends JFrame{
 			bClasificacion.addActionListener((ActionEvent arg0)-> {
 				if (!(vent instanceof VentanaLiga)) {
 					VentanaLiga v= new VentanaLiga(true, e.getLiga(), u);
-					v.dispose();
+					vent.dispose();
 				}else {
 					VentanaLiga ventLiga=(VentanaLiga)vent;
 					if (ventLiga.clasif==false) {
@@ -151,4 +160,17 @@ public class VentanaEquipo extends JFrame{
 			//TODO añadir botonera
 		}
 	
+}
+
+class RendererPlantilla extends DefaultTableCellRenderer {
+	   
+	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
+	      JLabel cell = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	      if (column==0) {
+	    	  ImageIcon valor=(ImageIcon)value;
+	    	  cell.setIcon(VentanaInicio.redimensionImgProd(valor, 50, 50));
+	    	  cell.setText("");
+	      }
+	      return cell;
+	   }
 }

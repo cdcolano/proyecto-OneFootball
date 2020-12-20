@@ -8,6 +8,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import clases.Jornada;
 import clases.Liga;
@@ -46,14 +47,17 @@ public class VentanaJornada extends JFrame{
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getItem()!=null) {
 					Jornada j=(Jornada)e.getItem();
+					pCentral.removeAll();
+					pCentral.add(cbJornadas,BorderLayout.NORTH);
 					pCentral.add(VentanaPartidos.anyadePanelUltimaJornada(j),BorderLayout.CENTER);
 				}
 				
 			}
 		});
-		
-		pCentral.add(cbJornadas,BorderLayout.SOUTH);
-		
+		pCentral.add(VentanaPartidos.anyadePanelUltimaJornada(l.getJornadas().get(l.getJornadas().size()-1)));
+		pCentral.add(cbJornadas,BorderLayout.NORTH);
+		JScrollPane spCentral= new JScrollPane(pCentral);
+		getContentPane().add(spCentral);
 		VentanaInicio.anyadeBotonera(this, u);
 		VentanaLiga.anyadePanelSup(this, l, u);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

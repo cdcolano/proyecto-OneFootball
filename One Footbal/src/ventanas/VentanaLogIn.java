@@ -76,13 +76,13 @@ public class VentanaLogIn extends JFrame {
 					}
 				}
 			}else {
-				if (logIn.containsKey(tCorreo.getText())) {
+				if (logIn.containsKey(tCorreo.getText())&& logIn.get(tCorreo.getText()).getContrasena().contentEquals(tContrasena.getText())) {
 					Usuario u = BD.selectUsuario(tCorreo.getText());
 					u.setEquiposSeguidos(BD.selectEquiposUsuario(u));
 					u.setJugadoresSeguidos(BD.selectJugadoresUsuario(u));
 					u.setLigasSeguidas(BD.selectLigasUsuario(u));
 					VentanaInicio v= new VentanaInicio(u);
-				}
+				}//TODO usuario o contraseña incorrectos
 			}
 		});
 		
@@ -104,13 +104,13 @@ public class VentanaLogIn extends JFrame {
 							}
 						}
 					}else {
-						if (logIn.containsKey(tCorreo.getText())) {
+						if (logIn.containsKey(tCorreo.getText())&& logIn.get(tCorreo.getText()).getContrasena().contentEquals(tContrasena.getText())) {
 							Usuario u = BD.selectUsuario(tCorreo.getText());
 							u.setEquiposSeguidos(BD.selectEquiposUsuario(u));
 							u.setJugadoresSeguidos(BD.selectJugadoresUsuario(u));
 							u.setLigasSeguidas(BD.selectLigasUsuario(u));
 							VentanaInicio v= new VentanaInicio(u);
-						}
+						}//TODO usuario o contraseña incorrectos
 					}
 					
 				}
