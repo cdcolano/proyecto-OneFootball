@@ -184,7 +184,7 @@ public class BD {
 			statement.executeUpdate("drop table if exists LigaNot");
 			
 			
-			//TODO completar drop table
+			//
 	//		a
 			return usarCrearTablasBD( con );
 		} catch (SQLException e) {
@@ -345,12 +345,12 @@ public class BD {
 			st.executeUpdate(s);
 			cerrarBD(c, st);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
 		
 	}
-	//TODO acabar 
+	// 
 	public static void insertarLiga(Liga l) {
 		String s = "INSERT INTO Liga VALUES('"+l.getNombre()+"','"+l.getImagen()+  "' )";
 
@@ -360,7 +360,7 @@ public class BD {
 			st.executeUpdate(s);
 			cerrarBD(con, st);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
 	}
@@ -705,8 +705,12 @@ public class BD {
 		}
 	}
 	
+	public void rellenaTraspasos(Equipo e) {
+		e.setTraspasos(selectTraspasos(e));
+	}
 	
 	
+	//TODO AKIIIIIIIII
 	public static Equipo selectEquipo (String nomEquipo) {
 		
 		String s = "SELECT * FROM Equipo WHERE nom='" + nomEquipo +"'";
@@ -726,7 +730,7 @@ public class BD {
 				e.setNoticias(selectNoticias(e));
 				e.setLiga(selectLiga(rs.getString("liga")));
 				e.setPartidos(selectPartidos(e)); //TODO implantar con un or
-				e.setTraspasos(selectTraspasos(e));
+				//e.setTraspasos(selectTraspasos(e));
 				//TODO implantar con un or
 				cerrarBD(con, st);
 				return e;
@@ -772,6 +776,11 @@ public class BD {
 			ResultSet rs = st.executeQuery(s);	
 			while(rs.next()) {
 				Traspaso t= new Traspaso();
+				if (rs.getString("nomEquipoVendedor").contentEquals(e.getNombre())) {
+					t.setVendedor(e);
+				}else if (rs.getString("nomEquipoComprador").contentEquals(e.getNombre())) {
+					t.setEquipo(e);
+				}
 				t.setEquipo(selectEquipo(rs.getString("nomEquipoComprador")));
 				t.setVendedor(selectEquipo(rs.getString("nomEquipoVendedor")));
 				t.setJugador(selectJugador(rs.getString("nomJugador"), t.getVendedor()));
@@ -809,12 +818,11 @@ public class BD {
 					for (Equipo e:l.getEquipos()) {
 						n.addAll(e.getNoticias());
 					}
-					l.setTraspasos(selectTraspasos(l));
+				//	l.setTraspasos(selectTraspasos(l));
 					l.setTarjetasAmarillas(selectJugadoresAmarillas(l));
 					l.setTarjetasRojas(selectJugadoresRojas(l));
 					l.setMaximosGoleadores(selectJugadoresGoleadores(l));
 					l.setMaximosAsistentes(selectJugadoresAsistentes(l));
-					
 					cerrarBD(con, st);
 					return l;
 				}else {
@@ -834,7 +842,7 @@ public class BD {
 		private static ArrayList<Traspaso> selectTraspasos(Liga l) {
 			ArrayList<Traspaso>traspasos= new ArrayList<Traspaso>();
 			for (Equipo e: l.getEquipos()) {
-				traspasos.addAll(selectTraspasos(e));
+				l.getTraspasos().addAll(e.getTraspasos());
 			}
 			return traspasos;
 		}
@@ -909,6 +917,8 @@ public class BD {
 			}
 		}
 		
+		
+		// TODO AKIIII acelga
 		public static Equipo selectEquipo(Liga l, String nomEquipo) {
 
 			String s = "SELECT * FROM Equipo WHERE nom='" + nomEquipo +"'";
@@ -927,9 +937,8 @@ public class BD {
 					e.setPuntos(rs.getInt("puntos"));
 					e.setNoticias(selectNoticias(e));
 					e.setLiga(l);
-					e.setPartidos(selectPartidos(e)); //TODO implantar con un or
-					e.setTraspasos(selectTraspasos(e));
-					//TODO implantar con un or
+					e.setPartidos(selectPartidos(e)); 
+					//e.setTraspasos(selectTraspasos(e));
 					cerrarBD(con, st);
 					return e;
 				}else {
@@ -939,7 +948,7 @@ public class BD {
 				
 			} catch (SQLException e) {
 					e.printStackTrace();
-					//TODO logger
+					//
 					return null;
 			}
 		}
@@ -1116,7 +1125,7 @@ public class BD {
 					jor.setNumJornada(rs.getInt("numJornada"));
 					jor.setLiga(l);
 					jor.setPartidos(selectPartidos(jor));
-					jornadas.add(jor);//TODO seleccionar partidos en base a una jornada
+					jornadas.add(jor);//
 				}
 				cerrarBD(con, st);
 				return jornadas;
@@ -1126,7 +1135,8 @@ public class BD {
 				return null;
 			}
 		}
-
+		
+		//TODO AKIIIII acelga
 		public static  TreeSet<Equipo>selectEquipos(Liga l){
 			String s = "SELECT * FROM Equipo WHERE liga='" + l.getNombre() +"'";
 			Connection con = initBD("OneFootball.db");
@@ -1144,7 +1154,7 @@ public class BD {
 						e.setPuntos(rs.getInt("puntos"));
 						e.setNoticias(selectNoticias(e));
 						e.setPartidos(selectPartidos(e)); //TODO implantar con un or
-						e.setTraspasos(selectTraspasos(e));
+					//	e.setTraspasos(selectTraspasos(e));
 						listaEquipos.add(e);
 				}
 			cerrarBD(con, st);
@@ -1192,6 +1202,36 @@ public class BD {
 				return null;
 			}
 		}
+		
+		
+		public static ArrayList<Traspaso> selectTraspaso(Equipo e1, Equipo e2) {
+			String s = "SELECT * FROM Traspaso WHERE nomEquipoVendedor='" + e1.getNombre() +"' and nomEquipoComprador='" + e2.getNombre()+ "'";
+			Connection con = initBD("OneFootball.db");
+			ArrayList<Traspaso>traspasos= new ArrayList<Traspaso>();
+			try {
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery(s);	
+				while (rs.next()) {
+					Traspaso t= new Traspaso();
+					t.setEquipo(e2);
+					t.setVendedor(e1);
+					t.setJugador(BD.selectJugador(rs.getString("nomJugador"), e1));
+					t.setGrado(rs.getByte("grado"));
+					t.setPrecio(rs.getLong("precio"));
+					t.setFecha(new Date(rs.getLong("fecha")));
+					cerrarBD(con, st);
+					traspasos.add(t);
+				}
+					cerrarBD(con, st);
+					return traspasos;
+			
+			}catch (SQLException e) {
+				e.printStackTrace();
+				return traspasos;//
+			}
+		}
+		
+		
 
 		public static Traspaso selectTraspaso(Jugador j, Date fecha) {
 			String s = "SELECT * FROM Traspaso WHERE nomJugador='" + j.getNombre() +"' and fecha=" + fecha.getTime();
@@ -1216,9 +1256,11 @@ public class BD {
 			
 			}catch (SQLException e) {
 				e.printStackTrace();
-				return null;//TODO logger
+				return null;//
 			}
 		}
+		
+		
 		
 		public static Jornada selectJornada(int numJornada, Liga l) {
 			String s = "SELECT * FROM Jornada WHERE liga='" + l.getNombre() +"' and numJornada=" + numJornada;
@@ -1233,7 +1275,7 @@ public class BD {
 					jor.setNumJornada(numJornada);
 					jor.setLiga(l);
 					jor.setPartidos(selectPartidos(jor));
-					cerrarBD(con, st);//TODO seleccionar partidos en base a una jornada
+					cerrarBD(con, st);
 					return jor;
 				}else {
 					cerrarBD(con, st);
@@ -1498,8 +1540,8 @@ public class BD {
 					sel.setGolesEnContra(rs.getInt("golesEnContra"));
 					sel.setPuntos(rs.getInt("puntos"));
 					sel.setNoticias(selectNoticias(sel));
-					sel.setPartidos(selectPartidos(sel)); //TODO implantar con un or
-					sel.setTraspasos(new ArrayList<Traspaso>()); //TODO implantar con un or
+					sel.setPartidos(selectPartidos(sel)); 
+					sel.setTraspasos(new ArrayList<Traspaso>()); 
 					sel.setSeleccionables(selectSeleccionables(sel));
 					cerrarBD(con, st);
 					return sel;
@@ -1510,7 +1552,6 @@ public class BD {
 				
 			} catch (SQLException e) {
 					e.printStackTrace();
-					//TODO logger
 					return null;
 			}
 		}
@@ -1569,6 +1610,7 @@ public class BD {
 			}
 		}
 		
+		//TODO AKI ACELGA
 		public static Equipo selectEquipoPartido(Partido p,String nomEquipo) {
 			String s = "SELECT * FROM Equipo WHERE nom='" + nomEquipo +"'";
 			
@@ -1586,8 +1628,7 @@ public class BD {
 					e.setPuntos(rs.getInt("puntos"));
 					e.setNoticias(selectNoticias(e));
 					e.setLiga(p.getLiga()); 
-					e.setTraspasos(selectTraspasos(e));
-					//TODO implantar con un or
+					//e.setTraspasos(selectTraspasos(e));
 					cerrarBD(con, st);
 					return e;
 				}else {
@@ -1653,7 +1694,7 @@ public class BD {
 		
 		
 		
-		//TODO borrar todos los elementos que tengan este Equipo. ON DELETE CASCADE
+		
 		public static void deleteEquipo(Equipo e) {
 			String s="DELETE FROM Equipo WHERE nom='"+e.getNombre()+"'";
 			Connection con = BD.initBD("oneFootball.db");

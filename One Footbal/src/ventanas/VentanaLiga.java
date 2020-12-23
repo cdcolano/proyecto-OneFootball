@@ -33,7 +33,8 @@ import clases.Equipo;
 import clases.Jugador;
 import clases.Liga;
 import clases.Usuario;
-
+//TODO revisar BD orden Noticias topNews 
+//si no salen siempre en el mismo orden asignar clave numerica
 /**Ventana que muestra la clasificacion asi como las estadisticas de lideres en ciertas categorias en funcion 
  * del booleano clasificacion si este es true se muestra la clasificacion, si es false se muestran los lideres en las 
  * diferentes categorias
@@ -75,7 +76,7 @@ public class VentanaLiga extends JFrame {
 		clasificacion= new TreeSet<Equipo>();
 		JPanel pContenedor= new JPanel();
 		JScrollPane spClasif= new JScrollPane(tClasificacion);
-		
+		this.clasif=clasif;
 		tClasificacion.setModel(mEquipos);
 		
 		if (clasif) {
@@ -183,12 +184,14 @@ public class VentanaLiga extends JFrame {
 	 * @param mJugador modelo de la Tabla correspondiente
 	 */
 	private void anyadeElementos(TreeSet<Jugador>listaJugador, DefaultTableModel mJugador) { //TODO este metodo no funciona si no hay más datos de prueba
-		for (int i=0;i<3;i++) {	
-			Jugador[] jugadores= (Jugador[])listaJugador.toArray();
-			Jugador jugador= jugadores[i];
+		int i=0;
+		for (Jugador jugador:listaJugador) {	
 			ImageIcon img= new ImageIcon(VentanaLiga.class.getResource(jugador.getImagen()));
 			Object[] listaAtributos= {img, jugador.getNombre(), jugador.getEquipo(), jugador.getNumGoles()};
 			mJugador.addRow(listaAtributos);
+			if(i>=3) {
+				break;
+			}
 		}
 	}
 	
@@ -253,8 +256,13 @@ public class VentanaLiga extends JFrame {
 			}else {
 				VentanaLiga ventLiga=(VentanaLiga)vent;
 				if (ventLiga.clasif==true) {
-					ventLiga.clasif=false;
-					ventLiga.revalidate();
+					System.out.println("se toca");
+					//ventLiga.clasif=false;
+					//ventLiga.revalidate();
+					VentanaLiga v= new VentanaLiga(false,l,u);
+					vent.dispose();	
+				}else {
+					System.out.println("modo estadistica");
 				}
 			}
 				

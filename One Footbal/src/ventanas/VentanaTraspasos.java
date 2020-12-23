@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import clases.BD;
 import clases.Contenedor;
 import clases.Equipo;
 import clases.Jugador;
@@ -30,6 +31,22 @@ public class VentanaTraspasos extends JFrame {
 	 * @param u Usuario loggeado
 	 */
 	public VentanaTraspasos( Contenedor c, Usuario u) {
+		if (c instanceof Liga) {
+			Liga l=(Liga)c;
+			if (l.getTraspasos()==null || l.getTraspasos().size()==0) {
+				for(Equipo e:l.getEquipos()) {
+					l.getTraspasos().addAll(BD.selectTraspasos(e));
+				
+				}
+			}
+		System.out.println(l.getTraspasos().size() + "traspasos");
+		}else {
+			Equipo e=(Equipo)c;
+			if (e.getTraspasos()==null || e.getTraspasos().size()==0) {
+			e.getTraspasos().addAll(BD.selectTraspasos(e));
+			System.out.println(e.getTraspasos().size() + "traspasos");
+			}
+		}
 		//TODO añadir la imagen del contenedor en un JPanel arriba si es null nada posibilidad de aplicarlo a noticias
 		traspasos=c.getTraspasos();
 		JPanel pCentral= new JPanel();
@@ -59,18 +76,19 @@ public class VentanaTraspasos extends JFrame {
 			pTraspaso.add(pTraspasoSup,BorderLayout.NORTH);
 			
 			JPanel pTraspasoCen=new JPanel();
+			JPanel pTraspasoCenSup= new JPanel();
 			
 			JLabel img= new JLabel();
 			img.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaTraspasos.class.getResource(traspaso.getJugador().getImagen())),
 					30, 30));
-			pTraspasoCen.add(img);
+			pTraspasoCenSup.add(img);
 			
 			JPanel pTraspasoCenA= new JPanel();
 			pTraspasoCenA.setLayout(new GridLayout(3,1));
 			JLabel lNombre= new JLabel(traspaso.getJugador().getNombre());
 			lNombre.setFont(new Font("helvitica", Font.BOLD, 36));
 			pTraspasoCenA.add(lNombre);
-			pTraspasoCen.add(new JLabel(traspaso.getJugador().getPosicion()));
+			pTraspasoCenSup.add(new JLabel(traspaso.getJugador().getPosicion()));
 			if (traspaso.getGrado()<4) {
 				JSlider slGrado= new JSlider(1, 4);
 				slGrado.setValue(traspaso.getGrado());
@@ -79,38 +97,43 @@ public class VentanaTraspasos extends JFrame {
 				}else if (traspaso.getGrado()==3) {
 					slGrado.setForeground(Color.ORANGE);
 				}
-				pTraspasoCen.add(slGrado);
+				pTraspasoCenSup.add(slGrado);
 			}else {
 				JLabel precio= new JLabel(""+ traspaso.getPrecio()+ "€");
 				precio.setForeground(Color.WHITE);
 				precio.setBackground(Color.GREEN);
+				pTraspasoCenSup.add(precio);
 			}
 			
-			JPanel pTraspasoInf= new JPanel();
+			pTraspasoCen.setLayout(new BorderLayout());
 			JPanel pVendedor= new JPanel();
-			JPanel pTraspasoInfCen= new JPanel();
+			JPanel pTraspasoInf= new JPanel();
 			JPanel pComprador= new JPanel();
+			JPanel pTraspasoInfCen= new JPanel();
 			
+			pTraspasoInfCen.setLayout(new FlowLayout(FlowLayout.CENTER));
 			pTraspasoInf.setLayout(new BorderLayout());
 			pVendedor.setLayout(new FlowLayout(FlowLayout.LEFT));
-			pTraspasoInfCen.setLayout(new FlowLayout(FlowLayout.CENTER));
 			pComprador.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			
-			
-			pVendedor.add(new JLabel( traspaso.getVendedor().getNombre()),FlowLayout.LEFT);
-			pTraspasoInfCen.add(new JLabel("se va a"), FlowLayout.CENTER);
+			JLabel imgVendedor= new JLabel();
+			imgVendedor.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaTraspasos.class.getResource(traspaso.getVendedor().getImagen())),50,50));
+			pVendedor.add(imgVendedor);
+			pVendedor.add(new JLabel( traspaso.getVendedor().getNombre()));
+			pTraspasoInfCen.add(new JLabel("se va a"));
+			JLabel imgComprador= new JLabel();
+			imgComprador.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaTraspasos.class.getResource(traspaso.getEquipo().getImagen())),50,50));
+			pComprador.add(imgComprador);
 			pComprador.add(new JLabel(traspaso.getEquipo().getNombre()));
-			
-			pTraspaso.add(pVendedor,BorderLayout.WEST);
-			pTraspaso.add(pTraspasoInfCen, BorderLayout.CENTER);
-			pTraspaso.add(pComprador, BorderLayout.EAST);
-			
-			
-			
+			pTraspasoInf.add(pVendedor,BorderLayout.WEST);
+			//pTraspasoInf.add(pTraspasoInfCen, BorderLayout.CENTER);
+			pTraspasoInf.add(pComprador, BorderLayout.EAST);
+			pTraspasoInf.add(pTraspasoInfCen,BorderLayout.CENTER);
+			pTraspasoCen.add(pTraspasoCenSup,BorderLayout.CENTER);
 			pTraspaso.add( pTraspasoCen,BorderLayout.CENTER);
 			pTraspaso.add(pTraspasoInf,BorderLayout.SOUTH);
 			
 			
+			pCentral.add(pTraspaso);
 			
 		}
 		if (c instanceof Liga) {

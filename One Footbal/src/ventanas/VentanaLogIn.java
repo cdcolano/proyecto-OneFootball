@@ -15,7 +15,10 @@ import javax.swing.*;
 
 import clases.BD;
 import clases.Usuario;
-
+//TODO ventana de estadisticas revisar 
+//TODO ventana de busqueda 
+//TODO barras de progreso en el acceso a BD 
+//TODO recur  con Noticias->implementar Date en Noticias y buscador de Noticias
 public class VentanaLogIn extends JFrame {
 	HashMap<String, Usuario>logIn;
 	JTextField tNombre;
@@ -131,7 +134,12 @@ public class VentanaLogIn extends JFrame {
 	}
 	
 	public static void main(String[]args) {
-		VentanaLogIn v2= new VentanaLogIn(false);
+		try {
+			UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+			VentanaLogIn v2= new VentanaLogIn(false);
 	}
 	
 	
