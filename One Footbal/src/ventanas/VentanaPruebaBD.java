@@ -1390,6 +1390,7 @@ public class VentanaPruebaBD extends JFrame{
 			n.setImagen(tfizquierdo2.getText());
 			n.setCuerpo(tfizquierdo3.getText());
 			n.setFuente(tfizquierdo4.getText());
+			n.setFecha(new Date(System.currentTimeMillis()));
 			BD.insertarNoticia(n);
 			rellenaNoticia();
 			

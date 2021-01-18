@@ -1,6 +1,7 @@
 package clases;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Noticia implements ConImagenes{
 	private String titulo; // titulo clave primaria
@@ -9,8 +10,15 @@ public class Noticia implements ConImagenes{
 	private String fuente;
 	private ArrayList<Equipo> equipos;
 	private ArrayList<Liga>ligas;
+	private Date fecha;
 	
 	
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
 	public ArrayList<Equipo> getEquipos() {
 		return equipos;
 	}

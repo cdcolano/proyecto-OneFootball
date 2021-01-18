@@ -448,7 +448,7 @@ public class BD {
 	public static void insertarNoticia(Noticia n) {
 		if (selectNoticia(n.getTitulo())==null) {
 			String s= "INSERT INTO Noticia VALUES('"+n.getTitulo()+"','"+n.getImagen()+  "','" + n.getCuerpo() 
-					+ "','"+ n.getFuente()+ "')";
+					+ "','"+ n.getFuente()+ "',"+ n.getFecha().getTime()+ ")";
 			Connection con = BD.initBD("oneFootball.db");
 			try {
 				Statement st = con.createStatement();
@@ -1473,6 +1473,7 @@ public class BD {
 						n.setFuente(rs.getString("fuente"));
 						n.setImagen(rs.getString("img"));
 						n.setCuerpo(rs.getString("cuerpo"));
+						n.setFecha(new Date(rs.getLong("fecha")));
 						cerrarBD(con, st);
 						return n;
 					}else {
@@ -2189,6 +2190,25 @@ public class BD {
 		}
 		
 		return usuarios;
+	}
+	
+	/**
+	 * Metodo que añade una columna para la fecha que se introdujo despues
+	 * solo se utiliza una vez
+	 */
+	public static void actualizaTablaNoticias() {
+		String s="ALTER TABLE NOTICIA ADD FECHA BIGINT";
+		String s2="Update Noticia set fecha=" + System.currentTimeMillis();
+		Connection con = BD.initBD("oneFootball.db");
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(s);
+			Statement st2=con.createStatement();
+			st2.executeUpdate(s2);
+			cerrarBD(con, st);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	

@@ -95,6 +95,7 @@ public class VentanaInicio extends JFrame {
 					
 				}
 			});
+			System.out.println("ESTA NOTICIA TIENE LA FECHA " + not.getFecha().getTime());
 			pTopNews.add(pNoticia);
 		}
 		pCentral.add(pTopNewsConTit);
