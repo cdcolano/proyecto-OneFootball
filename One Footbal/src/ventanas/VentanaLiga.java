@@ -135,12 +135,14 @@ public class VentanaLiga extends JFrame {
 			mGoleadores.setColumnIdentifiers(ID_GOLEADORES);
 			anyadeElementos(liga.getMaximosGoleadores(), mGoleadores);;
 			tGoleadores.setModel(mGoleadores);
+			decoraTabla(tGoleadores);
 			JScrollPane spGoleadores= new JScrollPane(tGoleadores);
 			
 			JTable tAsistentes= new JTable();
 			mAsistentes.setColumnIdentifiers(ID_ASISTENTES);
 			anyadeElementos(liga.getMaximosAsistentes(), mAsistentes);
 			tAsistentes.setModel(mAsistentes);
+			decoraTabla(tAsistentes);
 			JScrollPane spAsistentes= new JScrollPane(tAsistentes);
 			
 			
@@ -148,12 +150,14 @@ public class VentanaLiga extends JFrame {
 			mTarjetasAmarillas.setColumnIdentifiers(ID_AMARILLAS);
 			anyadeElementos(liga.getTarjetasAmarillas(), mTarjetasAmarillas);
 			tAmarillas.setModel(mTarjetasAmarillas);
+			decoraTabla(tAmarillas);
 			JScrollPane spAmarillas= new JScrollPane(tAmarillas);
 			
 			JTable tRojas= new JTable();
 			mTarjetasRojas.setColumnIdentifiers(ID_ROJAS);
 			anyadeElementos(liga.getTarjetasRojas(), mTarjetasRojas);
 			tRojas.setModel(mTarjetasRojas);
+			decoraTabla(tRojas);
 			JScrollPane spRojas= new JScrollPane(tRojas);
 			
 			JPanel pCentro= new JPanel();
@@ -168,13 +172,12 @@ public class VentanaLiga extends JFrame {
 			getContentPane().add(pCentro,BorderLayout.CENTER);
 			
 			
-			
 		}
 		VentanaLiga.anyadePanelSup(this, liga, u);
 		
 		VentanaInicio.anyadeBotonera(this, u);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setBounds(200, 300, 500, 500);
+		setBounds(200, 300, 700, 700);
 		setVisible(true);
 	}
 	
@@ -187,7 +190,9 @@ public class VentanaLiga extends JFrame {
 		int i=0;
 		for (Jugador jugador:listaJugador) {	
 			ImageIcon img= new ImageIcon(VentanaLiga.class.getResource(jugador.getImagen()));
-			Object[] listaAtributos= {img, jugador.getNombre(), jugador.getEquipo(), jugador.getNumGoles()};
+			Object[] listaAtributos= {img, jugador.getNombre(), 
+					VentanaInicio.redimensionImgProd(new ImageIcon(VentanaLiga.class.getResource(jugador.getEquipo().getImagen())),50,50)
+					, jugador.getNumGoles()};
 			mJugador.addRow(listaAtributos);
 			if(i>=3) {
 				break;
@@ -293,6 +298,14 @@ public class VentanaLiga extends JFrame {
 		vent.getContentPane().add(pSuperior,BorderLayout.NORTH);
 		//TODO añadir botonera
 	}
+	
+	
+	private void decoraTabla(JTable tabla) {
+		for (int p=0;p<tabla.getColumnCount();p++) {//TODO revisar este for
+			tabla.getColumnModel().getColumn(p).setCellRenderer(new RendererStats());
+		}
+		tabla.setRowHeight(50);
+	}
 }
 
 
@@ -326,4 +339,19 @@ class ColumnColorRenderer extends DefaultTableCellRenderer {
 	      return cell;
 	   }
 }
+class RendererStats extends DefaultTableCellRenderer {
+	   
+	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
+	      JLabel cell = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	      if (column==0 || column==2) {
+	    	  ImageIcon valor=(ImageIcon)value;
+	    	  cell.setIcon(VentanaInicio.redimensionImgProd(valor, 50, 50));
+	    	  cell.setText("");
+	      }
+	      return cell;
+	   }
+}
+
+
+
 

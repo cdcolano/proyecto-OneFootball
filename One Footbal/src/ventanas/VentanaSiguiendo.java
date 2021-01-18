@@ -3,6 +3,7 @@ package ventanas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,17 +67,7 @@ public class VentanaSiguiendo extends JFrame{
 		}
 		pEquipos.add(new JLabel("Equipos"), BorderLayout.NORTH);
 		pEquipos.add(tEquipos,BorderLayout.CENTER);
-		JButton anyadeEquipos= new JButton();
-		anyadeEquipos.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")),30,30));
-		JPanel pAnyadeEquipos= new JPanel();
-		pAnyadeEquipos.add(anyadeEquipos);
-		pEquipos.add(pAnyadeEquipos,BorderLayout.SOUTH);
 		
-		anyadeEquipos.addActionListener((ActionEvent e)->{
-				//TODO una vez implantada la base de datos
-				
-			
-		});
 		ListSelectionModel lmEquipos= tEquipos.getSelectionModel();
 		lmEquipos.addListSelectionListener((ListSelectionEvent e)-> {
 				if(e.getFirstIndex()==e.getLastIndex()) {
@@ -99,17 +90,6 @@ public class VentanaSiguiendo extends JFrame{
 		}
 		pLigas.add(new JLabel("Ligas"), BorderLayout.NORTH);
 		pLigas.add(tLigas,BorderLayout.CENTER);
-		JButton anyadeLiga= new JButton();
-		anyadeLiga.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")),30,30));
-		JPanel pAnyadeLiga= new JPanel();
-		pAnyadeLiga.add(anyadeLiga);
-		pLigas.add(pAnyadeLiga,BorderLayout.SOUTH);
-		
-		anyadeLiga.addActionListener((ActionEvent e)->{
-				//TODO una vez implantada la base de datos
-				
-			
-		});
 		
 		tLigas.getSelectionModel().addListSelectionListener((ListSelectionEvent e)-> {
 				// TODO Auto-generated method stub
@@ -131,16 +111,16 @@ public class VentanaSiguiendo extends JFrame{
 		}
 		pJugadores.add(new JLabel("Jugadores"), BorderLayout.NORTH);
 		pJugadores.add(tJugadores,BorderLayout.CENTER);
-		JButton anyadeJugador= new JButton();
-		JPanel pAnyadeJugador= new JPanel();
-		anyadeJugador.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaSiguiendo.class.getResource("/img/anadir.png")),30,30));
-		pAnyadeJugador.add(anyadeJugador);
-		pJugadores.add(pAnyadeJugador,BorderLayout.SOUTH);
 		
-		anyadeJugador.addActionListener((ActionEvent e)->{
-				//TODO una vez implantada la base de datos
-				
-			
+		tJugadores.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			//TODO añadir Equipo y foto de Equipo y boton de quitar (igual que seguir en ventanaBusqueda)
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getFirstIndex()==e.getLastIndex() && e.getFirstIndex()!=-1 && !e.getValueIsAdjusting()) {
+					VentanaJugador v= new VentanaJugador(u, j);
+					VentanaSiguiendo.this.dispose();
+				}
+			}
 		});
 		
 		tEquipos.setModel(mEquipos);
@@ -156,6 +136,8 @@ public class VentanaSiguiendo extends JFrame{
 		
 		
 		JPanel pCentral= new JPanel();
+		JPanel pCentralFuera= new JPanel();
+		pCentralFuera.setLayout(new BorderLayout());
 		JScrollPane scEquipos= new JScrollPane(pEquipos);
 		JScrollPane scLigas= new JScrollPane (pLigas);
 		JScrollPane scJugadores= new JScrollPane (pJugadores);
@@ -164,7 +146,26 @@ public class VentanaSiguiendo extends JFrame{
 		pCentral.add(scLigas);
 		pCentral.add(scJugadores);
 		
-		getContentPane().add(pCentral,BorderLayout.CENTER);
+		pCentralFuera.add(pCentral,BorderLayout.CENTER);
+		
+		JButton bAnyade= new JButton();
+		bAnyade.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaBusqueda.class.getResource("/img/anadir.png")), 30, 30));
+		JPanel pBoton= new JPanel();
+		pBoton.setLayout(new FlowLayout(FlowLayout.CENTER));
+		pBoton.add(bAnyade);
+		pCentralFuera.add(pBoton,BorderLayout.SOUTH);
+		
+		bAnyade.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VentanaBusqueda v= new VentanaBusqueda(u);
+				VentanaSiguiendo.this.dispose();
+				
+			}
+		});
+		
+		getContentPane().add(pCentralFuera,BorderLayout.CENTER);
 		
 		
 		

@@ -284,6 +284,79 @@ public class BD {
 		}
 	}
 	
+	
+	
+	
+	public static ArrayList<Liga> selectLigas() {
+		String sql = "SELECT * FROM Liga";
+		Connection con = initBD("oneFootball.db");
+		Statement st;
+		try {
+			st = con.createStatement(); //Creo el objeto sentencia
+			ArrayList<Liga>ligas= new ArrayList<Liga>();
+			ResultSet rs = st.executeQuery(sql); //Ejecutamos la consulta
+			while(rs.next()) { 
+				Liga l= new Liga(rs.getString("nom"));
+				l.setImagen( rs.getString("img"));
+				l.setEquipos(selectEquipos(l));
+				l.setJornadas(selectJornadas(l));
+				l.setMaximosGoleadores(selectJugadoresGoleadores(l));
+				ArrayList<Noticia>n= new ArrayList<Noticia>();
+				for (Equipo e:l.getEquipos()) {
+					n.addAll(e.getNoticias());
+				}
+			//	l.setTraspasos(selectTraspasos(l));
+				l.setTarjetasAmarillas(selectJugadoresAmarillas(l));
+				l.setTarjetasRojas(selectJugadoresRojas(l));
+				l.setMaximosGoleadores(selectJugadoresGoleadores(l));
+				l.setMaximosAsistentes(selectJugadoresAsistentes(l));
+				ligas.add(l);
+			}
+			cerrarBD(con, st);
+			return ligas;
+		}catch(SQLException ex) {			
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+
+	public static ArrayList<Equipo> selectEquipos() {
+		String sql = "SELECT * FROM Equipo";
+		Connection con = initBD("oneFootball.db");
+		Statement st;
+		try {
+			st = con.createStatement(); //Creo el objeto sentencia
+			ArrayList<Equipo>equipos= new ArrayList<Equipo>();
+			ResultSet rs = st.executeQuery(sql); //Ejecutamos la consulta
+			while(rs.next()) { 
+				Equipo e= new Equipo(rs.getString("nom"));
+				e.setImagen( rs.getString("img"));
+				e.setGolesAFavor(rs.getInt("golesAFavor"));
+				e.setGolesEnContra(rs.getInt("golesEnContra"));
+				ArrayList<Jugador>jugadores= new ArrayList<Jugador>();
+				e.setJugadores(selectJugadores(e));
+				e.setPuntos(rs.getInt("puntos"));
+				e.setNoticias(selectNoticias(e));
+				e.setLiga(selectLiga(rs.getString("liga")));
+				e.setPartidos(selectPartidos(e)); //TODO implantar con un or
+				//e.setTraspasos(selectTraspasos(e));
+				//TODO implantar con un or
+				cerrarBD(con, st);
+			}
+			cerrarBD(con, st);
+			return equipos;
+		}catch(SQLException ex) {			
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+
+	
+	
+	
 	public static ArrayList<Jugador> selectJugadoresUsuario(Usuario u) {
 		String sql = "SELECT * FROM UsuarioJugador WHERE correoUsuario ='"+u.getCorreoElec()+"'";
 		Connection con = initBD("oneFootball.db");
