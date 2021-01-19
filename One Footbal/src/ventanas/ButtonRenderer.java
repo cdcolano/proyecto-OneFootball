@@ -7,24 +7,30 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
 public class ButtonRenderer extends JButton implements TableCellRenderer {
-
     public ButtonRenderer() {
         setOpaque(true);
+        
     }
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
+    	String nombre=(String)table.getValueAt(row, 1);
         if (isSelected) {
-            setForeground(table.getSelectionForeground());
-            //setBackground(table.getSelectionBackground());
+        	setForeground(Color.LIGHT_GRAY);
+            setBackground(Color.WHITE);
         } else {
-            setForeground(table.getForeground());
+            setForeground(Color.WHITE);
             setBackground(Color.WHITE);
             setBorderPainted(false);
           //  setBackground(UIManager.getColor("Button.background"));
-        }
-        setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(ButtonRenderer.class.getResource((String)value)),30,30));
+        }try {
+        	ImageIcon img=new ImageIcon(ButtonRenderer.class.getResource((String)value));
+        	if (img!=null)
+        		setIcon(VentanaInicio.redimensionImgProd(img,30,30));
+        }catch(NullPointerException ex) {
+        		ex.printStackTrace();
+        	}
         return this;
     }
 }

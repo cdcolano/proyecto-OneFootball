@@ -74,11 +74,11 @@ public class Equipo extends Contenedor implements Comparable{
 	public int compareTo(Object o) {
 		Equipo eq=(Equipo)o;
 		if (puntos<eq.getPuntos()) {
-			return -1;
+			return 1;
 		}else if(puntos==eq.getPuntos()) {
 			return 0;
 		}else {
-			return 1;
+			return -1;
 		}
 		
 	}

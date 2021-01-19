@@ -94,7 +94,7 @@ public class VentanaBusqueda extends JFrame{
 		
 		
 		
-		//TODO implantar listSelectionModel para Jufgador
+		
 		
 		for (Jugador j:jugadores) {
 			Object[]valores= {
@@ -168,25 +168,31 @@ public class VentanaBusqueda extends JFrame{
 				mLigas.getDataVector().clear();
 				for (Equipo eq:equipos) {
 					if (eq.getNombre().contains(texto)) {
-						Object[] data= {eq.getImagen(),eq.getNombre()};
+						Object[] data= {eq.getImagen(),eq.getNombre(),"/img/siguiendo.png"};
 						mEquipos.addRow(data);
 					}
 				}
 				for (Jugador j:jugadores) {
 					if (j.getNombre().contains(texto)) {
-						Object[] data= {j.getImagen(),j.getNombre()};
+						Object[] data={
+								j.getImagen(), 
+								j.getNombre(),
+								j.getEquipo().getNombre(),
+								VentanaInicio.redimensionImgProd(new ImageIcon(VentanaBusqueda.class.getResource(j.getEquipo().getImagen())),50,50),
+								"/img/siguiendo.png"
+						}; 
 						mJugadores.addRow(data);
 					}
 				}
 				for (Liga l:ligas) {
 					if (l.getNombre().contains(texto)) {
-						Object[] data= {l.getImagen(),l.getNombre()};
+						Object[] data= {l.getImagen(),l.getNombre(),"/img/siguiendo.png"};
 						mLigas.addRow(data);
 					}
 				}
-				tEquipos.revalidate();
-				tLigas.revalidate();
-				tJugadores.revalidate();
+				tEquipos.repaint();
+				tLigas.repaint();
+				tJugadores.repaint();
 				
 			}
 			
@@ -237,8 +243,12 @@ class ButtonEditorLiga extends DefaultCellEditor {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	 if (table.isEditing())
+                     table.getCellEditor().stopCellEditing();
                Liga l= BD.selectLiga((String)table.getValueAt(row, 1));
-               BD.insertarUsuarioLiga(l, u);
+               if (!BD.insertarUsuarioLiga(l, u))
+               u.addLigaSeguida(l);
+              
             }
         });
         return button;
@@ -292,7 +302,12 @@ class ButtonEditorEquipo extends DefaultCellEditor {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	BD.insertarUsuarioEquipo(BD.selectEquipo((String)table.getValueAt(row, 1)), u);
+            	System.out.println(e.getSource());
+            	if (table.isEditing())
+                    table.getCellEditor().stopCellEditing();
+            	Equipo eq=BD.selectEquipo((String)table.getValueAt(row, 1));
+            	if (!BD.insertarUsuarioEquipo(eq, u))
+            	u.addEquipoSeguido(eq);
             	
             }
         });
@@ -347,9 +362,14 @@ class ButtonEditorJugador extends DefaultCellEditor {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	if (table.isEditing())
+                    table.getCellEditor().stopCellEditing();
             	Equipo eq=BD.selectEquipo((String)table.getValueAt(row, 2));
             	Jugador j=BD.selectJugador((String)table.getValueAt(row, 1), eq);
-        		BD.insertarUsuarioJugador(j, u);
+            	if (!BD.insertarUsuarioJugador(j, u))
+            	u.addJugadorSeguido(j);
+        		
+        		
             }
         });
         return button;
@@ -378,6 +398,7 @@ class RendererEquipo extends DefaultTableCellRenderer {
 	      JLabel cell = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 	      if (column==3) {
 	    	  ImageIcon valor=(ImageIcon)value;
+	    	  if (valor!=null)
 	    	  cell.setIcon(VentanaInicio.redimensionImgProd(valor, 50, 50));
 	    	  cell.setText("");
 	      }

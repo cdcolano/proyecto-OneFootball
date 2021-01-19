@@ -74,10 +74,8 @@ public class VentanaPartidos extends JFrame {
 	public static JPanel anyadePanelUltimaJornada(Jornada j) {
 		JPanel pPrincipal= new JPanel();
 		j.setPartidos(BD.selectPartidos(j));
-		System.out.println(j.getPartidos().size()+ "tamano 2");
 		pPrincipal.setLayout(new GridLayout(j.getPartidos().size(), 1));
 		for (Partido p: j.getPartidos()) {
-			System.out.println(p.getLocal().getNombre() +"Equipo LoCal");
 			JPanel pPartido= new JPanel();
 			pPartido.setLayout(new BorderLayout());
 			SimpleDateFormat df= new SimpleDateFormat("aaaa.MM.dd HH: mm: ss zzz");

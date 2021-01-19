@@ -115,7 +115,7 @@ public class VentanaLiga extends JFrame {
 		        	if (event.getFirstIndex()==event.getLastIndex() && event.getFirstIndex()!=-1 && !event.getValueIsAdjusting()) {
 						int i=event.getFirstIndex();
 						for (Equipo eq: clasificacion) {
-							String nom=(String)mEquipos.getValueAt(i, 1);
+							String nom=(String)mEquipos.getValueAt(i, 2);
 							if (eq.equals(new Equipo(nom))) {
 								pEstadisticas.add(new JLabel ("Goles " + eq.getGolesAFavor()/eq.getNumPartidos() ));
 								pEstadisticas.add(new JLabel ("Goles en contra" + eq.getGolesEnContra()/eq.getNumPartidos()));

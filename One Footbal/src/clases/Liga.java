@@ -176,6 +176,13 @@ public class Liga extends Contenedor{
 			return false;
 		}
 	}
+
+
+
+	public int compareTo(Liga ligaSel) {
+		// TODO Auto-generated method stub
+		return nombre.compareTo(ligaSel.getNombre());
+	}
 	
 }
 

@@ -109,22 +109,33 @@ public class Jugador implements ConImagenes{
 
 	}
 	
+	public Jugador(String nombre,Equipo e) {
+		this(nombre);
+		this.equipo=e;
+	}
+	
 	
 	public Jugador() {
 	
 	}
 	
-	/**Considera iguales dos jugadores con mismo nombre, misma nacionalidad,
-	 * misma posicion y misma edad
+	/**Considera iguales dos jugadores con mismo nombre y mismo equipo
 	 * @param j Jugador a comparar
 	 * @return true si son iguales,, false si no lo son
 	 */
 	public boolean equals(Jugador j) {
-		if (nombre.contentEquals(j.getNombre())&& 
-				pais.contentEquals(j.getPais()) && equipo.equals(j.getEquipo())) {
+		if (nombre.contentEquals(j.getNombre()) && equipo.equals(j.getEquipo())) {
 			return true;
 		}else {
 			return false;
+		}
+	}
+	
+	
+	public int compareTo(Jugador j) {
+		if (!nombre.contentEquals(j.getNombre()))	return nombre.compareTo(j.getNombre());
+		else {
+			return equipo.getNombre().compareTo(j.getEquipo().getNombre());
 		}
 	}
 	

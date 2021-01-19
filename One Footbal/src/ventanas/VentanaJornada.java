@@ -45,16 +45,18 @@ public class VentanaJornada extends JFrame{
 			 */
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getItem()!=null) {
+				if (e.getItem()!=null && e.getStateChange()==ItemEvent.SELECTED) {
 					Jornada j=(Jornada)e.getItem();
+					System.out.println(j.getNumJornada() + "NUMERO DE JORNADA");
 					pCentral.removeAll();
 					pCentral.add(cbJornadas,BorderLayout.NORTH);
 					pCentral.add(VentanaPartidos.anyadePanelUltimaJornada(j),BorderLayout.CENTER);
+					pCentral.revalidate();
 				}
 				
 			}
 		});
-		pCentral.add(VentanaPartidos.anyadePanelUltimaJornada(l.getJornadas().get(l.getJornadas().size()-1)));
+		cbJornadas.setSelectedIndex(mJornadas.getSize()-1);
 		pCentral.add(cbJornadas,BorderLayout.NORTH);
 		JScrollPane spCentral= new JScrollPane(pCentral);
 		getContentPane().add(spCentral);

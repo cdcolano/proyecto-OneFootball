@@ -223,7 +223,7 @@ public class BD {
 			st = con.createStatement(); //Creo el objeto sentencia
 			ResultSet rs = st.executeQuery(sql); //Ejecutamos la consulta
 			if(rs.next()) {
-				System.out.println(rs.getString("nombre"));//rs.next() -> Devuelve true si rs tiene datos, false en caso contrario
+			//	System.out.println(rs.getString("nombre"));//rs.next() -> Devuelve true si rs tiene datos, false en caso contrario
 				Usuario u= new Usuario();
 				u.setContrasena(rs.getString("contrasena"));
 				u.setCorreoElec(correoElec);
@@ -632,7 +632,7 @@ public class BD {
 							+ "nomEquipo string,"
 							+ "correoUsuario string)");
 	 */
-	public static void insertarUsuarioJugador(Jugador j, Usuario u) {
+	public static boolean insertarUsuarioJugador(Jugador j, Usuario u) {
 		boolean existe=false;
 		if(selectJugadoresUsuario(u)!=null) {
 			for (Jugador jug2: selectJugadoresUsuario(u)) {
@@ -651,9 +651,10 @@ public class BD {
 				ex.printStackTrace();
 			}
 		}
+		return existe;
 	}
 	
-	public static void insertarUsuarioEquipo(Equipo e, Usuario u) {
+	public static boolean insertarUsuarioEquipo(Equipo e, Usuario u) {
 		boolean existe=false;
 		if(selectEquiposUsuario(u)!=null) {
 			for (Equipo eq2: selectEquiposUsuario(u)) {
@@ -672,12 +673,13 @@ public class BD {
 				ex.printStackTrace();
 			}
 		}
+		return existe;
 	}
 	
 	
 	
 	
-	public static void insertarUsuarioLiga(Liga l, Usuario u) {
+	public static boolean insertarUsuarioLiga(Liga l, Usuario u) {
 		boolean existe=false;
 		for (Liga li2: selectLigasUsuario(u)) {
 			if (li2.equals(l)) {
@@ -694,6 +696,7 @@ public class BD {
 				ex.printStackTrace();
 			}
 		}
+		return existe;
 	}
 	
 	
@@ -947,7 +950,9 @@ public class BD {
 				}else {
 					in= in + e.getNombre() + "','";
 				}
+				i++;
 			}
+			System.out.println(in);
 			String s = "SELECT * FROM Jugador WHERE nomEquipo in"+ in + " and numGoles>0";
 			Connection con = initBD("OneFootball.db");
 			try {
@@ -1035,6 +1040,7 @@ public class BD {
 				}else {
 					in= in + e.getNombre() + "','";
 				}
+				i++;
 			}
 			String s = "SELECT * FROM Jugador WHERE nomEquipo in" + in + " and numAsistencias>0";
 			Connection con = initBD("OneFootball.db");
@@ -1087,6 +1093,7 @@ public class BD {
 				}else {
 					in= in + e.getNombre() + "','";
 				}
+				i++;
 			}
 			String s = "SELECT * FROM Jugador WHERE nomEquipo in " +in + " and numAmarillas>0";
 			Connection con = initBD("OneFootball.db");
@@ -1139,6 +1146,7 @@ public class BD {
 				}else {
 					in= in + e.getNombre() + "','";
 				}
+				i++;
 			}
 			String s = "SELECT * FROM Jugador WHERE nomEquipo in" + in +" and numRojas>0";
 			Connection con = initBD("OneFootball.db");
@@ -2283,6 +2291,53 @@ public class BD {
 			ex.printStackTrace();
 		}
 	}
+
+	public static void deleteUsuarioJugador(Usuario u,Jugador j) {
+			String s="DELETE FROM UsuarioJugador WHERE correoUsuario='"+ u.getCorreoElec()+ "' and nomJugador='" + j.getNombre()+
+					"' and nomEquipo ='" + j.getEquipo().getNombre() + "'" ;
+			Connection con = BD.initBD("oneFootball.db");
+			try {
+				Statement st = con.createStatement();
+				st.executeUpdate(s);
+				cerrarBD(con, st);
+			}catch(SQLException ex) {
+				ex.printStackTrace();
+			}
+		
+	}
+	
+	
+	public static void deleteUsuarioEquipo(Usuario u,Equipo e) {
+		String s="DELETE FROM UsuarioEquipo WHERE correoUsuario='"+ u.getCorreoElec()+ "' and nomEquipo ='" + e.getNombre() + "'" ;
+		Connection con = BD.initBD("oneFootball.db");
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(s);
+			cerrarBD(con, st);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+		
+		
+		public static void deleteUsuarioLiga(Usuario u,Liga l) {
+			String s="DELETE FROM UsuarioLiga WHERE correoUsuario='"+ u.getCorreoElec()+ "' and nomLiga='" + l.getNombre()+ "'" ;
+			Connection con = BD.initBD("oneFootball.db");
+			try {
+				Statement st = con.createStatement();
+				st.executeUpdate(s);
+				cerrarBD(con, st);
+			}catch(SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+	
+
+	
+	
+}
 	
 	
 	
@@ -2303,4 +2358,3 @@ public class BD {
 	
 	
 
-}
