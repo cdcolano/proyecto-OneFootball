@@ -309,6 +309,7 @@ class ButtonEditorQuitaJugador extends DefaultCellEditor {
             	if (table.isEditing())
                     table.getCellEditor().stopCellEditing();
             	modelo.removeRow(row);
+            	table.getColumnModel().getColumn(4).setCellEditor(new ButtonEditorQuitaJugador(new JCheckBox(), u, vent));
             	table.revalidate();
             	//table.repaint();
             }
@@ -413,6 +414,7 @@ class ButtonEditorQuitaLiga extends DefaultCellEditor {
             	if (table.isEditing())
                     table.getCellEditor().stopCellEditing();
             	modelo.removeRow(row);
+            	table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditorQuitaLiga(new JCheckBox(), u, vent));
             	table.revalidate();
             	
             }

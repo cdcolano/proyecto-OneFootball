@@ -100,8 +100,8 @@ public class VentanaTraspasos extends JFrame {
 				pTraspasoCenSup.add(slGrado);
 			}else {
 				JLabel precio= new JLabel(""+ traspaso.getPrecio()+ "€");
-				precio.setForeground(Color.WHITE);
-				precio.setBackground(Color.GREEN);
+				precio.setForeground(Color.MAGENTA);
+				//precio.setBackground(Color.GREEN);
 				pTraspasoCenSup.add(precio);
 			}
 			

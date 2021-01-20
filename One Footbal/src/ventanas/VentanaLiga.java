@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.Set;
 import java.util.TreeSet;
 
 //TODO posibilidad de seleccionar un equipo , al seleccionar un equipo se cargan sus estaditicas en un JPanel abajo
@@ -50,6 +51,7 @@ public class VentanaLiga extends JFrame {
 	DefaultTableModel mTarjetasAmarillas;
 	DefaultTableModel mTarjetasRojas;
 	TreeSet<Equipo>clasificacion;
+	int lastSelection;
 	
 	boolean clasif;
 	public static final String[] ID_CLASIF= {"Puesto","Logo", "Equipo", "Pts", "PJ", "GF", "GC"};
@@ -107,24 +109,33 @@ public class VentanaLiga extends JFrame {
 			pContenedor.add(spClasif, BorderLayout.CENTER);
 			pContenedor.add(pEstadisticas,BorderLayout.NORTH);
 			getContentPane().add(pContenedor, BorderLayout.CENTER);
+			lastSelection=-1;
 			
-			
+			tClasificacion.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 			tClasificacion.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 		        public void valueChanged(ListSelectionEvent event) {
-		        	if (event.getFirstIndex()==event.getLastIndex() && event.getFirstIndex()!=-1 && !event.getValueIsAdjusting()) {
+		        	System.out.println(event.getFirstIndex() +"=" + event.getLastIndex());
+		        	if (event.getFirstIndex()==event.getLastIndex() && event.getFirstIndex()!=-1 && event.getFirstIndex()!=lastSelection)  {
+	
 						int i=event.getFirstIndex();
+						lastSelection=i;
+						pEstadisticas.removeAll();
 						for (Equipo eq: clasificacion) {
 							String nom=(String)mEquipos.getValueAt(i, 2);
 							if (eq.equals(new Equipo(nom))) {
-								pEstadisticas.add(new JLabel ("Goles " + eq.getGolesAFavor()/eq.getNumPartidos() ));
-								pEstadisticas.add(new JLabel ("Goles en contra" + eq.getGolesEnContra()/eq.getNumPartidos()));
+								pEstadisticas.add(new JLabel ("Goles por Partido" + eq.getGolesAFavor()/eq.getNumPartidos() ));
+								pEstadisticas.add(new JLabel ("Goles en contra por Partido " + eq.getGolesEnContra()/eq.getNumPartidos()));
+								pContenedor.revalidate();
+								System.out.println(tClasificacion.getSelectedRow());
 							}
 						}
 						
-					}else {
-						pEstadisticas.removeAll();
-					}
+						
+						
+		        	}
+		        	tClasificacion.clearSelection();
+		        	tClasificacion.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		        }
 		    });
 			
@@ -133,14 +144,14 @@ public class VentanaLiga extends JFrame {
 		}else{
 			JTable tGoleadores= new JTable();
 			mGoleadores.setColumnIdentifiers(ID_GOLEADORES);
-			anyadeElementos(liga.getMaximosGoleadores(), mGoleadores);;
+			anyadeElementos(liga.getMaximosGoleadores(), mGoleadores,1);
 			tGoleadores.setModel(mGoleadores);
 			decoraTabla(tGoleadores);
 			JScrollPane spGoleadores= new JScrollPane(tGoleadores);
 			
 			JTable tAsistentes= new JTable();
 			mAsistentes.setColumnIdentifiers(ID_ASISTENTES);
-			anyadeElementos(liga.getMaximosAsistentes(), mAsistentes);
+			anyadeElementos(liga.getMaximosAsistentes(), mAsistentes,2);
 			tAsistentes.setModel(mAsistentes);
 			decoraTabla(tAsistentes);
 			JScrollPane spAsistentes= new JScrollPane(tAsistentes);
@@ -148,14 +159,14 @@ public class VentanaLiga extends JFrame {
 			
 			JTable tAmarillas= new JTable();
 			mTarjetasAmarillas.setColumnIdentifiers(ID_AMARILLAS);
-			anyadeElementos(liga.getTarjetasAmarillas(), mTarjetasAmarillas);
+			anyadeElementos(liga.getTarjetasAmarillas(), mTarjetasAmarillas,3);
 			tAmarillas.setModel(mTarjetasAmarillas);
 			decoraTabla(tAmarillas);
 			JScrollPane spAmarillas= new JScrollPane(tAmarillas);
 			
 			JTable tRojas= new JTable();
 			mTarjetasRojas.setColumnIdentifiers(ID_ROJAS);
-			anyadeElementos(liga.getTarjetasRojas(), mTarjetasRojas);
+			anyadeElementos(liga.getTarjetasRojas(), mTarjetasRojas,4);
 			tRojas.setModel(mTarjetasRojas);
 			decoraTabla(tRojas);
 			JScrollPane spRojas= new JScrollPane(tRojas);
@@ -186,14 +197,35 @@ public class VentanaLiga extends JFrame {
 	 * @param listaJugador  lista de Jugadores a añadir
 	 * @param mJugador modelo de la Tabla correspondiente
 	 */
-	private void anyadeElementos(TreeSet<Jugador>listaJugador, DefaultTableModel mJugador) { //TODO este metodo no funciona si no hay más datos de prueba
+	private void anyadeElementos(Set<Jugador>listaJugador, DefaultTableModel mJugador,int num) { //TODO este metodo no funciona si no hay más datos de prueba
 		int i=0;
-		for (Jugador jugador:listaJugador) {	
+		for (Jugador jugador:listaJugador) {
+			System.out.println(jugador.getNombre() + mJugador.getColumnName(0));
 			ImageIcon img= new ImageIcon(VentanaLiga.class.getResource(jugador.getImagen()));
-			Object[] listaAtributos= {img, jugador.getNombre(), 
-					VentanaInicio.redimensionImgProd(new ImageIcon(VentanaLiga.class.getResource(jugador.getEquipo().getImagen())),50,50)
-					, jugador.getNumGoles()};
-			mJugador.addRow(listaAtributos);
+			if (num==1) {
+				
+				Object[] listaAtributos= {img, jugador.getNombre(), 
+						VentanaInicio.redimensionImgProd(new ImageIcon(VentanaLiga.class.getResource(jugador.getEquipo().getImagen())),50,50)
+						, jugador.getNumGoles()};
+				mJugador.addRow(listaAtributos);
+			}else if (num==2) {
+					
+					Object[] listaAtributos= {img, jugador.getNombre(), 
+							VentanaInicio.redimensionImgProd(new ImageIcon(VentanaLiga.class.getResource(jugador.getEquipo().getImagen())),50,50)
+							, jugador.getNumAsistencias()};
+					mJugador.addRow(listaAtributos);
+				}else if (num==3) {
+					Object[] listaAtributos= {img, jugador.getNombre(), 
+							VentanaInicio.redimensionImgProd(new ImageIcon(VentanaLiga.class.getResource(jugador.getEquipo().getImagen())),50,50)
+							, jugador.getNumAmarillas()};
+					mJugador.addRow(listaAtributos);
+				}else if (num==4) {
+					Object[] listaAtributos= {img, jugador.getNombre(), 
+							VentanaInicio.redimensionImgProd(new ImageIcon(VentanaLiga.class.getResource(jugador.getEquipo().getImagen())),50,50)
+							, jugador.getNumRojas()};
+					mJugador.addRow(listaAtributos);
+				}
+			
 			if(i>=3) {
 				break;
 			}
@@ -246,8 +278,10 @@ public class VentanaLiga extends JFrame {
 			}else {
 				VentanaLiga ventLiga=(VentanaLiga)vent;
 				if (ventLiga.clasif==false) {
-					ventLiga.clasif=true;
-					ventLiga.revalidate();
+					VentanaLiga v= new VentanaLiga(true, l, u);
+					vent.dispose();
+				}else {
+					vent.revalidate();
 				}
 			}
 				
@@ -261,13 +295,13 @@ public class VentanaLiga extends JFrame {
 			}else {
 				VentanaLiga ventLiga=(VentanaLiga)vent;
 				if (ventLiga.clasif==true) {
-					System.out.println("se toca");
 					//ventLiga.clasif=false;
 					//ventLiga.revalidate();
 					VentanaLiga v= new VentanaLiga(false,l,u);
 					vent.dispose();	
 				}else {
-					System.out.println("modo estadistica");
+					vent.revalidate();
+					
 				}
 			}
 				

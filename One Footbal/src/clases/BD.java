@@ -842,9 +842,20 @@ public class BD {
 	
 	}
 		
-		
+	/*	
+	 * nom string, " + 
+							"img string, " + 
+						   "puntos int, " + 
+							"golesAFavor int, "
+							+ "golesEnContra int, "
+							+ "liga string"
+	 */
+	
 	public static ArrayList<Traspaso> selectTraspasos(Equipo e) {
-		String s = "SELECT * FROM Traspaso WHERE nomEquipoVendedor='" + e.getNombre() +"' or nomEquipoComprador='" + e.getNombre() + "'";
+		String s = "SELECT t.*, e1.nom,e1.img as 'imgVendedor', e1.puntos, e1.golesAFavor, e1.golesEnContra,e1.liga,e2.nom as 'nomComprador',e2.img as 'imgComprador', e2.puntos as 'puntosComprador', e2.golesAfavor"
+				+ " as 'golesAFavorComprador', e2.golesEnContra as 'golesEnContraComprador', e2.liga as 'ligaComprador'"
+				+ ",j.* FROM Traspaso t,Equipo e1,Equipo e2, Jugador j"
+				+ " WHERE e1.nom=t.nomEquipoVendedor and e2.nom=t.nomEquipoComprador and e1.nom=j.nomEquipo and (t.nomEquipoVendedor='" + e.getNombre() +"' or nomEquipoComprador='" + e.getNombre() + "')";
 		ArrayList<Traspaso>traspasos= new ArrayList<Traspaso>();
 		Connection con = initBD("OneFootball.db");
 		try {
@@ -852,15 +863,41 @@ public class BD {
 			ResultSet rs = st.executeQuery(s);	
 			while(rs.next()) {
 				Traspaso t= new Traspaso();
-				if (rs.getString("nomEquipoVendedor").contentEquals(e.getNombre())) {
-					t.setVendedor(e);
-				}else if (rs.getString("nomEquipoComprador").contentEquals(e.getNombre())) {
-					t.setEquipo(e);
+				Equipo vendedor= new Equipo(rs.getString("nom"));
+				Equipo comprador= new Equipo(rs.getString("nomComprador"));
+				Jugador j= new Jugador(rs.getString("nombre"));
+				vendedor.setImagen(rs.getString("imgVendedor"));
+				vendedor.setPuntos(rs.getInt("puntos"));
+				vendedor.setGolesAFavor(rs.getInt("golesAFavor"));
+				vendedor.setGolesEnContra(rs.getInt("golesEnContra"));
+				String ligaVendedor=rs.getString("liga");
+				vendedor.setLiga(BD.selectLiga(ligaVendedor));
+				String ligaComprador=rs.getString("ligaComprador");
+				if (ligaComprador.contentEquals(ligaVendedor)) {
+					comprador.setLiga(vendedor.getLiga());
+				}else {
+					comprador.setLiga(BD.selectLiga(ligaComprador));
 				}
-				t.setEquipo(selectEquipo(rs.getString("nomEquipoComprador")));
-				t.setVendedor(selectEquipo(rs.getString("nomEquipoVendedor")));
-				t.setJugador(selectJugador(rs.getString("nomJugador"), t.getVendedor()));
+				comprador.setImagen(rs.getString("imgComprador"));
+				comprador.setPuntos(rs.getInt("puntosComprador"));
+				comprador.setGolesAFavor(rs.getInt("golesAFavorComprador"));
+				comprador.setGolesEnContra(rs.getInt("golesEnContraComprador"));
+				t.setEquipo(comprador);
+				t.setVendedor(vendedor);
+				j.setNombre(rs.getString("nombre"));
+				j.setEquipo(vendedor);
+				j.setDorsal(rs.getInt("dorsal"));
+				j.setEdad(rs.getInt("edad"));
+				j.setImagen(rs.getString("img"));
+				j.setLiga(vendedor.getLiga());
+				j.setPais(rs.getString("pais"));
+				j.setPosicion(rs.getString("posicion"));
+				j.setNumAmarillas(rs.getInt("numAmarillas"));
+				j.setNumRojas(rs.getInt("numRojas"));
+				j.setNumGoles(rs.getInt("numGoles"));
+				j.setNumAsistencias(rs.getInt("numAsistencias"));
 				t.setGrado(rs.getByte("grado"));
+				t.setJugador(j);
 				t.setPrecio(rs.getLong("precio"));
 				t.setFecha(new Date(rs.getLong("fecha")));
 				
@@ -944,21 +981,22 @@ public class BD {
 		public static TreeSet<Jugador> selectJugadoresGoleadores(Liga l) {
 			String in="('";
 			int i=0;
-			for (Equipo e:l.getEquipos()) { 
-				if (i==l.getEquipos().size()-1) {
-					in=in + e.getNombre() + "')";
-				}else {
-					in= in + e.getNombre() + "','";
+			if (l.getEquipos()!=null && l.getEquipos().size()>0) {
+				for (Equipo e:l.getEquipos()) { 
+					if (i==l.getEquipos().size()-1) {
+						in=in + e.getNombre() + "')";
+					}else {
+						in= in + e.getNombre() + "','";
+					}
+					i++;
 				}
-				i++;
-			}
 			System.out.println(in);
 			String s = "SELECT * FROM Jugador WHERE nomEquipo in"+ in + " and numGoles>0";
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
 				TreeSet<Jugador>jugadores=  new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
-					if (o1.getNumGoles()>o2.getNumGoles()) {
+					if (o1.getNumGoles()<o2.getNumGoles()) {
 						return 1;
 					}else if (o1.getNumGoles()==o2.getNumGoles()) {
 						return 0;
@@ -969,6 +1007,7 @@ public class BD {
 				}
 				
 			);
+				System.out.println(in);
 				ResultSet rs = st.executeQuery(s);	
 				while(rs.next()) {
 					Jugador j= new Jugador();
@@ -993,7 +1032,10 @@ public class BD {
 				e.printStackTrace();
 				return null;
 			}
+		}else {
+			return new TreeSet<Jugador>();
 		}
+	}
 		
 		
 		// TODO AKIIII acelga
@@ -1034,20 +1076,22 @@ public class BD {
 		public static TreeSet<Jugador> selectJugadoresAsistentes(Liga l) {
 			String in="('";
 			int i=0;
-			for (Equipo e:l.getEquipos()) { 
-				if (i==l.getEquipos().size()-1) {
-					in=in + e.getNombre() + "')";
-				}else {
-					in= in + e.getNombre() + "','";
+			if (l.getEquipos()!=null && l.getEquipos().size()>0) {
+				for (Equipo e:l.getEquipos()) { 
+					if (i==l.getEquipos().size()-1) {
+						in=in + e.getNombre() + "')";
+					}else {
+						in= in + e.getNombre() + "','";
+					}
+					i++;
 				}
-				i++;
-			}
+			
 			String s = "SELECT * FROM Jugador WHERE nomEquipo in" + in + " and numAsistencias>0";
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
 				TreeSet<Jugador>jugadores=  new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
-					if (o1.getNumAsistencias()>o2.getNumAsistencias()) {
+					if (o1.getNumAsistencias()<o2.getNumAsistencias()) {
 						return 1;
 					}else if (o1.getNumAsistencias()==o2.getNumAsistencias()) {
 						return 0;
@@ -1082,25 +1126,29 @@ public class BD {
 				e.printStackTrace();
 				return null;
 			}
+		}else {
+			return new TreeSet<Jugador>();
 		}
+	}
 		
 		public static TreeSet<Jugador> selectJugadoresAmarillas(Liga l) {
 			String in="('";
 			int i=0;
-			for (Equipo e:l.getEquipos()) { 
-				if (i==l.getEquipos().size()-1) {
-					in=in + e.getNombre() + "')";
-				}else {
-					in= in + e.getNombre() + "','";
+			if (l.getEquipos()!=null && l.getEquipos().size()>0) {
+				for (Equipo e:l.getEquipos()) { 
+					if (i==l.getEquipos().size()-1) {
+						in=in + e.getNombre() + "')";
+					}else {
+						in= in + e.getNombre() + "','";
+					}
+					i++;
 				}
-				i++;
-			}
 			String s = "SELECT * FROM Jugador WHERE nomEquipo in " +in + " and numAmarillas>0";
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
 				TreeSet<Jugador>jugadores=  new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
-					if (o1.getNumAmarillas()>o2.getNumAmarillas()) {
+					if (o1.getNumAmarillas()<o2.getNumAmarillas()) {
 						return 1;
 					}else if (o1.getNumAmarillas()==o2.getNumAmarillas()) {
 						return 0;
@@ -1136,24 +1184,29 @@ public class BD {
 				return null;
 			}
 		}
+		else {
+			return new TreeSet<Jugador>();
+		}
+	}
 		
 		public static TreeSet<Jugador> selectJugadoresRojas(Liga l) {
 			String in="('";
 			int i=0;
-			for (Equipo e:l.getEquipos()) { 
-				if (i==l.getEquipos().size()-1) {
-					in=in + e.getNombre() + "')";
-				}else {
-					in= in + e.getNombre() + "','";
-				}
+			if (l.getEquipos()!=null && l.getEquipos().size()>0) {
+				for (Equipo e:l.getEquipos()) { 
+					if (i==l.getEquipos().size()-1) {
+						in=in + e.getNombre() + "')";
+					}else {
+						in= in + e.getNombre() + "','";
+					}
 				i++;
-			}
+				}
 			String s = "SELECT * FROM Jugador WHERE nomEquipo in" + in +" and numRojas>0";
 			Connection con = initBD("OneFootball.db");
 			try {
 				Statement st = con.createStatement();
 				TreeSet<Jugador>jugadores=new TreeSet<Jugador>((Jugador o1, Jugador o2)-> {
-					if (o1.getNumRojas()>o2.getNumRojas()) {
+					if (o1.getNumRojas()<o2.getNumRojas()) {
 						return 1;
 					}else if (o1.getNumRojas()==o2.getNumRojas()) {
 						return 0;
@@ -1187,6 +1240,10 @@ public class BD {
 			}catch (SQLException e) {
 				e.printStackTrace();
 				return null;
+			}
+		}
+			else {
+				return new TreeSet<Jugador>();
 			}
 		}
 		

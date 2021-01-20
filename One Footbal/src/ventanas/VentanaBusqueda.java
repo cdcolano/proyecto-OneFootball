@@ -245,6 +245,12 @@ class ButtonEditorLiga extends DefaultCellEditor {
             public void actionPerformed(ActionEvent e) {
             	 if (table.isEditing())
                      table.getCellEditor().stopCellEditing();
+            		String nomLiga=(String)table.getValueAt(row, 1);
+                	if (u.getLigasSeguidas().size()!=0 && u.getLigasSeguidas()!=null) {
+    	            	if (u.buscaLiga(u.getLigasSeguidas(), new Liga(nomLiga), 0, u.getLigasSeguidas().size()-1)!=-1){
+    	            		return;
+    	            	}
+                	}
                Liga l= BD.selectLiga((String)table.getValueAt(row, 1));
                if (!BD.insertarUsuarioLiga(l, u))
                u.addLigaSeguida(l);
@@ -274,7 +280,9 @@ class ButtonEditorLiga extends DefaultCellEditor {
 
 class ButtonEditorEquipo extends DefaultCellEditor {
 
-    protected JButton button;
+    
+
+	protected JButton button;
     private String label;
     private boolean isPushed;
     private Usuario u;
@@ -305,7 +313,13 @@ class ButtonEditorEquipo extends DefaultCellEditor {
             	System.out.println(e.getSource());
             	if (table.isEditing())
                     table.getCellEditor().stopCellEditing();
-            	Equipo eq=BD.selectEquipo((String)table.getValueAt(row, 1));
+            	String nomEquipo=(String)table.getValueAt(row, 1);
+            	if (u.getEquiposSeguidos().size()!=0 && u.getEquiposSeguidos()!=null) {
+	            	if (u.buscaEquipo(u.getEquiposSeguidos(), new Equipo(nomEquipo), 0, u.getLigasSeguidas().size()-1)!=-1){
+	            		return;
+	            	}
+            	}
+            	Equipo eq=BD.selectEquipo(nomEquipo);
             	if (!BD.insertarUsuarioEquipo(eq, u))
             	u.addEquipoSeguido(eq);
             	
@@ -364,13 +378,21 @@ class ButtonEditorJugador extends DefaultCellEditor {
             public void actionPerformed(ActionEvent e) {
             	if (table.isEditing())
                     table.getCellEditor().stopCellEditing();
-            	Equipo eq=BD.selectEquipo((String)table.getValueAt(row, 2));
-            	Jugador j=BD.selectJugador((String)table.getValueAt(row, 1), eq);
-            	if (!BD.insertarUsuarioJugador(j, u))
-            	u.addJugadorSeguido(j);
+            	String nomEquipo=(String)table.getValueAt(row, 2);
+            	String nomJugador=(String)table.getValueAt(row, 1);
+            	if (u.getJugadoresSeguidos().size()!=0 && u.getJugadoresSeguidos()!=null) {
+	            	if (u.buscaJugador(u.getJugadoresSeguidos(), new Jugador(nomJugador, new Equipo(nomEquipo)), 0, u.getJugadoresSeguidos().size()-1)!=-1){
+	            		return;
+	            	}
+            	}
+	            Equipo eq=BD.selectEquipo(nomEquipo);
+	            Jugador j=BD.selectJugador(nomJugador, eq);
+	            	
+	            if (!BD.insertarUsuarioJugador(j, u))
+	            	u.addJugadorSeguido(j);
+            	}
         		
         		
-            }
         });
         return button;
     }

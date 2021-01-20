@@ -215,15 +215,22 @@ public class Usuario {
 		Jugador jugadorSel= lista.get(indice);
 		if (indiceInf>indiceSup) {
 			return -1;
+		}else if (indiceInf==indiceSup) {
+			if (!j.equals(jugadorSel)) {
+				return -1;
+			}
 		}
 		if (j.equals(jugadorSel)) {
 			return indice;
 		}
 		else {
 			if (j.compareTo(jugadorSel)>0) {
-				return buscaJugador(lista, j, indice, lista.size()-1);
+				System.out.println(indice + "mitad");
+				System.out.println(indiceSup + "Superior");
+				System.out.println(indiceInf + "inferior");
+				return buscaJugador(lista, j, indice +1, indiceSup);
 			}else
-				return buscaJugador(lista, j, 0, indice);
+				return buscaJugador(lista, j, indiceInf, indice-1);
 		}
 		
 	}
@@ -233,26 +240,29 @@ public class Usuario {
 		Liga ligaSel= lista.get(indice);
 		if (indiceInf>indiceSup) {
 			return -1;
+		}else if (indiceInf==indiceSup) {
+			if (!l.equals(ligaSel)) {
+				return -1;
+			}
 		}
 		if (l.equals(ligaSel)) {
 			return indice;
 		}
 		else {
 			if (l.compareTo(ligaSel)>0) {
-				return buscaLiga(lista, l, indice, lista.size()-1);
+				return buscaLiga(lista, l, indice+1, indiceSup);
 			}else
-				return buscaLiga(lista, l, 0, indice);
+				return buscaLiga(lista, l, indiceInf, indice-1);
 		}
 		
 	}
 	
 	public static int buscaEquipo(ArrayList<Equipo> lista, Equipo e, int indiceInf, int indiceSup) {
 		int indice=(indiceInf+ indiceSup)/2;
-		for (Equipo eq:lista) {
-			System.out.println(eq.getNombre());
-		}
 		Equipo equipoSel= lista.get(indice);
 		if (indiceInf>indiceSup) {
+			return -1;
+		}else if (indiceInf==indiceSup && !e.equals(equipoSel)) {
 			return -1;
 		}
 		if (e.equals(equipoSel)) {
@@ -267,9 +277,10 @@ public class Usuario {
 				}
 			};
 			if (comparador.compare(e, equipoSel)>0) {
-				return buscaEquipo(lista, e, indice, lista.size());
-			}else
-				return buscaEquipo(lista, e, 0, indice);
+				return buscaEquipo(lista, e, indice+1, indiceSup);
+			}else {
+				return buscaEquipo(lista, e, indiceInf, indice-1);
+			}
 		}
 		
 	}

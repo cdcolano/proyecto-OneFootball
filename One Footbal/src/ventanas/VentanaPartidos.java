@@ -78,7 +78,7 @@ public class VentanaPartidos extends JFrame {
 		for (Partido p: j.getPartidos()) {
 			JPanel pPartido= new JPanel();
 			pPartido.setLayout(new BorderLayout());
-			SimpleDateFormat df= new SimpleDateFormat("aaaa.MM.dd HH: mm: ss zzz");
+			SimpleDateFormat df= new SimpleDateFormat("yyyy.MM.dd HH:mm");
 			pPartido.add(new JLabel("" +df.format(p.getFecha())),BorderLayout.NORTH);
 			JPanel pResultado= new JPanel();
 			pResultado.setLayout(new GridLayout(2,1));

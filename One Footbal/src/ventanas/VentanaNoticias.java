@@ -44,14 +44,17 @@ public class VentanaNoticias extends JFrame {
 		}
 		JScrollPane scpanelCentral= new JScrollPane();
 		JPanel pEquipo= new JPanel();
-		pEquipo.setLayout(new GridLayout(c.getNoticias().size(),1));
+		pEquipo.setLayout(new BorderLayout());
 		JPanel pEquipoAct= new JPanel();
+		JPanel pNoticias= new JPanel();
+		pNoticias.setLayout(new GridLayout(c.getNoticias().size(),1));
+		pEquipoAct.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel img= new JLabel();
 		img.setIcon(VentanaInicio.redimensionImgProd(new ImageIcon(VentanaInicio.class.getResource(c.getImagen())),50,50));
 		pEquipoAct.add(img);
-		pEquipo.setLayout(new FlowLayout(FlowLayout.LEFT));
+		//pEquipo.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pEquipo.add(new JLabel (c.getNombre()));
-		pEquipo.add(pEquipoAct);
+		pEquipo.add(pEquipoAct,BorderLayout.NORTH);
 		for (Noticia n: c.getNoticias()) {
 			System.out.println("Noticia!!");
 			JPanel pNoticia=VentanaInicio.anyadePanalesNoticia(n);
@@ -68,8 +71,9 @@ public class VentanaNoticias extends JFrame {
 					
 				}
 			});
-			pEquipo.add(pNoticia);
+			pNoticias.add(pNoticia);
 		}
+		pEquipo.add(pNoticias,BorderLayout.CENTER);
 		scpanelCentral=new JScrollPane(pEquipo);
 		getContentPane().add(scpanelCentral, BorderLayout.CENTER);
 		

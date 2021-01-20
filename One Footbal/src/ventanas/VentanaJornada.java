@@ -50,6 +50,7 @@ public class VentanaJornada extends JFrame{
 					System.out.println(j.getNumJornada() + "NUMERO DE JORNADA");
 					pCentral.removeAll();
 					pCentral.add(cbJornadas,BorderLayout.NORTH);
+					System.out.println(j.getPartidos().get(0).getLocal().getNombre());
 					pCentral.add(VentanaPartidos.anyadePanelUltimaJornada(j),BorderLayout.CENTER);
 					pCentral.revalidate();
 				}
@@ -57,6 +58,7 @@ public class VentanaJornada extends JFrame{
 			}
 		});
 		cbJornadas.setSelectedIndex(mJornadas.getSize()-1);
+		pCentral.add(VentanaPartidos.anyadePanelUltimaJornada(mJornadas.getElementAt(mJornadas.getSize()-1)),BorderLayout.CENTER);
 		pCentral.add(cbJornadas,BorderLayout.NORTH);
 		JScrollPane spCentral= new JScrollPane(pCentral);
 		getContentPane().add(spCentral);

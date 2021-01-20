@@ -19,6 +19,7 @@ public class TestRecur {
 		Equipo c= new Equipo ("barcelona");
 		Equipo d= new Equipo ("atletico");
 		Equipo e= new Equipo ("levante");
+		Equipo f= new Equipo("real sociedad");
 		ArrayList<Equipo>equipos= new ArrayList<Equipo>();
 		ArrayList<Equipo>resultado= new ArrayList<Equipo>();
 		equipos.add(a);
@@ -28,9 +29,11 @@ public class TestRecur {
 		equipos.add(c);
 		equipos.add(d);
 		equipos.add(e);
+		equipos.add(f);
 		resultado.add(c);
 		resultado.add(e);
 		resultado.add(b);
+		resultado.add(f);
 		u.setEquiposSeguidos(equipos);
 		ArrayList<Equipo>ordenado= new ArrayList<Equipo>();
 		ordenado=u.quickSortEquipo(equipos, 0, equipos.size()-1);
@@ -58,6 +61,7 @@ public class TestRecur {
 		if (u.buscaEquipo(ordenado, e, 0, ordenado.size())!=3) {
 			fail();
 		}
+		
 		
 	}
 

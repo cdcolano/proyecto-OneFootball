@@ -46,25 +46,31 @@ public class VentanaInicio extends JFrame {
 		topNews= new ArrayList<Noticia>();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		ResultSet rs= BD.selectTodas("Noticia");
+		int x=0;
 		try {
-			while (rs.next()) {
+			while (rs.next() && x<3) {
+				x++;
 				Noticia not= BD.selectNoticia(rs.getString("titulo"));
-				not.setEquipos(BD.selectEquiposNot(not));
-				not.setLigas(BD.selectLigasNot(not));
+				//not.setEquipos(BD.selectEquiposNot(not));
+				//not.setLigas(BD.selectLigasNot(not));
 				topNews.add(not);
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		for (Noticia n:topNews) {
-			System.out.println(n.getTitulo() + "Not");
-		}
+		
 		this.u=u;
 		
 		JPanel pCentral= new JPanel();
 		scpanelCentral= new JScrollPane(pCentral);
-		pCentral.setLayout(new GridLayout(u.getEquiposSeguidos().size()+1,1));
+		ArrayList<Equipo>equipos= new ArrayList<Equipo>();
+		for (Equipo e: u.getEquiposSeguidos()) {
+			if (e.getNoticias().size()>0) {
+				equipos.add(e);
+			}
+		}
+		pCentral.setLayout(new GridLayout(equipos.size()+1,1));
 		pTopNews=new JPanel();
 		JPanel pTopNewsConTit= new JPanel();
 		pTopNewsConTit.setLayout(new BorderLayout());
@@ -95,61 +101,61 @@ public class VentanaInicio extends JFrame {
 					
 				}
 			});
-			System.out.println("ESTA NOTICIA TIENE LA FECHA " + not.getFecha().getTime());
 			pTopNews.add(pNoticia);
 		}
 		pCentral.add(pTopNewsConTit);
 		
-		for (Equipo e :u.getEquiposSeguidos()) {
-			JPanel pNoticias= new JPanel();
-			pNoticias.setLayout(new FlowLayout(FlowLayout.LEFT));
-			JPanel pEquipo= new JPanel();
-			pEquipo.setLayout(new BorderLayout());
-			JPanel pEquipoAct= new JPanel();
-			pEquipoAct.setLayout(new FlowLayout(FlowLayout.LEFT));
-			JLabel img= new JLabel();
-			img.setIcon(redimensionImgProd(new ImageIcon(VentanaInicio.class.getResource(e.getImagen())),50,50)); //TODO redimension
-			pEquipoAct.add(img);
-			pEquipoAct.add(new JLabel (e.getNombre()));
-			pEquipo.add(pEquipoAct);
-			if (e.getNoticias().size()>=6) {
-				for (int i=e.getNoticias().size()-1; i>e.getNoticias().size()-6; i++) {	//solo las ultimas 5 noticias por equipo
-					Noticia n= e.getNoticias().get(i);
-					JPanel pNoticia=anyadePanalesNoticia(n);
-					pNoticia.addMouseListener(new MouseAdapter() {
-						
-						public void mouseClicked(MouseEvent e) {
-							if (e.getClickCount()>=2 ){//&& pNoticia.getLocationOnScreen().x<=e.getLocationOnScreen().x &&
-							//	pNoticia.getLocationOnScreen().x+ pNoticia.getWidth()>=e.getLocationOnScreen().x &&
-								//pNoticia.getLocationOnScreen().y<=e.getLocationOnScreen().y && 
-								//pNoticia.getLocationOnScreen().y+pNoticia.getHeight()>=e.getLocationOnScreen().y
-								VentanaNoticia v= new VentanaNoticia( u, n);
-								VentanaInicio.this.dispose();
-							}
+		for (Equipo e :equipos) {
+				JPanel pNoticias= new JPanel();
+				pNoticias.setLayout(new GridLayout(e.getNoticias().size(),1));
+				JPanel pEquipo= new JPanel();
+				pEquipo.setLayout(new BorderLayout());
+				JPanel pEquipoAct= new JPanel();
+				pEquipoAct.setLayout(new FlowLayout(FlowLayout.LEFT));
+				JLabel img= new JLabel();
+				img.setIcon(redimensionImgProd(new ImageIcon(VentanaInicio.class.getResource(e.getImagen())),50,50)); //TODO redimension
+				pEquipoAct.add(img);
+				pEquipoAct.add(new JLabel (e.getNombre()));
+				pEquipo.add(pEquipoAct);
+				if (e.getNoticias().size()>=3) {
+					for (int i=e.getNoticias().size()-1; i>e.getNoticias().size()-3; i--) {	//solo las ultimas 3 noticias por equipo
+						Noticia n= e.getNoticias().get(i);
+						JPanel pNoticia=anyadePanalesNoticia(n);
+						pNoticia.addMouseListener(new MouseAdapter() {
 							
+							public void mouseClicked(MouseEvent e) {
+								if (e.getClickCount()>=2 ){//&& pNoticia.getLocationOnScreen().x<=e.getLocationOnScreen().x &&
+								//	pNoticia.getLocationOnScreen().x+ pNoticia.getWidth()>=e.getLocationOnScreen().x &&
+									//pNoticia.getLocationOnScreen().y<=e.getLocationOnScreen().y && 
+									//pNoticia.getLocationOnScreen().y+pNoticia.getHeight()>=e.getLocationOnScreen().y
+									VentanaNoticia v= new VentanaNoticia( u, n);
+									VentanaInicio.this.dispose();
+								}
+								
+							}
+						}); 
+						pNoticias.add(pNoticia);
 						}
-					}); 
-					pNoticias.add(pNoticia);
+				}else {
+					for (Noticia n: e.getNoticias()) {
+						JPanel pNoticia=anyadePanalesNoticia(n);
+						pNoticia.addMouseListener(new MouseAdapter() {
+							
+							public void mouseClicked(MouseEvent e) {
+								if (e.getClickCount()>=2) {
+									VentanaNoticia v= new VentanaNoticia( u, n);
+								}
+								
+							}
+						}); 
+						pNoticias.add(pNoticia);
 					}
-			}else {
-				for (Noticia n: e.getNoticias()) {
-					JPanel pNoticia=anyadePanalesNoticia(n);
-					pNoticia.addMouseListener(new MouseAdapter() {
-						
-						public void mouseClicked(MouseEvent e) {
-							if (e.getClickCount()>=2) {
-								VentanaNoticia v= new VentanaNoticia( u, n);
-							}
-							
-						}
-					}); 
-					pNoticias.add(pNoticia);
+					pEquipo.add(pEquipoAct,BorderLayout.NORTH);
+					pEquipo.add(pNoticias,BorderLayout.CENTER);
+					pCentral.add(pEquipo);
+					
 				}
-				pEquipo.add(pEquipoAct,BorderLayout.NORTH);
-				pEquipo.add(pNoticias,BorderLayout.CENTER);
-				pCentral.add(pEquipo);
-				
-			}
+			
 		}
 		
 		getContentPane().add(scpanelCentral, BorderLayout.CENTER);
