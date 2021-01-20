@@ -32,7 +32,8 @@ public class VentanaPartidos extends JFrame {
 	 */
 	public VentanaPartidos( Usuario u) {
 		JPanel pPrincipal= new JPanel();
-		pPrincipal.setLayout(new GridLayout(u.getLigasSeguidas().size(),1));
+		//pPrincipal.setLayout(new GridLayout(u.getLigasSeguidas().size(),1));
+		pPrincipal.setLayout(new BoxLayout(pPrincipal,BoxLayout.Y_AXIS));
 		for (Liga l : u.getLigasSeguidas()) {
 			JPanel panelLiga= new JPanel();
 			panelLiga.setLayout(new BorderLayout());
@@ -74,14 +75,17 @@ public class VentanaPartidos extends JFrame {
 	public static JPanel anyadePanelUltimaJornada(Jornada j) {
 		JPanel pPrincipal= new JPanel();
 		j.setPartidos(BD.selectPartidos(j));
-		pPrincipal.setLayout(new GridLayout(j.getPartidos().size(), 1));
+		//pPrincipal.setLayout(new GridLayout(j.getPartidos().size(), 1));
+		pPrincipal.setLayout(new BoxLayout(pPrincipal, BoxLayout.Y_AXIS));
 		for (Partido p: j.getPartidos()) {
 			JPanel pPartido= new JPanel();
-			pPartido.setLayout(new BorderLayout());
+			//pPartido.setLayout(new BorderLayout());
+			pPartido.setLayout(new BoxLayout(pPartido,BoxLayout.Y_AXIS));
 			SimpleDateFormat df= new SimpleDateFormat("yyyy.MM.dd HH:mm");
 			pPartido.add(new JLabel("" +df.format(p.getFecha())),BorderLayout.NORTH);
 			JPanel pResultado= new JPanel();
-			pResultado.setLayout(new GridLayout(2,1));
+			//pResultado.setLayout(new GridLayout(2,1));
+			pResultado.setLayout(new BoxLayout(pResultado, BoxLayout.Y_AXIS));
 			JPanel pResultadoArriba= new JPanel();
 			pResultadoArriba.setLayout(new BorderLayout());
 			JPanel pResultadoAbajo= new JPanel();
@@ -117,7 +121,7 @@ public class VentanaPartidos extends JFrame {
 			pResultado.add(pResultadoArriba);
 			pResultado.add(pResultadoAbajo);
 			
-			pPartido.add(pResultado,BorderLayout.CENTER);
+			pPartido.add(pResultado,BorderLayout.SOUTH);
 			
 			pPrincipal.add(pPartido);
 			

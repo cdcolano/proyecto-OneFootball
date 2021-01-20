@@ -212,10 +212,13 @@ public class Usuario {
 	
 	public int buscaJugador(ArrayList<Jugador> lista, Jugador j, int indiceInf, int indiceSup) {
 		int indice=(indiceInf+ indiceSup)/2;
-		Jugador jugadorSel= lista.get(indice);
 		if (indiceInf>indiceSup) {
 			return -1;
-		}else if (indiceInf==indiceSup) {
+		}else if (indice>=lista.size() || indice<0){
+			return -1;
+		}
+		Jugador jugadorSel= lista.get(indice);
+		 if (indiceInf==indiceSup) {
 			if (!j.equals(jugadorSel)) {
 				return -1;
 			}
@@ -237,10 +240,13 @@ public class Usuario {
 	
 	public int buscaLiga(ArrayList<Liga> lista, Liga l, int indiceInf, int indiceSup) {
 		int indice=(indiceInf+ indiceSup)/2;
-		Liga ligaSel= lista.get(indice);
 		if (indiceInf>indiceSup) {
 			return -1;
-		}else if (indiceInf==indiceSup) {
+		}else if (indice>=lista.size() || indice<0){
+			return -1;
+		}
+		Liga ligaSel= lista.get(indice);
+		if (indiceInf==indiceSup) {
 			if (!l.equals(ligaSel)) {
 				return -1;
 			}
@@ -259,10 +265,13 @@ public class Usuario {
 	
 	public static int buscaEquipo(ArrayList<Equipo> lista, Equipo e, int indiceInf, int indiceSup) {
 		int indice=(indiceInf+ indiceSup)/2;
-		Equipo equipoSel= lista.get(indice);
 		if (indiceInf>indiceSup) {
 			return -1;
-		}else if (indiceInf==indiceSup && !e.equals(equipoSel)) {
+		}else if (indice>=lista.size() || indice<0){
+			return -1;
+		}
+		Equipo equipoSel= lista.get(indice);
+		if (indiceInf==indiceSup && !e.equals(equipoSel)) {
 			return -1;
 		}
 		if (e.equals(equipoSel)) {
@@ -277,7 +286,7 @@ public class Usuario {
 				}
 			};
 			if (comparador.compare(e, equipoSel)>0) {
-				return buscaEquipo(lista, e, indice+1, indiceSup);
+				return buscaEquipo(lista, e, indice +1, indiceSup);
 			}else {
 				return buscaEquipo(lista, e, indiceInf, indice-1);
 			}

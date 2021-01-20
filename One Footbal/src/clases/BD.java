@@ -634,44 +634,41 @@ public class BD {
 	 */
 	public static boolean insertarUsuarioJugador(Jugador j, Usuario u) {
 		boolean existe=false;
-		if(selectJugadoresUsuario(u)!=null) {
-			for (Jugador jug2: selectJugadoresUsuario(u)) {
-				if (jug2.equals(j)) {
-					existe=true;
-				}
-			}
-		}
-		if (!existe) {
-			String s="INSERT INTO UsuarioJugador VALUES('"+j.getNombre()+"','"+ j.getEquipo().getNombre()+ "','" + u.getCorreoElec()+  "')";
-			Connection con = BD.initBD("oneFootball.db");
-			try {
-				Statement st = con.createStatement();
+		String sql="Select * from UsuarioJugador WHERE nomJugador='" + j.getNombre()+ "' and nomEquipo='" + j.getEquipo().getNombre()
+				+"' and correoUsuario='" + u.getCorreoElec()+"'";
+		Connection con = BD.initBD("oneFootball.db");
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			if (!rs.next()) {
+				String s="INSERT INTO UsuarioJugador VALUES('"+j.getNombre()+"','"+ j.getEquipo().getNombre()+ "','" + u.getCorreoElec()+  "')";
 				st.executeUpdate(s);
-			}catch(SQLException ex) {
-				ex.printStackTrace();
+			}else {
+				existe=true;
 			}
+		}catch(SQLException ex) {
+				ex.printStackTrace();
 		}
+		
 		return existe;
 	}
 	
 	public static boolean insertarUsuarioEquipo(Equipo e, Usuario u) {
 		boolean existe=false;
-		if(selectEquiposUsuario(u)!=null) {
-			for (Equipo eq2: selectEquiposUsuario(u)) {
-				if (eq2.equals(e)) {
-					existe=true;
-				}
-			}
-		}
-		if (!existe) {
-			String s="INSERT INTO UsuarioEquipo VALUES('"+e.getNombre()+"','"+ u.getCorreoElec()+  "')";
-			Connection con = BD.initBD("oneFootball.db");
-			try {
-				Statement st = con.createStatement();
+		String sql="Select * from UsuarioEquipo WHERE nomEquipo='" + e.getNombre()
+				+"' and correoUsuario='" + u.getCorreoElec()+"'";
+		Connection con = BD.initBD("oneFootball.db");
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			if (!rs.next()) {
+				String s="INSERT INTO UsuarioEquipo VALUES('"+e.getNombre()+"','"+ u.getCorreoElec()+  "')";
 				st.executeUpdate(s);
-			}catch(SQLException ex) {
-				ex.printStackTrace();
+			}else {
+				existe=true;
 			}
+		}catch(SQLException ex) {
+			ex.printStackTrace();
 		}
 		return existe;
 	}
@@ -681,20 +678,21 @@ public class BD {
 	
 	public static boolean insertarUsuarioLiga(Liga l, Usuario u) {
 		boolean existe=false;
-		for (Liga li2: selectLigasUsuario(u)) {
-			if (li2.equals(l)) {
-				existe=true;
-			}
-		}
-		if (!existe) {
-			String s="INSERT INTO UsuarioLiga VALUES('"+l.getNombre()+"','"+ u.getCorreoElec()+  "')";
-			Connection con = BD.initBD("oneFootball.db");
-			try {
-				Statement st = con.createStatement();
+		String sql="Select * from UsuarioLiga WHERE nomLiga='" + l.getNombre()+ "' "+
+		"and correoUsuario='" + u.getCorreoElec()+"'";
+		Connection con = BD.initBD("oneFootball.db");
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs=st.executeQuery(sql);
+			if (!rs.next()) {
+				String s="INSERT INTO UsuarioLiga VALUES('"+l.getNombre()+"','"+ u.getCorreoElec()+  "')";
 				st.executeUpdate(s);
-			}catch(SQLException ex) {
-				ex.printStackTrace();
+			}else{existe=true;
 			}
+		}catch(SQLException ex) {
+			
+				ex.printStackTrace();
+			
 		}
 		return existe;
 	}

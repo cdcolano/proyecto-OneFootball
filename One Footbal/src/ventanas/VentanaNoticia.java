@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import clases.Noticia;
@@ -24,6 +25,7 @@ public class VentanaNoticia extends JFrame {
 	 * @param n Noticia a mostrar
 	 */
 	public VentanaNoticia(Usuario u, Noticia n) {
+
 		JPanel pCentral= new JPanel();
 		JPanel pNoticia=new JPanel();
 		pNoticia.setLayout(new BorderLayout());
@@ -44,8 +46,8 @@ public class VentanaNoticia extends JFrame {
 		taTexto.setWrapStyleWord(true);
 		taTexto.setEditable(false);
 		pCentral.add(taTexto);
-		
-		getContentPane().add(pCentral,BorderLayout.CENTER);
+		JScrollPane spCentral= new JScrollPane(pCentral);
+		getContentPane().add(spCentral,BorderLayout.CENTER);
 		VentanaInicio.anyadeBotonera(this, u);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(200, 300, 500, 500);

@@ -70,7 +70,8 @@ public class VentanaInicio extends JFrame {
 				equipos.add(e);
 			}
 		}
-		pCentral.setLayout(new GridLayout(equipos.size()+1,1));
+		//pCentral.setLayout(new GridLayout(equipos.size()+1,1));
+		pCentral.setLayout(new BoxLayout(pCentral,BoxLayout.Y_AXIS));
 		pTopNews=new JPanel();
 		JPanel pTopNewsConTit= new JPanel();
 		pTopNewsConTit.setLayout(new BorderLayout());
