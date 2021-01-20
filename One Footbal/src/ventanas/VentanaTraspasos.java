@@ -35,7 +35,12 @@ public class VentanaTraspasos extends JFrame {
 			Liga l=(Liga)c;
 			if (l.getTraspasos()==null || l.getTraspasos().size()==0) {
 				for(Equipo e:l.getEquipos()) {
-					l.getTraspasos().addAll(BD.selectTraspasos(e));
+					ArrayList<Traspaso>traspasosBuenos=BD.selectTraspasos(e);
+					for (Traspaso t:traspasosBuenos) {
+						if (l.buscaTraspaso(t)) {
+							l.getTraspasos().add(t);
+						}
+					}
 				
 				}
 			}

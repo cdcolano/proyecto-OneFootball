@@ -187,6 +187,16 @@ public class Liga extends Contenedor{
 			return false;
 		}
 	}
+	
+	
+	public boolean buscaTraspaso(Traspaso t) {
+		for (Traspaso tras:traspasos) {
+			if (t.equals(tras)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 
 

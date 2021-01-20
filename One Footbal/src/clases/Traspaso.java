@@ -79,7 +79,7 @@ public class Traspaso { // jugador + fecha primary key
 	 */
 	public boolean equals(Traspaso tras) {
 		if (jugador.equals(tras.getJugador()) && equipo.equals(tras.getEquipo())  && 
-				vendedor.equals(tras.getVendedor()) && precio==tras.getPrecio() && fecha.equals(tras.getFecha())) {
+				vendedor.equals(tras.getVendedor()) ) {
 			return true;
 		}else {
 			return false;
