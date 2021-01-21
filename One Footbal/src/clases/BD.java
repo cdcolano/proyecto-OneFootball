@@ -2293,7 +2293,7 @@ public class BD {
 	 * @param usuario
 	 */
 	public static void deleteUsuario(Usuario u) {
-		String s="DELETE FROM Usuario WHERE correoElec='"+ u.getCorreoElec()+ "'";
+		String s="DELETE FROM Usuario WHERE correoElect='"+ u.getCorreoElec()+ "'";
 		Connection con = BD.initBD("oneFootball.db");
 		try {
 			Statement st = con.createStatement();

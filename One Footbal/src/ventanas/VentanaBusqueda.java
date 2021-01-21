@@ -21,6 +21,11 @@ import clases.Jugador;
 import clases.Liga;
 import clases.Usuario;
 
+/**Ventana que permite añadir nuevos Equipos,Jugadores o Ligas a los ya seguidos
+ * permite la busqueda a traves de un JtextField 
+ * @author cdcol
+ *
+ */
 public class VentanaBusqueda extends JFrame{
 	JTextField tfBuscador;
 	ArrayList<Jugador>jugadores;
@@ -212,6 +217,10 @@ public class VentanaBusqueda extends JFrame{
 
 
 
+/**Editor que dota de funcionalidad a los botones de la tabla Liga
+ * @author cdcol
+ *
+ */
 class ButtonEditorLiga extends DefaultCellEditor {
 
     protected JButton button;
@@ -278,6 +287,10 @@ class ButtonEditorLiga extends DefaultCellEditor {
 
 
 
+/**Editor que dota de funcionalidad a los botones de la tabla Equipo
+ * @author cdcol
+ *
+ */
 class ButtonEditorEquipo extends DefaultCellEditor {
 
     
@@ -345,7 +358,10 @@ class ButtonEditorEquipo extends DefaultCellEditor {
     }
 }
 
-
+/**Editor que dota de funcionalidad a los botones de la tabla Jugador
+ * @author cdcol
+ *
+ */
 class ButtonEditorJugador extends DefaultCellEditor {
 
     protected JButton button;
@@ -414,6 +430,10 @@ class ButtonEditorJugador extends DefaultCellEditor {
 }
 
 
+/**Renderer que incluye el icono correspondiente a la imagen del equipo en la tabla Jugador
+ * @author cdcol
+ *
+ */
 class RendererEquipo extends DefaultTableCellRenderer {
 	   
 	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {

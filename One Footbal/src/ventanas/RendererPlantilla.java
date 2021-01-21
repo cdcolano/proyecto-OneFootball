@@ -7,6 +7,10 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+/**Renderer que hace que la columna 0 se sistitya por el icono correspondiente
+ * @author cdcol
+ *
+ */
 public class RendererPlantilla extends DefaultTableCellRenderer {
 	   
 	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {

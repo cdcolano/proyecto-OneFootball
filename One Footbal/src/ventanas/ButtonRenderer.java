@@ -6,6 +6,11 @@ import java.awt.Component;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
+/**Renderer para los botones implementados en Jtble 
+ * en las clases VentanaSiguiendo y Ventana Busqueda
+ * @author cdcol
+ *
+ */
 public class ButtonRenderer extends JButton implements TableCellRenderer {
     public ButtonRenderer() {
         setOpaque(true);

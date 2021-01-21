@@ -23,6 +23,11 @@ import clases.Usuario;
 //TODO ventana de busqueda 
 //TODO barras de progreso en el acceso a BD 
 //TODO recur  con Noticias->implementar Date en Noticias y buscador de Noticias
+/**Ventana de Registro o de logIn
+ * permite cambiar de modo a traves de un JMenu
+ * @author cdcol
+ *
+ */
 public class VentanaLogIn extends JFrame {
 	HashMap<String, Usuario>logIn;
 	JTextField tNombre;
@@ -173,6 +178,9 @@ public class VentanaLogIn extends JFrame {
 		}
 			VentanaLogIn v2= new VentanaLogIn();
 	}
+	/**
+	 * Prepara el menuBar 
+	 */
 	private void prepareMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -215,6 +223,9 @@ public class VentanaLogIn extends JFrame {
 	}
 	
 	
+	/**Valida los campos al registrarse
+	 * @return true si es valido, false si no
+	 */
 	public boolean validaCampos() {
 		if (tNombre.getText().isEmpty() || tContrasena.getText().isEmpty()|| tCorreo.getText().isEmpty()) {
 			return false;

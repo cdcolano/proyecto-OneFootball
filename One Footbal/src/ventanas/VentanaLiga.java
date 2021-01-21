@@ -373,6 +373,10 @@ class ColumnColorRenderer extends DefaultTableCellRenderer {
 	      return cell;
 	   }
 }
+/**Ajusta las columnas correspondientes con un icono
+ * @author cdcol
+ *
+ */
 class RendererStats extends DefaultTableCellRenderer {
 	   
 	   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
