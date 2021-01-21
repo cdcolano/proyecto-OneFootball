@@ -137,7 +137,9 @@ public class Jugador implements ConImagenes{
 	 * @return devuelve 1 si el jugador a comparar es mayor y -1 si es menor
 	 */
 	public int compareTo(Jugador j) {
-		if (!nombre.contentEquals(j.getNombre()))	return nombre.compareTo(j.getNombre());
+		if (!nombre.contentEquals(j.getNombre())) {
+			return nombre.compareTo(j.getNombre());
+		}
 		else {
 			return equipo.getNombre().compareTo(j.getEquipo().getNombre());
 		}

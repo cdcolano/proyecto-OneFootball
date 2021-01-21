@@ -87,6 +87,7 @@ public class Usuario {
 	public void removeJugador(Jugador j) {
 		jugadoresSeguidos=quickSortJugador(jugadoresSeguidos, 0, jugadoresSeguidos.size()-1);
 		int indice=buscaJugador(jugadoresSeguidos, j, 0, jugadoresSeguidos.size()-1);
+		if (indice!=-1)
 		jugadoresSeguidos.remove(indice);
 	}
 	
@@ -96,6 +97,7 @@ public class Usuario {
 	public void removeLiga(Liga l) {
 		ligasSeguidas=quickSortLiga(ligasSeguidas, 0, ligasSeguidas.size()-1);
 		int indice= buscaLiga(ligasSeguidas, l, 0, ligasSeguidas.size()-1);
+		if (indice!=-1)
 		ligasSeguidas.remove(indice);
 	}
 	
@@ -105,6 +107,7 @@ public class Usuario {
 	public void removeEquipo(Equipo e) {
 		equiposSeguidos=quickSortEquipo(equiposSeguidos, 0, equiposSeguidos.size()-1);
 		int indice=buscaEquipo(equiposSeguidos, e, 0, equiposSeguidos.size()-1);
+		if (indice!=-1)
 		equiposSeguidos.remove(indice);
 	}
 	
@@ -208,10 +211,10 @@ public class Usuario {
 		int izquierda=inferior;
 		int derecha=superior;
 		do {
-			while (lista.get(izquierda).getNombre().compareTo(mitad.getNombre())<0 && izquierda<superior) {
+			while (lista.get(izquierda).compareTo(mitad)<0 && izquierda<superior) {
 				izquierda++;
 			}
-			while (mitad.getNombre().compareTo(lista.get(derecha).getNombre())<0 && derecha>inferior) {
+			while (mitad.compareTo(lista.get(derecha))<0 && derecha>inferior) {
 				derecha--;
 			}
 		if (izquierda<derecha) {
@@ -248,22 +251,23 @@ public class Usuario {
 			return -1;
 		}
 		Jugador jugadorSel= lista.get(indice);
-		 if (indiceInf==indiceSup) {
+	/*	 if (indiceInf==indiceSup) {
 			if (!j.equals(jugadorSel)) {
 				return -1;
 			}
 		}
+	*/	
 		if (j.equals(jugadorSel)) {
 			return indice;
+			
 		}
 		else {
 			if (j.compareTo(jugadorSel)>0) {
-				System.out.println(indice + "mitad");
-				System.out.println(indiceSup + "Superior");
-				System.out.println(indiceInf + "inferior");
 				return buscaJugador(lista, j, indice +1, indiceSup);
-			}else
+			}else {
 				return buscaJugador(lista, j, indiceInf, indice-1);
+		
+			}
 		}
 		
 	}
@@ -315,9 +319,10 @@ public class Usuario {
 			return -1;
 		}
 		Equipo equipoSel= lista.get(indice);
-		if (indiceInf==indiceSup && !e.equals(equipoSel)) {
-			return -1;
-		}
+//		if (indiceInf==indiceSup && !e.equals(equipoSel)) {
+//			System.out.println("AQUI");
+//			return -1;
+//		}
 		if (e.equals(equipoSel)) {
 			return indice;
 		}
@@ -331,8 +336,10 @@ public class Usuario {
 			};
 			if (comparador.compare(e, equipoSel)>0) {
 				return buscaEquipo(lista, e, indice +1, indiceSup);
+				
 			}else {
 				return buscaEquipo(lista, e, indiceInf, indice-1);
+				
 			}
 		}
 		

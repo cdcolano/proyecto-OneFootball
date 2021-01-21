@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import org.junit.Test;
+import org.omg.CORBA.portable.IndirectionException;
 
 import clases.Equipo;
 import clases.Jugador;
@@ -98,6 +99,9 @@ public class ListasUsuario {
 				falla2=false;
 			}
 		}
+		
+		
+		
 		if (falla2) {
 			fail();
 		}
