@@ -1910,7 +1910,7 @@ public class BD {
 		 * @param equipo
 		 * @return lista de noticias
 		 */
-		private static ArrayList<Noticia> selectNoticias(Equipo e) {
+		public static ArrayList<Noticia> selectNoticias(Equipo e) {
 			String s = "SELECT * FROM EquipoNot WHERE nomEquipo='" + e.getNombre() +"'";
 			
 			Connection con = initBD("OneFootball.db");

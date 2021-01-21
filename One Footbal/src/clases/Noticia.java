@@ -72,12 +72,12 @@ public class Noticia implements ConImagenes{
 		this.ligas= new ArrayList<Liga>();
 	}
 	
-	/**Considera iguales dos noticias con mismo titulo y mismo cuerpo
+	/**Considera iguales dos noticias con mismo titulo
 	 * @param n Noticia a comparar
 	 * @return true si son iguales false si no lo son
 	 */
 	public boolean equals(Noticia n) {
-		if (n.getTitulo().contentEquals(titulo) && n.getCuerpo().contentEquals(cuerpo)) {
+		if (n.getTitulo().contentEquals(titulo) ) {
 			return true;
 		}else {
 			return false;

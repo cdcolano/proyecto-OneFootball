@@ -15,10 +15,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import clases.BD;
 import clases.Contenedor;
 import clases.Equipo;
+import clases.Jornada;
 import clases.Liga;
 import clases.Noticia;
+import clases.Traspaso;
 import clases.Usuario;
 
 /**Ventana que dispone varias noticias
@@ -27,7 +30,7 @@ import clases.Usuario;
  *
  */
 public class VentanaNoticias extends JFrame {
-
+	private Liga l;
 	
 	/**
 	 * @param u Usuario loggeadp
@@ -36,11 +39,23 @@ public class VentanaNoticias extends JFrame {
 	public VentanaNoticias(Usuario u, Contenedor c) {
 		if (c instanceof Liga) {
 			ArrayList<Noticia>not= new ArrayList<Noticia>();
-			Liga l=(Liga)c;
-			for (Equipo e:l.getEquipos()) {
-				not.addAll(e.getNoticias());
+			l=(Liga)c;
+			if (l.getNoticias()==null || l.getNoticias().size()==0) {
+				l.setNoticias(new ArrayList<Noticia>());
+				for(Equipo e:l.getEquipos()) {
+					ArrayList<Noticia>noticiasBuenas=e.getNoticias();
+					for (Noticia n:noticiasBuenas) {
+						if (l.buscaNoticia(n)) {
+							l.getNoticias().add(n);
+						}
+					}
+				
+				}
 			}
-			l.setNoticias(not);
+		/*	for (Equipo e:l.getEquipos()) {
+				not.addAll(e.getNoticias());
+			}*/
+			//l.setNoticias(not);
 		}
 		JScrollPane scpanelCentral= new JScrollPane();
 		JPanel pEquipo= new JPanel();
@@ -80,7 +95,6 @@ public class VentanaNoticias extends JFrame {
 		
 		VentanaInicio.anyadeBotonera(this, u);
 		if (c instanceof Liga) {
-			Liga l=(Liga)c;
 			VentanaLiga.anyadePanelSup(this, l, u);
 		}else {
 			Equipo e=(Equipo)c;

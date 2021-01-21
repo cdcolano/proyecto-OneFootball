@@ -213,6 +213,16 @@ public class Liga extends Contenedor{
 		}
 		return true;
 	}
+	
+	public boolean buscaNoticia(Noticia n) {
+		for (Noticia not:noticias) {
+			if (n.equals(not)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 
 
 
