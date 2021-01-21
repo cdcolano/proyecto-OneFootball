@@ -15,10 +15,16 @@ public class Liga extends Contenedor{
 	
 		
 
+	/**
+	 * 
+	 */
 	public Liga() {
 		equipos= new TreeSet<Equipo>();
 		maximosGoleadores= new TreeSet<Jugador>(new Comparator<Jugador>() {
 
+			/**
+			 *Compara en base a los goles
+			 */
 			@Override
 			public int compare(Jugador o1, Jugador o2) {
 				if (o1.getNumGoles()<o2.getNumGoles()) {
@@ -37,6 +43,9 @@ public class Liga extends Contenedor{
 		
 		maximosAsistentes=new TreeSet<Jugador>(new Comparator<Jugador>() {
 
+			/**
+			 *Compara en base a las asistencias
+			 */
 			@Override
 			public int compare(Jugador o1, Jugador o2) {
 				if (o1.getNumAsistencias()>o2.getNumAsistencias()) {
@@ -52,6 +61,9 @@ public class Liga extends Contenedor{
 		});
 		tarjetasAmarillas= new TreeSet<Jugador>(new Comparator<Jugador>() {
 
+			/**
+			 *Compara en base a las amarillas
+			 */
 			@Override
 			public int compare(Jugador o1, Jugador o2) {
 				if (o1.getNumAmarillas()>o2.getNumAmarillas()) {
@@ -189,6 +201,10 @@ public class Liga extends Contenedor{
 	}
 	
 	
+	/**Busca el traspaso en la lista de traspasos
+	 * @param t traspaso
+	 * @return true si no esta false si esta
+	 */
 	public boolean buscaTraspaso(Traspaso t) {
 		for (Traspaso tras:traspasos) {
 			if (t.equals(tras)) {
@@ -200,6 +216,10 @@ public class Liga extends Contenedor{
 
 
 
+	/**Compara dos ligas en base al nombre
+	 * @param ligaSel liga a comparar
+	 * @return1 si la liga a comparar es mayor y -1 si es menor
+	 */
 	public int compareTo(Liga ligaSel) {
 		// TODO Auto-generated method stub
 		return nombre.compareTo(ligaSel.getNombre());

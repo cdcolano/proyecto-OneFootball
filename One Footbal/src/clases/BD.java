@@ -209,6 +209,10 @@ public class BD {
 	//                      Operaciones sobre tablas                   //
 	/////////////////////////////////////////////////////////////////////
 	
+	/**Selecciona al Usuario indicado por la clave primaria
+	 * @param correoElec correo del usuario clave primaria
+	 * @return Usuario con ese correo
+	 */
 	public static Usuario selectUsuario(String correoElec) {
 		//statement.executeUpdate : Cuando queramos hacer create, insert, delete, update, drop
 		//statement.executeQuery : Cuando queramos hacer select
@@ -246,6 +250,10 @@ public class BD {
 	
 	}
 	
+	/**Selecciona los equipos relacionados con el Usuario especificado
+	 * @param u Usuario relacionado con los equipos
+	 * @return ArrayList de equipos relacionados con el Usuario
+	 */
 	public static ArrayList<Equipo> selectEquiposUsuario(Usuario u) {
 		String sql = "SELECT * FROM UsuarioEquipo WHERE correoUsuario ='"+u.getCorreoElec()+"'";
 		Connection con = initBD("oneFootball.db");
@@ -265,6 +273,10 @@ public class BD {
 		}
 	}
 	
+	/**Selecciona las ligas relacionadas con el Usuario especificado
+	 * @param u Usuario relacionado con los equipos
+	 * @return ArrayList de ligas relacionadas con el Usuario
+	 */
 	public static ArrayList<Liga> selectLigasUsuario(Usuario u) {
 		String sql = "SELECT * FROM UsuarioLiga WHERE correoUsuario ='"+u.getCorreoElec()+"'";
 		Connection con = initBD("oneFootball.db");
@@ -287,6 +299,9 @@ public class BD {
 	
 	
 	
+	/**Selecciona todas las ligas
+	 * @return ArrayList de todos las ligas
+	 */
 	public static ArrayList<Liga> selectLigas() {
 		String sql = "SELECT * FROM Liga";
 		Connection con = initBD("oneFootball.db");
@@ -321,6 +336,9 @@ public class BD {
 	}
 	
 
+	/**Selecciona todos los quipos
+	 * @return ArrayList con todos los equipos
+	 */
 	public static ArrayList<Equipo> selectEquipos() {
 		String sql = "SELECT * FROM Equipo";
 		Connection con = initBD("oneFootball.db");
@@ -357,6 +375,10 @@ public class BD {
 	
 	
 	
+	/**Selecciona los jugadores a los que sigue un usuario 
+	 * @param Usuario que sigue a los jugadores
+	 * @return ArrayList de Jugadores
+	 */
 	public static ArrayList<Jugador> selectJugadoresUsuario(Usuario u) {
 		String sql = "SELECT * FROM UsuarioJugador WHERE correoUsuario ='"+u.getCorreoElec()+"'";
 		Connection con = initBD("oneFootball.db");
@@ -409,6 +431,11 @@ public class BD {
 		
 	}
 	
+	/**Inserta los valores especificados en la tabla Usuario
+	 * @param nombre del Usuario
+	 * @param correoElec del Usuario
+	 * @param contrasena del Usuario
+	 */
 	public static void insertarUsuario(String nombre, String correoElec,String con) {
 		
 		String s = "INSERT INTO Usuario VALUES('"+nombre+"','" + correoElec + "','"+  con+"')";
@@ -424,6 +451,9 @@ public class BD {
 		
 	}
 	// 
+	/**Inserta una Liga en la BD 
+	 * @param liga a insertar
+	 */
 	public static void insertarLiga(Liga l) {
 		String s = "INSERT INTO Liga VALUES('"+l.getNombre()+"','"+l.getImagen()+  "' )";
 
@@ -449,6 +479,9 @@ public class BD {
 							+ "liga string" + ")");
 			
 	 */
+	/**inserta un equipo en la bd
+	 * @param equipo a insertar
+	 */
 	public static void insertarEquipo(Equipo e) {
 		String s = "INSERT INTO Equipo VALUES('"+e.getNombre()+"', '"+e.getImagen()+  "'," + e.getPuntos() + "," +e.getGolesAFavor() + "," +e.getGolesEnContra()
 		+ ",'" + e.getLiga().getNombre() + "')";
@@ -469,6 +502,9 @@ public class BD {
 							+ "fechaInicio bigint,"
 							+ "fechaFin bigint,"+
 							"liga string)");
+	 */
+	/**inserta una Jornada en ls BD
+	 * @param jornada a insertar
 	 */
 	public static void insertarJornada(Jornada j) {
 		String s = "INSERT INTO Jornada VALUES("+j.getNumJornada()+","+j.getFechaInicio().getTime()+  "," + j.getFechaFinal().getTime() 
@@ -496,6 +532,9 @@ public class BD {
 								+ "nomEquipo string,"
 								+ "imagen string)");
 	 */
+	/**inserta un Jugador en la BD
+	 * @param jugador
+	 */
 	public static void insertarJugador(Jugador j) {
 		if (selectJugador(j.getNombre(), j.getEquipo())==null) {
 			String s = "INSERT INTO Jugador VALUES('"+j.getNombre()+"','"+j.getPais()+ "','" + j.getPosicion()+"'," + 
@@ -517,6 +556,9 @@ public class BD {
 					 			+ "img string,"
 					 			+ "cuerpo string,"
 					 			+ "fuente string)");
+	 */
+	/**Inserta una noticia en la bd
+	 * @param noticia
 	 */
 	public static void insertarNoticia(Noticia n) {
 		if (selectNoticia(n.getTitulo())==null) {
@@ -541,6 +583,9 @@ public class BD {
 								+ "nomLiga string"
 								+ "golesVisitante int)"
 	 */
+	/**inserta un partido en la bd
+	 * @param partido
+	 */
 	public static void insertarPartido(Partido p) {
 		if (selectPartido(p.getLocal(), p.getVisitante(), p.getFecha())==null) {
 			String s= "INSERT INTO Partido VALUES('"+p.getLocal().getNombre()+"','"+p.getVisitante().getNombre()+ "'," + p.getFecha().getTime() 
@@ -563,6 +608,9 @@ public class BD {
 							"golesAFavor int,"
 							+ "golesEnContra int,"
 							+ "liga string" + ")")
+	 */
+	/**inserta una seleccion en la bd
+	 * @param seleccion
 	 */
 	public static void insertarSeleccion(SeleccionNacional sel) {
 		if(selectSeleccion(sel.getNombre())==null) {
@@ -588,6 +636,9 @@ public class BD {
 								+ "grado int,"
 								+ "fecha bigint)");
 	 */
+	/**inserta un traspaso en la bd
+	 * @param traspaso
+	 */
 	public static void insertarTraspaso(Traspaso t) {
 		if (selectTraspaso(t.getJugador(), t.getFecha())==null) {
 			String s="INSERT INTO Traspaso VALUES('"+t.getJugador().getNombre()+"','"+t.getVendedor().getNombre()+ "','" + t.getEquipo().getNombre() + "'," 
@@ -609,6 +660,9 @@ public class BD {
 						   "(nombre string, "+
 						   " correoElect string,"
 						   + "contrasena string)");
+	 */
+	/**inserta un Usuario en la bd
+	 * @param usuario
 	 */
 	public static void insertarUsuario(Usuario u) {
 		if (selectUsuario(u.getCorreoElec())==null) {
@@ -632,6 +686,11 @@ public class BD {
 							+ "nomEquipo string,"
 							+ "correoUsuario string)");
 	 */
+	/**inserta una relacion entre Usuario y jugador
+	 * @param jugador
+	 * @param usuario
+	 * @return true si la relacion ya existia false si no
+	 */
 	public static boolean insertarUsuarioJugador(Jugador j, Usuario u) {
 		boolean existe=false;
 		String sql="Select * from UsuarioJugador WHERE nomJugador='" + j.getNombre()+ "' and nomEquipo='" + j.getEquipo().getNombre()
@@ -653,6 +712,11 @@ public class BD {
 		return existe;
 	}
 	
+	/**inserta una relacion entre Usuario y equipo
+	 * @param equipo
+	 * @param usuario
+	 * @return true si la relacion ya existia false si no
+	 */
 	public static boolean insertarUsuarioEquipo(Equipo e, Usuario u) {
 		boolean existe=false;
 		String sql="Select * from UsuarioEquipo WHERE nomEquipo='" + e.getNombre()
@@ -675,7 +739,11 @@ public class BD {
 	
 	
 	
-	
+	/**inserta una relacion entre Usuario y liga
+	 * @param liga
+	 * @param usuario
+	 * @return true si la relacion ya existia false si no
+	 */
 	public static boolean insertarUsuarioLiga(Liga l, Usuario u) {
 		boolean existe=false;
 		String sql="Select * from UsuarioLiga WHERE nomLiga='" + l.getNombre()+ "' "+
@@ -710,6 +778,14 @@ public class BD {
 					+ "numAmarillas int,"
 					+ "fecha bigint)");
 	 */
+	/**inserta una relacion entre un partido y un jugador
+	 * @param partido
+	 * @param jugador
+	 * @param numGoles que ha metido el jugador en el partido
+	 * @param numAsistencias que ha repartido el jugador en el partido
+	 * @param numRojas que ha recibido el jugador en el partido
+	 * @param numAmarillas que ha recibido el jugador en el partido
+	 */
 	public static void insertarPartidoJugador(Partido p, Jugador j, int numGoles, int numAsistencias, int numRojas, int numAmarillas) {
 		boolean existe=false;
 		if (SelectTodosJugadoresPartido(p)!=null) {
@@ -738,6 +814,10 @@ public class BD {
 					"(nomEquipo string,"
 					+ "tituloNot string)");
 	 */
+	/**Inserta una relacion entre equipo y noticia
+	 * @param equipo
+	 * @param noticia
+	 */
 	public static void insertarEquipoNot(Equipo e, Noticia n) {
 		boolean existe=false;
 		for (Equipo eq2: selectEquiposNot(n)) {
@@ -758,6 +838,10 @@ public class BD {
 	}
 	
 	
+	/**Inserta una relacion entre noticia y liga
+	 * @param liga
+	 * @param noticia
+	 */
 	public static void insertarLigaNot(Liga l,Noticia n) {
 		boolean existe=false;
 		if (selectLigasNot(n)!=null) {
@@ -779,12 +863,19 @@ public class BD {
 		}
 	}
 	
+	/**rellena la lista de traspasos de un equipo
+	 * @param equipo
+	 */
 	public void rellenaTraspasos(Equipo e) {
 		e.setTraspasos(selectTraspasos(e));
 	}
 	
 	
 	//TODO AKIIIIIIIII
+	/**Selecciona un equipo dado su nombre(clave unica)
+	 * @param nomEquipo nombre del equipo
+	 * @return Equipo
+	 */
 	public static Equipo selectEquipo (String nomEquipo) {
 		
 		String s = "SELECT * FROM Equipo WHERE nom='" + nomEquipo +"'";
@@ -820,6 +911,10 @@ public class BD {
 		}
 	}
 	
+	/**Selecciona todos los jugadores que han intervenido en un partido
+	 * @param partido
+	 * @return lista de jugadores
+	 */
 	private static ArrayList<Jugador> SelectTodosJugadoresPartido(Partido p) {
 		String s = "SELECT * FROM PartidoJugador WHERE nomEquipolocal='" + p.getLocal().getNombre() +"' and nomEquipoVisitante='" + p.getVisitante().getNombre() 
 				+"'" +" and fecha=" + p.getFecha().getTime();
@@ -849,6 +944,10 @@ public class BD {
 							+ "liga string"
 	 */
 	
+	/**Selecciona los traspasos en los que participa un equipo
+	 * @param equipo que participa 
+	 * @return lista de traspasos
+	 */
 	public static ArrayList<Traspaso> selectTraspasos(Equipo e) {
 		String s = "SELECT t.*, e1.nom,e1.img as 'imgVendedor', e1.puntos, e1.golesAFavor, e1.golesEnContra,e1.liga,e2.nom as 'nomComprador',e2.img as 'imgComprador', e2.puntos as 'puntosComprador', e2.golesAfavor"
 				+ " as 'golesAFavorComprador', e2.golesEnContra as 'golesEnContraComprador', e2.liga as 'ligaComprador'"
@@ -910,6 +1009,10 @@ public class BD {
 		}
 	}
 
+		/**Selecciona una liga dado su nombre (clave unica)
+		 * @param nomLiga nombre de la iga
+		 * @return liga
+		 */
 		public static Liga selectLiga (String nomLiga) {
 			
 			String s = "SELECT * FROM Liga WHERE nom='" + nomLiga +"'";
@@ -950,6 +1053,10 @@ public class BD {
 		
 		
 		
+		/**Selecciona los Traspasos de una liga
+		 * @param liga
+		 * @return lista de traspasos
+		 */
 		private static ArrayList<Traspaso> selectTraspasos(Liga l) {
 			ArrayList<Traspaso>traspasos= new ArrayList<Traspaso>();
 			for (Equipo e: l.getEquipos()) {
@@ -958,6 +1065,10 @@ public class BD {
 			return traspasos;
 		}
 
+		/**Selecciona las noticias relacionadas con una liga
+		 * @param liga
+		 * @return lista de noticias
+		 */
 		private static ArrayList<Noticia> selectNoticias(Liga l) {
 			String s = "SELECT * FROM LigaNot WHERE nomLiga='" + l.getNombre() +"'";
 			Connection con = initBD("OneFootball.db");
@@ -976,6 +1087,10 @@ public class BD {
 			}
 		}
 
+		/**Selecciona los jugadores que han metido algun gol en la liga especificada
+		 * @param liga
+		 * @return lista de Jugadores ordenada por numero de goles
+		 */
 		public static TreeSet<Jugador> selectJugadoresGoleadores(Liga l) {
 			String in="('";
 			int i=0;
@@ -1037,6 +1152,11 @@ public class BD {
 		
 		
 		// TODO AKIIII acelga
+		/**Selecciona un equipo dada una liga y el nombre de este equipo
+		 * @param liga
+		 * @param nomEquipo nombre del equipo
+		 * @return equipo
+		 */
 		public static Equipo selectEquipo(Liga l, String nomEquipo) {
 
 			String s = "SELECT * FROM Equipo WHERE nom='" + nomEquipo +"'";
@@ -1071,6 +1191,10 @@ public class BD {
 			}
 		}
 		
+		/**Selecciona los jugadores que han dado alguna asistemcia en la liga especificada
+		 * @param liga
+		 * @return lista de Jugadores ordenada por numero de asistencias
+		 */
 		public static TreeSet<Jugador> selectJugadoresAsistentes(Liga l) {
 			String in="('";
 			int i=0;
@@ -1129,6 +1253,10 @@ public class BD {
 		}
 	}
 		
+		/**Selecciona los jugadores que han recibido alguna amarilla en la liga especificada
+		 * @param liga
+		 * @return lista de Jugadores ordenada por numero de amarillas
+		 */
 		public static TreeSet<Jugador> selectJugadoresAmarillas(Liga l) {
 			String in="('";
 			int i=0;
@@ -1187,6 +1315,11 @@ public class BD {
 		}
 	}
 		
+		
+		/**Selecciona los jugadores que han recibido alguna Roja en la liga especificada
+		 * @param liga
+		 * @return lista de Jugadores ordenada por numero de rojas
+		 */
 		public static TreeSet<Jugador> selectJugadoresRojas(Liga l) {
 			String in="('";
 			int i=0;
@@ -1247,6 +1380,10 @@ public class BD {
 		
 		
 
+		/**Selecciona las Jornadas de una liga
+		 * @param liga
+		 * @return lista de Jornadas
+		 */
 		public static ArrayList<Jornada> selectJornadas(Liga l) {
 			String s = "SELECT * FROM Jornada WHERE liga='" + l.getNombre() +"'";
 			Connection con = initBD("OneFootball.db");
@@ -1273,6 +1410,10 @@ public class BD {
 		}
 		
 		//TODO AKIIIII acelga
+		/**selecciona los Equipos que juegan en una liga
+		 * @param liga
+		 * @return lista ordenada por puntos de equipos
+		 */
 		public static  TreeSet<Equipo>selectEquipos(Liga l){
 			String s = "SELECT * FROM Equipo WHERE liga='" + l.getNombre() +"'";
 			Connection con = initBD("OneFootball.db");
@@ -1340,6 +1481,11 @@ public class BD {
 		}
 		
 		
+		/**Selecciona los traspaso dados entre dos equipos
+		 * @param e1 equipo Vendedor
+		 * @param e2 equipo Comprador
+		 * @return lista de traspasos
+		 */
 		public static ArrayList<Traspaso> selectTraspaso(Equipo e1, Equipo e2) {
 			String s = "SELECT * FROM Traspaso WHERE nomEquipoVendedor='" + e1.getNombre() +"' and nomEquipoComprador='" + e2.getNombre()+ "'";
 			Connection con = initBD("OneFootball.db");
@@ -1369,6 +1515,11 @@ public class BD {
 		
 		
 
+		/**selecciona un traspaso dado un Jugador y una fecha
+		 * @param jugador
+		 * @param fecha
+		 * @return Traspaso
+		 */
 		public static Traspaso selectTraspaso(Jugador j, Date fecha) {
 			String s = "SELECT * FROM Traspaso WHERE nomJugador='" + j.getNombre() +"' and fecha=" + fecha.getTime();
 			Connection con = initBD("OneFootball.db");
@@ -1398,6 +1549,11 @@ public class BD {
 		
 		
 		
+		/**Selecciona una jornada dado el numero de jornada y la liga
+		 * @param numJornada numero de jornada
+		 * @param liga
+		 * @return Jornada
+		 */
 		public static Jornada selectJornada(int numJornada, Liga l) {
 			String s = "SELECT * FROM Jornada WHERE liga='" + l.getNombre() +"' and numJornada=" + numJornada;
 			Connection con = initBD("OneFootball.db");
@@ -1425,6 +1581,10 @@ public class BD {
 		}
 		
 		
+		/**Selecciona todos los partios de una jornada
+		 * @param jornada
+		 * @return lista de partidos
+		 */
 		public static ArrayList<Partido> selectPartidos(Jornada jor) {
 			String s = "SELECT * FROM Partido WHERE nomLiga='" + jor.getLiga().getNombre() +"' and numJornada=" + jor.getNumJornada();
 			Connection con = initBD("OneFootball.db");
@@ -1456,6 +1616,10 @@ public class BD {
 		}
 		
 
+		/**Selecciona los jugadores que han recibido amarilla en un partido
+		 * @param partidp
+		 * @return lista de jugadores
+		 */
 		private static ArrayList<Jugador> selectJugadoresAmarillas(Partido p) {
 			String s = "SELECT * FROM PartidoJugador WHERE nomEquipolocal='" + p.getLocal().getNombre() +"' and nomEquipoVisitante='" + p.getVisitante().getNombre() 
 					+"'and numAmarillas>0" +" and fecha=" + p.getFecha().getTime();
@@ -1475,6 +1639,10 @@ public class BD {
 			}
 		}
 		
+		/**Selecciona los jugadores que han recibido roja en un partido
+		 * @param partido
+		 * @return lista de jugadores
+		 */
 		private static ArrayList<Jugador> selectJugadoresRojas(Partido p) {
 			String s = "SELECT * FROM PartidoJugador WHERE nomEquipolocal='" + p.getLocal().getNombre() +"' and nomEquipoVisitante='" + p.getVisitante().getNombre() 
 					+"'and numRojas>0" +" and fecha=" + p.getFecha().getTime();
@@ -1494,6 +1662,11 @@ public class BD {
 			}
 		}
 		
+		
+		/**Selecciona los jugadores que han marcado en un partido
+		 ** @param partido
+		 *@return lista de jugadores
+		 */
 		private static ArrayList<Jugador> selectJugadoresGoleadores(Partido p) {
 			String s = "SELECT * FROM PartidoJugador WHERE nomEquipolocal='" + p.getLocal().getNombre() +"' and nomEquipoVisitante='" + p.getVisitante().getNombre() 
 					+"'and numGoles>0" +" and fecha=" + p.getFecha().getTime();
@@ -1513,6 +1686,10 @@ public class BD {
 			}
 		}
 		
+		/**Selecciona los jugadores que han dado una asistencia en un partido
+		 * @param partido
+		 * @return lista de jugadores
+		 */
 		private static ArrayList<Jugador> selectJugadoresAsistencias(Partido p) {
 			String s = "SELECT * FROM PartidoJugador WHERE nomEquipolocal='" + p.getLocal().getNombre() +"' and nomEquipoVisitante='" + p.getVisitante().getNombre() 
 					+"'and numAsistencias>0" +" and fecha=" + p.getFecha().getTime();
@@ -1535,6 +1712,12 @@ public class BD {
 
 
 
+		/**Selecciona un partido
+		 * @param local Equipo local
+		 * @param visitante Equipo visitante
+		 * @param fecha
+		 * @return Partido
+		 */
 		public static Partido selectPartido(Equipo local,Equipo visitante, Date fecha) {
 			String s = "SELECT * FROM Partido WHERE local='" + local.getNombre() +"' and visitante='" + visitante.getNombre() +"' and fecha=" + fecha.getTime();
 			Connection con = initBD("OneFootball.db");
@@ -1563,6 +1746,11 @@ public class BD {
 			}
 		}
 //		b
+		/**Selecciona un Jugador dado su nombre y su equipo
+		 * @param nombre
+		 * @param equipo
+		 * @return jugador
+		 */
 		public static Jugador selectJugador(String nombre, Equipo e) {
 			String s = "SELECT * FROM Jugador WHERE nombre='" + nombre +"' and nomEquipo='" + e.getNombre() +"'" ;
 			Connection con = initBD("OneFootball.db");
@@ -1597,6 +1785,10 @@ public class BD {
 		}
 			
 			
+			/**Selecciona una noticia dado su titulo
+			 * @param titulo
+			 * @return noticia
+			 */
 			public static Noticia selectNoticia(String titulo) {
 				String s = "SELECT * FROM Noticia WHERE titulo='" + titulo +"'" ;
 				Connection con = initBD("OneFootball.db");
@@ -1624,6 +1816,10 @@ public class BD {
 		
 				
 				
+		/**Selecciona las ligas sobre las que habla una noticia
+		 * @param n noticia
+		 * @return lista de ligas
+		 */
 		public static ArrayList<Liga> selectLigasNot(Noticia n) {
 			String s = "SELECT * FROM LigaNot WHERE tituloNot='" + n.getTitulo()+"'" ;
 			ArrayList<Liga>ligas= new ArrayList<Liga>();
@@ -1642,6 +1838,11 @@ public class BD {
 			}
 		}
 
+		
+		/**Selecciona los equipos sobre los que habla una noticia
+		 * @param n noticia
+		 * @return lista de equipos
+		 */
 		public static ArrayList<Equipo> selectEquiposNot(Noticia n) {
 			String s = "SELECT * FROM EquipoNot WHERE tituloNot='" + n.getTitulo()+"'" ;
 			ArrayList<Equipo>equipos= new ArrayList<Equipo>();
@@ -1660,6 +1861,10 @@ public class BD {
 			}
 		}
 
+		/**selecciona la seleccion de un pais
+		 * @param pais
+		 * @return seleccion
+		 */
 		public static SeleccionNacional selectSeleccion (String pais) {
 			
 			String s = "SELECT * FROM Seleccion WHERE nom='" + pais +"'";
@@ -1694,6 +1899,10 @@ public class BD {
 		}
 		
 		
+		/**Selecciona las noticias de un equipo
+		 * @param equipo
+		 * @return lista de noticias
+		 */
 		private static ArrayList<Noticia> selectNoticias(Equipo e) {
 			String s = "SELECT * FROM EquipoNot WHERE nomEquipo='" + e.getNombre() +"'";
 			
@@ -1713,6 +1922,10 @@ public class BD {
 			}
 		}
 
+		/**selecciona los partidos de un equipo
+		 * @param equipo
+		 * @return lista de partidos
+		 */
 		public static ArrayList<Partido> selectPartidos(Equipo e) {
 			
 			String s = "SELECT * FROM Partido WHERE local='" + e.getNombre() +"' or visitante='" + e.getNombre() +"'";
@@ -1748,6 +1961,11 @@ public class BD {
 		}
 		
 		//TODO AKI ACELGA
+		/**selecciona un equipo que ha participado en un partido dado su nombre
+		 * @param partido
+		 * @param nomEquipo nombre del equipo
+		 * @return Equipo
+		 */
 		public static Equipo selectEquipoPartido(Partido p,String nomEquipo) {
 			String s = "SELECT * FROM Equipo WHERE nom='" + nomEquipo +"'";
 			
@@ -1781,6 +1999,10 @@ public class BD {
 		
 		
 
+		/**Selecciona los jugadores seleccionables de una seleccion
+		 * @param seleccion
+		 * @return lista de jugadores
+		 */
 		public static ArrayList<Jugador> selectSeleccionables(SeleccionNacional sel){
 
 			String s = "SELECT * FROM Jugador WHERE pais='" + sel.getNombre() +"'";
@@ -1814,6 +2036,10 @@ public class BD {
 		
 		
 		
+		/**selecciona la tabla entera indicada
+		 * @param tabla
+		 * @return result set
+		 */
 		public static ResultSet selectTodas(String tabla) {
 			String s = "SELECT * FROM " + tabla;
 			Connection con = initBD("OneFootball.db");
@@ -1832,6 +2058,9 @@ public class BD {
 		
 		
 		
+		/**borra el equipo indicado
+		 * @param equipo
+		 */
 		public static void deleteEquipo(Equipo e) {
 			String s="DELETE FROM Equipo WHERE nom='"+e.getNombre()+"'";
 			Connection con = BD.initBD("oneFootball.db");
@@ -1845,6 +2074,9 @@ public class BD {
 		}
 		
 		
+		/**Borra la liga indicada
+		 * @param liga
+		 */
 		public static void deleteLiga(Liga l) {
 			String s="DELETE FROM Liga WHERE nom='"+l.getNombre()+"'";
 			Connection con = BD.initBD("oneFootball.db");
@@ -1858,6 +2090,9 @@ public class BD {
 		}
 		
 		
+	/**Borra la jornada indicada
+	 * @param jornada
+	 */
 	public static void deleteJornada(Jornada j) {
 		String s="DELETE FROM Jornada WHERE liga='"+j.getLiga().getNombre()+"' and numJornada=" + j.getNumJornada();
 		Connection con = BD.initBD("oneFootball.db");
@@ -1870,6 +2105,9 @@ public class BD {
 		}
 	}
 	
+	/**Borra el jugador indicado
+	 * @param jugador
+	 */
 	public static void deleteJugador(Jugador j) {
 		String s="DELETE FROM Jugador WHERE nombre='"+j.getNombre()+"' and nomEquipo='" + j.getEquipo().getNombre()+ "'";
 		Connection con = BD.initBD("oneFootball.db");
@@ -1883,6 +2121,9 @@ public class BD {
 	}
 	
 	
+	/**Borra la noticia
+	 * @param noticia
+	 */
 	public static void deleteNoticia(Noticia n) {
 		String s="DELETE FROM Noticia WHERE titulo='"+n.getTitulo()+ "'";
 		Connection con = BD.initBD("oneFootball.db");
@@ -1895,6 +2136,9 @@ public class BD {
 		}
 	}
 	
+	/**Borra el partido indicado
+	 * @param partido
+	 */
 	public static void deletePartido(Partido p) {
 		String s="DELETE FROM Partido WHERE local='"+p.getLocal().getNombre()+ "' and visitante='" + p.getVisitante().getNombre() +"' and fecha=" + p.getFecha().getTime();
 		Connection con = BD.initBD("oneFootball.db");
@@ -1907,6 +2151,9 @@ public class BD {
 		}
 	}
 	
+	/**Borra la seleccion indicada
+	 * @param seleccion
+	 */
 	public static void deleteSeleccion(SeleccionNacional sel) {
 		String s="DELETE FROM Seleccion WHERE nom='"+ sel.getNombre()+ "'";
 		Connection con = BD.initBD("oneFootball.db");
@@ -1919,6 +2166,9 @@ public class BD {
 		}
 	}
 	
+	/**Borra el traspaso indicado
+	 * @param traspaso
+	 */
 	public static void deleteTraspaso(Traspaso t) {
 		String s="DELETE FROM Traspaso WHERE nomJugador='"+ t.getJugador().getNombre()+ "' and fecha=" + t.getFecha().getTime();
 		Connection con = BD.initBD("oneFootball.db");
@@ -1931,6 +2181,10 @@ public class BD {
 		}
 	}
 	
+	/**Borra la relacion de partido y jugador indicada
+	 * @param partido
+	 * @param jugador
+	 */
 	public static void deletePartidoJugador(Partido p, Jugador j) {
 		String s="DELETE FROM PartidoJugador WHERE nomJugador='"+ j.getNombre()+ "' and nomEquipoJugador='"+ j.getEquipo().getNombre()+ 
 				"' and nomEquipoLocal='" + p.getLocal().getNombre() + "' and nomEquipoVisitante='" +p.getVisitante().getNombre() + 
@@ -1945,6 +2199,10 @@ public class BD {
 		}
 	}
 	
+	/**Borra la relacion entre liga y noticia indicada
+	 * @param noticia
+	 * @param liga
+	 */
 	public static void deleteLigaNot(Noticia n, Liga l) {
 		String s="DELETE FROM LigaNot WHERE nomLiga='"+ l.getNombre()+ "' and tituloNot='"+ n.getTitulo()+ 
 				"' ";
@@ -1958,6 +2216,10 @@ public class BD {
 		}
 	}
 	
+	/**Borra la relacion entre equipo y noticia indicada
+	 * @param noticia
+	 * @param equipo
+	 */
 	public static void deleteEquipoNot(Noticia n, Equipo e) {
 		String s="DELETE FROM EquipoNot WHERE nomEquipo='"+ e.getNombre()+ "' and tituloNot='"+ n.getTitulo()+ 
 				"' ";
@@ -1971,6 +2233,10 @@ public class BD {
 		}
 	}
 	
+	/**Borra la relacion entre jugador y noticia indicada
+	 * @param noticia
+	 * @param jugador
+	 */
 	public static void deleteJugadorUsuario(Usuario u , Jugador j) {
 		String s="DELETE FROM UsuarioJugador WHERE nomJugador='"+ j.getNombre()+ "' and nomEquipo='"+ j.getEquipo().getNombre()
 				+"' and correoUsuario='"+ u.getCorreoElec()+ 
@@ -1985,6 +2251,10 @@ public class BD {
 		}
 	}
 	
+	/**Borra la relacion entre equipo y usuario indicada
+	 * @param usuario
+	 * @param equipo
+	 */
 	public static void deleteEquipoUsuario(Usuario u , Equipo e) {
 		String s="DELETE FROM UsuarioEquipo WHERE nomEquipo='"+ e.getNombre()
 				+"' and correoUsuario='"+ u.getCorreoElec()+ 
@@ -1998,6 +2268,11 @@ public class BD {
 			ex.printStackTrace();
 		}
 	}
+
+	/**Borra la relacion entre liga y usuario indicada
+	 * @param usuario
+	 * @param liga
+	 */
 	
 	public static void deleteLigaUsuario(Usuario u , Liga l) {
 		String s="DELETE FROM UsuarioLiga WHERE nomLiga='"+ l.getNombre()
@@ -2014,6 +2289,9 @@ public class BD {
 	}
 	
 	
+	/**Borra el usuario indicado
+	 * @param usuario
+	 */
 	public static void deleteUsuario(Usuario u) {
 		String s="DELETE FROM Usuario WHERE correoElec='"+ u.getCorreoElec()+ "'";
 		Connection con = BD.initBD("oneFootball.db");
@@ -2027,6 +2305,12 @@ public class BD {
 	}
 		
 		
+	/**Actualiza el usuario indicado
+	 * @param u usuario a actualizar
+	 * @param nombre nuevo nombre
+	 * @param correoElec nuevo correo
+	 * @param contrasena nueva contrasena
+	 */
 	public static void updateUsuario(Usuario u, String nombre, String correoElec, String contrasena) {
 		String s="UPDATE Usuario set nombre='" + nombre +"', correoElect='" + correoElec+ "', contrasena='"+ contrasena +
 	"' WHERE correoElect='"+ u.getCorreoElec()+ "'";
@@ -2052,6 +2336,15 @@ public class BD {
 							+ "golesEnContra int, "
 							+ "liga string" + ")"
 	 */
+	/**Actualiza un equipo 
+	 * @param e equipo
+	 * @param nombre nuevo 
+	 * @param img nueva
+	 * @param puntos nuevos
+	 * @param golesAFavor nuevos
+	 * @param golesEnContra nuevos
+	 * @param nomLiga nuevo
+	 */
 	public static void updateEquipo(Equipo e, String nombre,String img, int puntos, int golesAFavor, int golesEnContra,String nomLiga ) {
 		String s="UPDATE Equipo set nom='" + nombre +"', img='" + img + "', puntos="+ puntos +
 				", golesAFavor="+ golesAFavor + ", golesEnContra="+ golesEnContra+ ", liga='" +nomLiga+"'"+
@@ -2066,6 +2359,11 @@ public class BD {
 					}
 	}
 	
+	/**Actualiza una liga
+	 * @param l liga
+	 * @param nomLiga nuevo nombr
+	 * @param img nueva imagen
+	 */
 	public static void updateLiga(Liga l, String nomLiga, String img) {
 		String s="UPDATE Liga set nom='" + nomLiga +"', img='" + img + "'"+
 				" WHERE nom='"+ l.getNombre()+ "'";
@@ -2085,6 +2383,13 @@ public class BD {
 		+ "fechaInicio bigint, 
 		+ "fechaFin bigint, "+
 		"liga string)"
+	 */
+	/**Actualiza una jornada
+	 * @param j jornada
+	 * @param numJornada nuevo numero
+	 * @param fechaInicio nueva fecha de inicio
+	 * @param fechaFin nueva fecha de fin
+	 * @param nomLiga nuevo nombre liga
 	 */
 	public static void updateJornada(Jornada j, int numJornada, Date fechaInicio, Date fechaFin, String nomLiga ) {
 			String s="UPDATE Jornada set numJornada=" + numJornada+ ", fechaInicio=" + fechaInicio.getTime() + ", fechaFin="+
@@ -2108,6 +2413,16 @@ public class BD {
 	+ "numJornada int, "
 	+ "nomLiga string, "
  	+ "golesVisitante int)
+	 */
+	/**Actualiza un partido
+	 * @param partido
+	 * @param local nombre equipo local
+	 * @param visitante nombre equipo visitante
+	 * @param fecha nueva fecha
+	 * @param golesLocal nuevo 
+	 * @param numJornada nuevo
+	 * @param nomLiga nuevo
+	 * @param golesVisitante nuevo
 	 */
 	public static void updatePartido(Partido p, String local, String visitante, Date fecha, int golesLocal, int numJornada,
 			String nomLiga, int golesVisitante) {
@@ -2134,6 +2449,15 @@ public class BD {
 								+ "grado int, "
 								+ "fecha bigint)");
 	 */
+	/**Actualiza un traspaso
+	 * @param t traspaso
+	 * @param nomJugador nuevo 
+	 * @param nomEquipoVendedor nuevo
+	 * @param nomEquipoComprador nuevo
+	 * @param precio nuevo
+	 * @param grado nuevo
+	 * @param fecha nueva
+	 */
 	public static void updateTraspaso(Traspaso t, String nomJugador, String nomEquipoVendedor, String nomEquipoComprador, long precio, byte grado, Date fecha) {
 		String s="UPDATE Traspaso set nomJugador='" + nomJugador+ "', nomEquipoComprador='" + nomEquipoComprador + "', nomEquipoVendedor='"+ 
 	nomEquipoVendedor +"', fecha="+ fecha.getTime() + ", precio="+ precio + ", grado=" + grado +
@@ -2155,6 +2479,13 @@ public class BD {
 					 			+ "cuerpo string, "
 					 			+ "fuente string) ");
 	 */
+	/**Actualiza una noticia
+	 * @param noticia
+	 * @param nuevo titulo
+	 * @param nueva imagen
+	 * @param cuerpo nuevo cuerpo
+	 * @param fuente nueva fuente
+	 */
 	public static void updateNoticia(Noticia n, String titulo, String img, String cuerpo, String fuente) {
 		String s="UPDATE Noticia set titulo='" + titulo+ "', img='" + img + "', cuerpo='"+ 
 				cuerpo +"', fuente='"+ fuente+ "'"+
@@ -2170,6 +2501,15 @@ public class BD {
 	}
 	
 	
+	/**Actualiza una seleccion
+	 * @param seleccion
+	 * @param nombre nuevo nombre
+	 * @param img nueva imagen
+	 * @param puntos nuevo
+	 * @param golesAFavor nuevo
+	 * @param golesEnContra nuevo
+	 * @param nomLiga nuevo nombre de la liga
+	 */
 	public static void updateSeleccion(SeleccionNacional sel, String nombre,String img, int puntos, int golesAFavor, int golesEnContra,String nomLiga ) {
 		String s="UPDATE Seleccion set nom='" + nombre +"', img='" + img + "', puntos="+ puntos +
 				", golesAFavor="+ golesAFavor + ", golesEnContra="+ golesEnContra+ ", liga='" +nomLiga+"'"+
@@ -2197,6 +2537,20 @@ public class BD {
 								+ "numAsistencias int, "
 								+ "nomEquipo string, "
 								+ "img string)")
+	 */
+	/**Actualiza un jugador
+	 * @param jugador
+	 * @param nombre nuevo
+	 * @param pais nuevo
+	 * @param posicion nueva
+	 * @param edad nueva
+	 * @param numGoles nuevo
+	 * @param dorsal nuevo
+	 * @param numAmarillas nuevo
+	 * @param numRojas nuevo
+	 * @param numAsistencias nuevo
+	 * @param nomEquipo nuevo nombre de equipo
+	 * @param img nueva imagen
 	 */
 	public static void updateJugador(Jugador j,String nombre, String pais, String posicion, int edad, int numGoles, int dorsal, int numAmarillas,
 			int numRojas, int numAsistencias, String nomEquipo, String img) {
@@ -2227,6 +2581,19 @@ public class BD {
 					+ "numAmarillas int, "
 					+ "fecha bigint)");
 	 */
+	/**Actualiza la relacion entre Partido y Jugador
+	 * @param p partido
+	 * @param j jugador
+	 * @param nomJugador nuevo nombre jugador
+	 * @param nomEquipoJugador nuevo nombre equipo del jugador
+	 * @param nomEquipoLocal nuevo nombre equipo local
+	 * @param nomEquipoVisitante nuevo nombre equipo visitante
+	 * @param numGoles nuevo
+	 * @param numAsistencias nuevo
+	 * @param numRojas nuevo
+	 * @param numAmarillas nuevo
+	 * @param fecha nueva
+	 */
 	public static void updatePartidoJugador(Partido p, Jugador j, String nomJugador, String nomEquipoJugador, String nomEquipoLocal,
 			String nomEquipoVisitante, int numGoles, int numAsistencias, int numRojas, int numAmarillas, Date fecha) {
 		String s="UPDATE PartidoJugador set nomJugador='" + nomJugador +"', nomEquipoJugador='" + nomEquipoJugador+
@@ -2246,6 +2613,12 @@ public class BD {
 	
 	}
 	
+	/**Actualiza la relacion enttre noticia y liga
+	 * @param liga
+	 * @param noticia
+	 * @param nomLiga nuevo nombre liga
+	 * @param titulo nuevo titulo
+	 */
 	public static void updateLigaNot(Liga l, Noticia n, String nomLiga, String titulo) {
 		String s="UPDATE LigaNot set nomLiga='" + nomLiga +"', tituloNot='" + titulo + "'"+
 				" WHERE nomLiga='"+ l.getNombre()+ "' and tituloNot='" + n.getTitulo() + "'";
@@ -2259,8 +2632,14 @@ public class BD {
 		}
 	}
 	
-	public  static void updateEquipoNot(Equipo e, Noticia n, String nomLiga, String titulo) {
-		String s="UPDATE EquipoNot set nomEquipo='" + nomLiga +"', tituloNot='" + titulo + "'"+
+	/**Actualixa la relacion entre equipo y noticia
+	 * @param equipo
+	 * @param noticia
+	 * @param nomEquipo nuevo nombre del equipo
+	 * @param titulo nuevo titulo
+	 */
+	public  static void updateEquipoNot(Equipo e, Noticia n, String nomEquipo, String titulo) {
+		String s="UPDATE EquipoNot set nomEquipo='" + nomEquipo +"', tituloNot='" + titulo + "'"+
 				" WHERE nomEquipo='"+ e.getNombre()+ "' and tituloNot='" + n.getTitulo() + "'";
 		Connection con = BD.initBD("oneFootball.db");
 		try {
@@ -2272,6 +2651,13 @@ public class BD {
 		}
 	}
 	
+	/**Actualiza la relacion entre Usuario y Jugador
+	 * @param u Usuario
+	 * @param j Jugador
+	 * @param correo nuevo
+	 * @param nomJugador nuevo nombre del jugador
+	 * @param nomEquipo nuevo nombre del equipo del jugador
+	 */
 	public static void updateUsuarioJugador(Usuario u, Jugador j, String correo, String nomJugador, String nomEquipo) {
 		String s="UPDATE UsuarioJugador set nomJugador='" + nomJugador +"', nomEquipo='" + nomEquipo + "', correoUsuario='"+ correo+ "'"+
 				" WHERE nomJugador='"+ j.getNombre()+ "' and nomEquipo='" + j.getEquipo().getNombre() + "' and correoUsuario='" + u.getCorreoElec()+"'";
@@ -2286,6 +2672,12 @@ public class BD {
 	}
 	
 	
+	/**Actualiza la relacion entre Usuario y Equipo
+	 * @param Usuario u
+	 * @param Equipo e
+	 * @param correo nuevo en la relacion
+	 * @param nomEquipo nuevo en la relacion
+	 */
 	public static void updateUsuarioEquipo(Usuario u, Equipo e, String correo, String nomEquipo) {
 		String s="UPDATE UsuarioEquipo set nomEquipo='" + nomEquipo + "', correoUsuario='"+ correo+ "'"+
 				" WHERE nomEquipo='" + e.getNombre() + "' and correoUsuario='" + u.getCorreoElec()+"'";
@@ -2300,6 +2692,12 @@ public class BD {
 	}
 	
 	
+	/**Actualiza la relacion entre un usuario y una liga
+	 * @param Usuario u
+	 * @param liga l
+	 * @param correo nuevo en la relacion
+	 * @param nomLiga nuevo en la relacion
+	 */
 	public static void updateUsuarioLiga(Usuario u, Liga l, String correo, String nomLiga) {
 		String s="UPDATE UsuarioLiga set nomLiga='" + nomLiga + "', correoUsuario='"+ correo+ "'"+
 				" WHERE nomLiga='" + l.getNombre() + "' and correoUsuario='" + u.getCorreoElec()+"'";
@@ -2314,6 +2712,9 @@ public class BD {
 	}
 	
 	
+	/**Selecciona todos los usuarios
+	 * @return ArrayList con todos los Usuarios
+	 */
 	public static ArrayList<Usuario>selectUsuarios(){
 		ArrayList<Usuario>usuarios= new ArrayList<Usuario>();
 		try {
@@ -2347,6 +2748,11 @@ public class BD {
 		}
 	}
 
+	
+	/**Borra una relacion entre Jugador y Usuario
+	 * @param Usuario de la relacion
+	 * @param Jugadpr de la relacion
+	 */
 	public static void deleteUsuarioJugador(Usuario u,Jugador j) {
 			String s="DELETE FROM UsuarioJugador WHERE correoUsuario='"+ u.getCorreoElec()+ "' and nomJugador='" + j.getNombre()+
 					"' and nomEquipo ='" + j.getEquipo().getNombre() + "'" ;
@@ -2362,6 +2768,10 @@ public class BD {
 	}
 	
 	
+	/**Borra una relacion entre equipo y Usuario
+	 * @param Usuario de la relacion
+	 * @param Equipo de la relacion
+	 */
 	public static void deleteUsuarioEquipo(Usuario u,Equipo e) {
 		String s="DELETE FROM UsuarioEquipo WHERE correoUsuario='"+ u.getCorreoElec()+ "' and nomEquipo ='" + e.getNombre() + "'" ;
 		Connection con = BD.initBD("oneFootball.db");
@@ -2376,6 +2786,10 @@ public class BD {
 	
 		
 		
+		/**Borra una relacion entre usuario y liga
+		 * @param u usuario
+		 * @param l liga
+		 */
 		public static void deleteUsuarioLiga(Usuario u,Liga l) {
 			String s="DELETE FROM UsuarioLiga WHERE correoUsuario='"+ u.getCorreoElec()+ "' and nomLiga='" + l.getNombre()+ "'" ;
 			Connection con = BD.initBD("oneFootball.db");

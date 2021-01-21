@@ -10,6 +10,10 @@ public class Jornada {
 	private Liga liga;
 	
 	
+	/**
+	 * @param l liga en la que se disputa la jornada
+	 * @param numJornada numero de jornada
+	 */
 	public Jornada(Liga l,int numJornada) {
 		this.liga=l;
 		this.numJornada=numJornada;
@@ -63,13 +67,12 @@ public class Jornada {
 		partidos= new ArrayList<Partido>();
 	}
 	
-	/**Considera iguales cuando las jornadas tienen la misma fecha de inicio
-	 * misma fecha de fin y mismo numero de jornada
+	/**Considera iguales cuando las jornadas tienen la misma liga y mismo numero
 	 * @param j Jornada a comparar
 	 * @return true si son iguales, false en caso de que no lo sean
 	 */
 	public boolean equals(Jornada j) {
-		if (fechaInicio.equals(j.getFechaInicio()) && getFechaFinal().equals(j.getFechaFinal()) && numJornada==j.getNumJornada()) {
+		if (j.getLiga().equals(liga) && numJornada==j.getNumJornada()) {
 			return true;
 		}else {
 			return false;

@@ -132,6 +132,10 @@ public class Jugador implements ConImagenes{
 	}
 	
 	
+	/**Compara en base al nombre y en caso de ser iguales en base al nombre del equipo
+	 * @param Jugador a comparar
+	 * @return devuelve 1 si el jugador a comparar es mayor y -1 si es menor
+	 */
 	public int compareTo(Jugador j) {
 		if (!nombre.contentEquals(j.getNombre()))	return nombre.compareTo(j.getNombre());
 		else {

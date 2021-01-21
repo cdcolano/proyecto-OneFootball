@@ -70,6 +70,10 @@ public class Equipo extends Contenedor implements Comparable{
 		golesEnContra=0;
 		partidos= new ArrayList<Partido>();
 	}
+	
+	/**
+	 *Compara dos equipos en base a sus puntos
+	 */
 	@Override
 	public int compareTo(Object o) {
 		Equipo eq=(Equipo)o;

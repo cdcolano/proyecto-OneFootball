@@ -81,19 +81,27 @@ public class Usuario {
 		return "Nombre: "+ nombre + "Correo: " + correoElec;
 	}
 	
-	
+	/**Elimina un jugador de la lista de jugadores seguidos
+	 * @param j jugador a eliminar
+	 */
 	public void removeJugador(Jugador j) {
 		jugadoresSeguidos=quickSortJugador(jugadoresSeguidos, 0, jugadoresSeguidos.size()-1);
 		int indice=buscaJugador(jugadoresSeguidos, j, 0, jugadoresSeguidos.size()-1);
 		jugadoresSeguidos.remove(indice);
 	}
 	
+	/**Elimina una liga de la lista de ligas seguidas
+	 * @param l liga a eliminar
+	 */
 	public void removeLiga(Liga l) {
 		ligasSeguidas=quickSortLiga(ligasSeguidas, 0, ligasSeguidas.size()-1);
 		int indice= buscaLiga(ligasSeguidas, l, 0, ligasSeguidas.size()-1);
 		ligasSeguidas.remove(indice);
 	}
 	
+	/**Elimina un equipo de la lista de quipos seguidos
+	 * @param e equipo a eliminar
+	 */
 	public void removeEquipo(Equipo e) {
 		equiposSeguidos=quickSortEquipo(equiposSeguidos, 0, equiposSeguidos.size()-1);
 		int indice=buscaEquipo(equiposSeguidos, e, 0, equiposSeguidos.size()-1);
@@ -113,7 +121,12 @@ public class Usuario {
 			return false;
 		}
 	}
-	
+	/**Ordena la lista de Equipos
+	 * @param lista a ordenar
+	 * @param inferior
+	 * @param superior
+	 * @return lista ordenada
+	 */
 	public ArrayList<Equipo> quickSortEquipo(ArrayList<Equipo> lista, int inferior, int superior) {
 		Equipo mitad= lista.get((inferior + superior) /2 );
 		Equipo x;
@@ -145,7 +158,12 @@ public class Usuario {
 		return lista;
 	}
 	
-	
+	/**Ordena la lista de Ligas
+	 * @param lista a ordenar
+	 * @param inferior
+	 * @param superior
+	 * @return lista ordenada
+	 */
 	public  ArrayList<Liga> quickSortLiga(ArrayList<Liga> lista, int inferior, int superior) {
 		Liga mitad= lista.get((inferior + superior) /2 );
 		Liga x;
@@ -178,6 +196,12 @@ public class Usuario {
 	}
 	
 	
+	/**Ordena la lista de Jugadores
+	 * @param lista a ordenar
+	 * @param inferior
+	 * @param superior
+	 * @return lista ordenada
+	 */
 	public ArrayList<Jugador> quickSortJugador(ArrayList<Jugador> lista, int inferior, int superior) {
 		Jugador mitad= lista.get((inferior + superior) /2 );
 		Jugador x;
@@ -209,7 +233,13 @@ public class Usuario {
 		return lista;
 	}
 	
-	
+	/**Busca un jugador
+	 * @param lista en la que buscar
+	 * @param j jugador buscado
+	 * @param indiceInf indice inferior 
+	 * @param indiceSup indice Superior
+	 * @return posicion del Jugador -1 si no esta
+	 */
 	public int buscaJugador(ArrayList<Jugador> lista, Jugador j, int indiceInf, int indiceSup) {
 		int indice=(indiceInf+ indiceSup)/2;
 		if (indiceInf>indiceSup) {
@@ -238,6 +268,13 @@ public class Usuario {
 		
 	}
 	
+	/**Busca una liga
+	 * @param lista en la que buscar
+	 * @param l liga buscada
+	 * @param indiceInf indice inferior 
+	 * @param indiceSup indice Superior
+	 * @return posicion de la Liga -1 si no esta
+	 */
 	public int buscaLiga(ArrayList<Liga> lista, Liga l, int indiceInf, int indiceSup) {
 		int indice=(indiceInf+ indiceSup)/2;
 		if (indiceInf>indiceSup) {
@@ -263,6 +300,13 @@ public class Usuario {
 		
 	}
 	
+	/**Busca un equipo
+	 * @param lista en la que buscar
+	 * @param e equipo buscado
+	 * @param indiceInf indice inferior 
+	 * @param indiceSup indice Superior
+	 * @return posicion del equipo -1 si no esta
+	 */
 	public static int buscaEquipo(ArrayList<Equipo> lista, Equipo e, int indiceInf, int indiceSup) {
 		int indice=(indiceInf+ indiceSup)/2;
 		if (indiceInf>indiceSup) {
