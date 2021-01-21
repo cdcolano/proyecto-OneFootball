@@ -1057,10 +1057,17 @@ public class BD {
 		 * @param liga
 		 * @return lista de traspasos
 		 */
-		private static ArrayList<Traspaso> selectTraspasos(Liga l) {
+		public static ArrayList<Traspaso> selectTraspasos(Liga l) {
 			ArrayList<Traspaso>traspasos= new ArrayList<Traspaso>();
-			for (Equipo e: l.getEquipos()) {
-				l.getTraspasos().addAll(e.getTraspasos());
+			for(Equipo e:l.getEquipos()) {
+				ArrayList<Traspaso>traspasosBuenos=BD.selectTraspasos(e);
+				l.setTraspasos(traspasosBuenos);
+				for (Traspaso t:traspasosBuenos) {
+					if (l.buscaTraspaso(t)) {
+						traspasos.add(t);
+					}
+				}
+			
 			}
 			return traspasos;
 		}

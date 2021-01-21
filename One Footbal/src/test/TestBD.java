@@ -65,6 +65,12 @@ public class TestBD {
 		Liga l= new Liga("la liga");
 		Liga lBD=BD.selectLiga(l.getNombre());
 		assertEquals(lBD.getImagen(), "/img/liga/laLiga.jpg");
+		assertEquals(lBD.getJornadas().size(),2);
+		assertEquals(lBD.getMaximosGoleadores().first().getNombre(),"muniain");
+		assertEquals(lBD.getTarjetasAmarillas().first().getNombre(),"williams");
+		assertEquals(lBD.getTarjetasRojas().first().getNombre(), "messi");
+		assertEquals(lBD.getMaximosAsistentes().first().getNombre(), "messi");
+		
 	}
 	
 
