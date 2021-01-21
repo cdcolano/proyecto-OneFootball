@@ -19,6 +19,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -195,16 +196,48 @@ public class VentanaSiguiendo extends JFrame{
 		pBoton.setLayout(new FlowLayout(FlowLayout.CENTER));
 		pBoton.add(bAnyade);
 		pCentralFuera.add(pBoton,BorderLayout.SOUTH);
+		JProgressBar pbProgreso= new JProgressBar(0,100);
+		Thread hilo2= new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						while(VentanaSiguiendo.this.isVisible()) {
+							int n=pbProgreso.getValue()+1;
+							if (n>100) {
+							n=n-100;
+							}
+							pbProgreso.setValue(n);
+							try {
+								Thread.sleep(100);
+							}catch(Exception e) {
+								e.printStackTrace();
+							}
+						}
+						
+					}
+				});
+		
+		Thread hilo= new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				VentanaBusqueda v= new VentanaBusqueda(u);
+				VentanaSiguiendo.this.dispose();				
+			}
+		});
+		
 		
 		bAnyade.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaBusqueda v= new VentanaBusqueda(u);
-				VentanaSiguiendo.this.dispose();
-				
+				getContentPane().add(pbProgreso,BorderLayout.NORTH);
+				revalidate();
+				hilo2.start();
+				hilo.start();
 			}
 		});
+		
 		
 		getContentPane().add(pCentralFuera,BorderLayout.CENTER);
 		

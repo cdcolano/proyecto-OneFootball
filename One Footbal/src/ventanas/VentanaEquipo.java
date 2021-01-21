@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -105,6 +106,38 @@ public class VentanaEquipo extends JFrame{
 			pBotoneraSup.add(bPlantilla);
 			pSuperior.add(pBotoneraSup,BorderLayout.SOUTH);
 			
+			JProgressBar pbProgreso= new JProgressBar(0,100);
+			Thread hilo2= new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							while(vent.isVisible()) {
+								int n=pbProgreso.getValue()+1;
+								if (n>100) {
+								n=n-100;
+								}
+								pbProgreso.setValue(n);
+								try {
+									Thread.sleep(100);
+								}catch(Exception e) {
+									e.printStackTrace();
+								}
+							}
+							
+						}
+					});
+			
+			Thread hilo= new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					
+					VentanaTraspasos v= new VentanaTraspasos(e,u);
+					vent.dispose();
+					
+				}
+			});
+			
 			
 			bPlantilla.addActionListener((ActionEvent ev)-> {
 				if (!(vent instanceof VentanaEquipo)) {
@@ -138,8 +171,11 @@ public class VentanaEquipo extends JFrame{
 			
 			bTraspasos.addActionListener((ActionEvent arg0)-> {
 				if (!(vent instanceof VentanaTraspasos)) {
-					VentanaTraspasos v= new VentanaTraspasos(e,u);
-					vent.dispose();
+					pSuperior.add(pbProgreso,BorderLayout.NORTH);
+					pSuperior.revalidate();
+					vent.revalidate();
+					hilo2.start();
+					hilo.start();
 				}
 					
 				

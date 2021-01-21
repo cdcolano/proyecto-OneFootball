@@ -17,6 +17,7 @@ import java.util.EventObject;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.sound.sampled.ReverbType;
 //TODO posibilidad de seleccionar un equipo , al seleccionar un equipo se cargan sus estaditicas en un JPanel abajo
 //TODO si el equipo esta en una posicion del 18 o peor poner noombre o background en rojo
 //si el equipo esya en una posicion del 4 o mejor poner nombre o background en azul
@@ -258,9 +259,38 @@ public class VentanaLiga extends JFrame {
 		pBotoneraSup.add(bNoticias);
 		pBotoneraSup.add(bEstadisticas);
 		pSuperior.add(pBotoneraSup,BorderLayout.SOUTH);
+		JProgressBar pbProgreso= new JProgressBar(0,100);
+		Thread hilo2= new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						while(vent.isVisible()) {
+							int n=pbProgreso.getValue()+1;
+							if (n>100) {
+							n=n-100;
+							}
+							pbProgreso.setValue(n);
+							try {
+								Thread.sleep(100);
+							}catch(Exception e) {
+								e.printStackTrace();
+							}
+						}
+						
+					}
+				});
 		
+		Thread hilo= new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				VentanaTraspasos v= new VentanaTraspasos(l,u);
+				vent.dispose();
+				
+			}
+		});
 		
-	
 		
 		bJornada.addActionListener((ActionEvent arg0)-> {
 			if (!(vent instanceof VentanaJornada)) {
@@ -311,8 +341,12 @@ public class VentanaLiga extends JFrame {
 		
 		bTraspasos.addActionListener((ActionEvent arg0)-> {
 			if (!(vent instanceof VentanaTraspasos)) {
-				VentanaTraspasos v= new VentanaTraspasos(l,u);
-				vent.dispose();
+				pSuperior.add(pbProgreso,BorderLayout.NORTH);
+				pSuperior.revalidate();
+				vent.revalidate();
+				hilo2.start();
+				hilo.start();
+				
 			}
 				
 			
