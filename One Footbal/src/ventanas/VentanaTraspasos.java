@@ -48,7 +48,7 @@ public class VentanaTraspasos extends JFrame {
 		}else {
 			Equipo e=(Equipo)c;
 			if (e.getTraspasos()==null || e.getTraspasos().size()==0) {
-			e.getTraspasos().addAll(BD.selectTraspasos(e));
+				e.getTraspasos().addAll(BD.selectTraspasos(e));
 			System.out.println(e.getTraspasos().size() + "traspasos");
 			}
 		}

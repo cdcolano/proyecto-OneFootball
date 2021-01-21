@@ -952,7 +952,7 @@ public class BD {
 		String s = "SELECT t.*, e1.nom,e1.img as 'imgVendedor', e1.puntos, e1.golesAFavor, e1.golesEnContra,e1.liga,e2.nom as 'nomComprador',e2.img as 'imgComprador', e2.puntos as 'puntosComprador', e2.golesAfavor"
 				+ " as 'golesAFavorComprador', e2.golesEnContra as 'golesEnContraComprador', e2.liga as 'ligaComprador'"
 				+ ",j.* FROM Traspaso t,Equipo e1,Equipo e2, Jugador j"
-				+ " WHERE e1.nom=t.nomEquipoVendedor and e2.nom=t.nomEquipoComprador and e1.nom=j.nomEquipo and (t.nomEquipoVendedor='" + e.getNombre() +"' or nomEquipoComprador='" + e.getNombre() + "')";
+				+ " WHERE e1.nom=t.nomEquipoVendedor and e2.nom=t.nomEquipoComprador and e1.nom=j.nomEquipo and t.nomJugador=j.nombre and (t.nomEquipoVendedor='" + e.getNombre() +"' or nomEquipoComprador='" + e.getNombre() + "')";
 		ArrayList<Traspaso>traspasos= new ArrayList<Traspaso>();
 		Connection con = initBD("OneFootball.db");
 		try {
